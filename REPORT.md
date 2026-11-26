@@ -102,6 +102,25 @@ The patch readings exclude signs, overlay text and the blue path from the unlit 
 
 The stage's first uncontended Chestnut profile recorded **139.4 fps on the RTX 4070 Laptop** and **21.9 fps on Iris Xe** at 2560 × 1440, High, DPR 1, mesh. These were hardware-verified D3D11 readings before the final road, cloud and sky palette adjustment. Iris Xe had a single reading and no target.
 
+## Release checks and proof
+
+- `npm run typecheck`, the production build and `npm run check:drive` passed. The three drive seeds reached Parked with zero overlap frames, unsafe-gap frames, stuck traffic, red-light violations and stop-sign violations. Their timing and minimum clearance are recorded under Stage 1.
+- `check:parking -- http://localhost:4106/?scene=lot` exited 0. Northgate kept 43/43 selectable bays and exact parking endpoints, with 0.260 m minimum swept parking clearance and 0.377 m minimum cruise clearance. Chase passed 46/46 samples and overhead passed 29/29. The browser parked without console errors.
+- `npm run check:dive` passed 45 view projections and 75 tablet rays. The worst handover difference was 0.001966% of frame height.
+- The final build reached ready in **6.78 s** with **29.47 MB** transferred in the 2560 × 1440 capture. The capture clicked B201, reached Parked and returned to the cabin, with zero console errors and no asset fallbacks. Vite still reports its size warning for the lazy Spark bundle.
+- The final real-time Chrome trip loaded in **6.25 s** and transferred **38.97 MB** including music. It started from the default scene through a seat UI click, reached the lot at **405.70 s**, parked in B201 at **443.32 s** and began the automatic seat return after **2.12 s**. It verified both F2 scene options and finished with zero overlaps, control violations, stuck frames, asset fallbacks and console errors. The reversing endpoint error remained 0 m / 0°. Telemetry is in `shots/p2/live-final/live-drive.json`.
+- The final RTX 4070 Laptop run recorded **110.5 fps** at 2560 × 1440, High, DPR 1, mesh, against the 90 fps target. The test selected the most expensive of five moving Chestnut samples. The screen world averaged **5.62 ms GPU** and **718 draws**. The queue had no competing heavy job and Chrome reported no errors. The single Iris Xe reading was **21.9 fps** on the preceding palette revision. Local profiles are `shots/p2/fps.json` and `shots/p2/fps-final.json`.
+- `shots/p2/drive-vs-rv01.jpg` contains the reference and three labelled Chestnut measurements. `marina-blvd.jpg` shows both bridge towers and the harbor. `arrival.jpg` shows four chevrons, the overhead reverse and the lit Palace from the seat. Rays from the four parked cabin eye positions saw the dome in 3, 2, 3 and 3 of nine sampled directions. The local sheets were reviewed at their stored resolution. The README's two new JPEGs show only the project build.
+- The preview serves production entry `assets/index-CAohClpD.js` from `dist`. Vite built to a local temporary folder because of the pre-existing file lock in `dist`. The publisher copied the production entry page last.
+- The public release audit covered **321 files** with zero findings. The GitHub verification compares `main`, all five annotated release tags and the published file inventory with the audited commit. The audit output is kept in `shots/p2/github-verification.json`.
+
+## Decisions and remaining gaps
+
+1. The legal route takes 6¾–7¾ minutes to reach the lot. The 2,499 m drive, its full stops and the allowable Baker–Bay–Palace approach take priority over the 3–4 minute target. The demo uses the requested 25 mph street limit. The source data retains Chestnut's mapped 20 mph segment.
+2. The parked view gets the rotunda through the open colonnade, with part of the dome and the lagoon visible. Near columns and their crossbeam still cover much of it compared with the open composition in `rv-07`. The physical upper-dome reflection falls on dry ground from the parked eye. The visible reflections are lower architectural fragments and warm streaks. The lot's four free bays fit a simplified loop and there is no moving NPC traffic inside it.
+3. Chestnut's flatter street and modular façades, plain glass and low-poly pedestrians are visibly simpler than `rv-01`. The scene has fewer groups of moving cars directly in front of the player than either night reference. Distant hills, dock berths and sculpture details are approximations.
+4. The road reads 2–5 blue–red codes less blue than `rv-01`, and the headlight patch contrast is lower than the phase 1.6.1 matched frame. Warm pools remain around lit stores. The Marina Boulevard look photo is daylight, and the night bridge photo comes from nearby Crissy Field.
+
 # Phase 1.6 — AI driver, headlight cloud, traffic that gives way
 
 The kept preview at [http://localhost:4106/](http://localhost:4106/) serves production entry `assets/index-44Ac6HQG.js` from `dist`. [Live bot](http://localhost:4106/?bot=1) · [Splat world, mesh cars](http://localhost:4106/?bot=1&world=splat&cars=mesh) · [Browser studio](http://localhost:4106/?studio=side)

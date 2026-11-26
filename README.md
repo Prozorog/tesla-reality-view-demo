@@ -9,6 +9,8 @@ Sit in a Model X at night and start a self-driving trip from San Francisco's Che
 | ![Model X cabin with the Reality View tablet](docs/screens/cabin.jpg) | ![Model X cruising the lot at night](docs/screens/chase.jpg) |
 | **Straight-down parking** | **Model X studio** |
 | ![Overhead reverse parking and rear camera inset](docs/screens/parking.jpg) | ![Side view of the Model X built for the demo](docs/screens/model-x.jpg) |
+| **Chestnut Street at night** | **Parked at the Palace of Fine Arts** |
+| ![Westbound on Chestnut Street in Reality View](docs/screens/chestnut.jpg) | ![Lit Palace of Fine Arts through the Model X windscreen](docs/screens/rotunda-cabin.jpg) |
 
 ## Run locally
 
@@ -20,6 +22,8 @@ npm run dev
 ```
 
 For the production build, run `npm run build` and `npm run preview`. Open the URL Vite prints.
+
+`npm run check:drive` runs three seeded San Francisco trips through parking. Use `?scene=lot` with the Northgate parking and capture tools.
 
 ## Controls
 
