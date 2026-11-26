@@ -39,7 +39,7 @@ export class PavementLights {
   constructor(world: Object3D, private readonly footprint: Exterior['footprint']) {
     const pavement = standardMeshes(world).filter(mesh => /^(Asphalt_|Kerbs_and_paving$|Outer_verge$|Street_beyond$)/.test(mesh.name))
     for (const material of new Set(pavement.map(mesh => mesh.material))) {
-      const asphalt = pavement.some(mesh => mesh.material === material && /^Asphalt_/.test(mesh.name))
+      const asphalt = pavement.some(mesh => mesh.material === material && /^(Asphalt_|Street_beyond$)/.test(mesh.name))
       editShader(material, asphalt ? 'player-pavement-light-p161-asphalt' : 'player-pavement-light-p161', shader => {
         shader.uniforms.rvHead = this.front
         shader.uniforms.rvTail = this.rear

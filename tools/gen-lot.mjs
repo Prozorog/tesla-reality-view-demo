@@ -119,7 +119,7 @@ const rows = [
   { z: -11.85, h: Math.PI - angle, count: 21, free: [3, 5, 8, 10, 13, 15, 17, 19], extraFree: [20], corral: 6 },
   { z: -5.85, h: -angle, count: 21, free: [1, 3, 5, 8, 10, 13, 16], extraFree: [0, 18] },
   { z: 5.6, h: angle, count: 21, free: [0, 2, 5, 7, 10, 12, 14, 16], extraFree: [18], corral: 9 },
-  { z: 11.6, h: Math.PI + angle, count: 21, free: [2, 4, 6, 9, 14, 16, 18, 19], extraFree: [20], unavailable: [2] },
+  { z: 11.6, h: Math.PI + angle, count: 21, free: [2, 4, 6, 9, 14, 16, 18, 19], unavailable: [2, 20] },
 ]
 for (const [rowIndex, row] of rows.entries()) {
   const straight = rowIndex === 0
@@ -130,7 +130,8 @@ for (const [rowIndex, row] of rows.entries()) {
     const corral = row.corral === i
     const x = (i - (row.count - 1) / 2) * pitch + (straight ? Math.max(-0.6, Math.min(0.6, (i - 12) * 0.3)) : 0)
     const previouslyFree = row.free.includes(i)
-    const free = !(row.unavailable ?? []).includes(i) && (previouslyFree || (row.extraFree ?? []).includes(i))
+    const unavailable = (row.unavailable ?? []).includes(i)
+    const free = !unavailable && (previouslyFree || (row.extraFree ?? []).includes(i))
     const bay = {
       id, center: [x, row.z], heading: row.h, width: accessible ? 2.98 : straight ? 2.68 : 2.6, depth: 5.5,
       kind: corral ? 'corral' : accessible ? 'accessible' : straight ? 'straight' : 'angled',
@@ -146,7 +147,7 @@ for (const [rowIndex, row] of rows.entries()) {
         dx: (random() - 0.5) * 0.16, dz: (random() - 0.5) * 0.18, dh: (random() - 0.5) * 0.075,
         noseIn: random() < (straight ? 0.27 : 0.15),
       }
-      if (!free) bay.car = car
+      if (!free && !unavailable) bay.car = car
     }
     bays.push(bay)
   }
@@ -177,6 +178,7 @@ const trees = islandSites.map(([x, z]) => [x, z + 0.9]).concat([[-44.9, -21], [-
 const bollards = Array.from({ length: 23 }, (_, i) => [-40.7 + i * 3.7, -28.05])
 const lot = {
   seed, size: [90, 60], aisles, route, entrance, bays, lamps, kerbs, hatches, arrows, trees, bollards, corrals,
+  start: { x: 18, z: lane.south, h: Math.PI },
   building: { outline: box(-43.5, -42, 43.5, -30), height: 6.5, canopyDepth: 3, sign: 'NORTHGATE', doors: [[-26, -30], [-8, -30], [8, -30], [26, -30]] },
   street: { z: 36, from: -80, to: 80 },
 }

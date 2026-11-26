@@ -10,6 +10,7 @@ import { coverFrame, ease, fitTablet, HUD_HEIGHT, HUD_WIDTH, TABLET_ASPECT } fro
 import type { Dive } from './dive.ts'
 import type { LotOcclusion } from './lot-occlusion.ts'
 import type { SafeArea } from './safe-area.ts'
+import { CHEVRON_RANGE, markerAnchor } from './markers.ts'
 
 const radians = MathUtils.degToRad
 const BASE_SEAT_FOV = 64
@@ -37,7 +38,7 @@ const CANDIDATE_YAWS = [0, 8, -8, 16, -16, 24, -24].map(radians)
 function cruiseHeading(pose: Pose, bays: Bay[], windowAspect: number, preferredYaw: number) {
   const frame = coverFrame(windowAspect)
   const [x, z] = localPoint(pose, CENTER_OFFSET, 0)
-  const nearby = bays.filter(bay => Math.hypot(bay.center[0] - pose.x, bay.center[1] - pose.z) <= MARKER_RANGE)
+  const nearby = bays.filter(bay => Math.hypot(bay.center[0] - pose.x, bay.center[1] - pose.z) <= CHEVRON_RANGE)
   const closer = nearby.filter(bay => Math.hypot(bay.center[0] - pose.x, bay.center[1] - pose.z) <= MARKER_RANGE - 0.8)
   const candidates = closer.length >= 4 ? closer : nearby
   const tanY = Math.tan(radians(25))
@@ -50,7 +51,8 @@ function cruiseHeading(pose: Pose, bays: Bay[], windowAspect: number, preferredY
     const heading = pose.h + offset
     const cos = Math.cos(heading), sin = Math.sin(heading)
     let count = 0
-    for (const { center: [bx, bz] } of candidates) {
+    for (const bay of candidates) {
+      const [bx, , bz] = markerAnchor(bay, 0)
       const dx = bx - x, dz = bz - z
       const along = dx * cos - dz * sin + CRUISE_BACK
       const depth = along * Math.cos(pitch) + markerDrop * Math.sin(pitch)
@@ -280,18 +282,16 @@ export class Cameras {
 
   private fitCruise(drive: Drive, aspect: number) {
     const frame = coverFrame(aspect)
-    let first = Infinity, second = Infinity
-    for (const { center: [x, z] } of drive.freeBays) {
-      if (Math.hypot(x - drive.pose.x, z - drive.pose.z) > MARKER_RANGE) continue
-      const p = this.marker.set(x, 1.6, z).applyMatrix4(this.reality.matrixWorldInverse)
+    const fits: number[] = []
+    for (const bay of drive.freeBays) {
+      if (Math.hypot(bay.center[0] - drive.pose.x, bay.center[1] - drive.pose.z) > CHEVRON_RANGE) continue
+      const [x, y, z] = markerAnchor(bay, 0)
+      const p = this.marker.set(x, y, z)
+      if (this.reality.position.distanceToSquared(p) < 64) continue
+      p.applyMatrix4(this.reality.matrixWorldInverse)
       if (p.z >= -this.reality.near) continue
       const fit = Math.max(Math.abs(p.x) * HUD_HEIGHT / frame.width, Math.abs(p.y) * HUD_HEIGHT / frame.height) / -p.z
-      if (fit < first) {
-        second = first
-        first = fit
-      } else if (fit < second) {
-        second = fit
-      }
+      fits.push(fit)
     }
     const { rear, front, width } = this.footprint
     let fitCar = 0
@@ -299,7 +299,9 @@ export class Cameras {
       const p = this.marker.set(x, 0, z).applyMatrix4(this.reality.matrixWorldInverse)
       fitCar = Math.max(fitCar, -p.y * HUD_HEIGHT / (0.42 * frame.height * -p.z))
     }
-    const markersFov = Number.isFinite(second) ? Math.min(66, MathUtils.radToDeg(2 * Math.atan(second * 1.035))) : 0
+    fits.sort((a, b) => a - b)
+    const fit = fits[Math.min(fits.length, 4) - 1]
+    const markersFov = fit === undefined ? 0 : Math.min(66, MathUtils.radToDeg(2 * Math.atan(fit * 1.18)))
     return Math.max(BASE_REALITY_FOV, MathUtils.radToDeg(2 * Math.atan(fitCar)), markersFov)
   }
 

@@ -11,6 +11,7 @@ const out = resolve(process.argv[3] ?? 'tmp/model-x/look')
 const what = process.argv[4] ?? 'studio'
 const views = (process.argv[5] ?? 'side,front,rear,top').split(',')
 const temp = resolve('tmp/model-x/browser')
+const reference = resolve(process.env.TESLA_REF_DIR ?? '../ref', 'model-x-user')
 for (const dir of [temp, out]) mkdirSync(dir, { recursive: true })
 process.env.TMP = process.env.TEMP = process.env.TMPDIR = temp
 const browser = await chromium.launch({ channel: 'chrome', args: [
@@ -30,7 +31,7 @@ try {
       await page.waitForTimeout(400)
       const file = resolve(out, 'studio-' + angle + '.png')
       await page.screenshot({ path: file })
-      const ref = resolve('../ref/model-x-user/x-' + (angle === 'side' ? 'side-right' : angle) + '.webp')
+      const ref = resolve(reference, 'x-' + (angle === 'side' ? 'side-right' : angle) + '.webp')
       rows.push({ input: ref, left: 0, top: index * 768 }, { input: file, left: 1376, top: index * 768 })
     }
     await sharp({ create: { width: 2752, height: 768 * views.length, channels: 3, background: '#888' } })

@@ -22,6 +22,7 @@ export type Lot = {
   aisles: { id: string; points: Point[]; oneWay: boolean }[]
   route: Point[]
   entrance: { pos: Point; heading: number }
+  start?: Pose
   bays: Bay[]
   lamps: { pos: Point; height: number; arms: number }[]
   kerbs: { id: string; outline: Point[]; kind: 'island' | 'sidewalk' | 'hedge' }[]

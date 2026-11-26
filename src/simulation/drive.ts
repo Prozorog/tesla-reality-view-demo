@@ -86,6 +86,7 @@ export class Drive {
     this.firstFreeBay = this.freeBays[0]?.id
     // Arrive a little inside the entrance, clear of the street branches.
     this.station = this.route.wrap(this.route.closest(lot.entrance.pos, lot.entrance.heading).station - 10)
+    if (lot.start) this.station = this.route.closest([lot.start.x, lot.start.z], lot.start.h).station
     ;[this.profile, this.turnAhead] = this.buildProfile()
     const bay = lot.bays.find(candidate => candidate.id === bayId)
     const plan = bay && this.freeBays.includes(bay) && planParking(lot, this.route, bay, this.traffic.parkedObstacles)

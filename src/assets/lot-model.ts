@@ -44,9 +44,9 @@ function foliageCoverage(material: MeshStandardMaterial) {
       diffuseColor.a *= clamp(texture2D(alphaMap, vAlphaMapUv).g * (1.0 + 0.3 * leafLod), 0.0, 1.0);
       ${leaf ? `
       vec2 leafCard = fract(vAlphaMapUv);
-      diffuseColor.a *= smoothstep(0.0, 0.09, min(min(leafCard.x, 1.0 - leafCard.x), min(leafCard.y, 1.0 - leafCard.y)));
+      diffuseColor.a *= smoothstep(0.025, 0.16, min(min(leafCard.x, 1.0 - leafCard.x), min(leafCard.y, 1.0 - leafCard.y)));
       #ifndef FLAT_SHADED
-        diffuseColor.a *= smoothstep(0.10, 0.34, abs(dot(normalize(vNormal), normalize(vViewPosition))));
+        diffuseColor.a *= smoothstep(0.20, 0.46, abs(dot(normalize(vNormal), normalize(vViewPosition))));
       #endif` : ''}
     `)
   })

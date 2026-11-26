@@ -4078,7 +4078,7 @@
       "depth": 5.5,
       "kind": "angled",
       "row": "R5",
-      "taken": false
+      "taken": true
     }
   ],
   "lamps": [
@@ -4722,6 +4722,11 @@
     "B033",
     "B078"
   ],
+  "start": {
+    "x": 18,
+    "z": 17.25,
+    "h": 3.141593
+  },
   "building": {
     "outline": [
       [

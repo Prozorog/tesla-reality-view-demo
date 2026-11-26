@@ -17,6 +17,35 @@ The staged tree passed the audit across 289 files. The pre-push hook rejected a 
 
 GitHub confirmed a public repository with default branch `main` and all six requested topics. A fresh HTTPS clone of `c29a630` passed the 289-file audit with zero findings. `npm ci` installed 40 packages and `npm run build` succeeded, with Vite's bundle-size warning. The clone under `tmp/clone-check` was removed after the check.
 
+# Phase 1.6.1 — Northgate lot
+
+[Northgate preview](http://localhost:4106/?scene=lot) · [Hybrid world](http://localhost:4106/?scene=lot&world=splat&cars=mesh&bot=1)
+
+- The 372.0 m loop uses the three parking aisles and their end connectors. It visits the middle aisle twice and leaves the perimeter apron to entering and exiting traffic. The start is on a straight. The junction speed profile matches actual crossing angles so coincident aisle sections can run at 6 mph.
+- The release has 43 selectable bays and 63 cars in the baked layout. Two tight end bays stay empty to protect the turn and the exit. The parked-car splat group was regenerated for the thinned layout and the round-10 Model X.
+- The asphalt and far street receive a diffuse fill. The distant windows use one batched warm mesh. The cruise cloud is wider and cooler. Selecting a bay restores the parking cloud immediately. The hardened leaf-card edges were softened and ORIEL & FIG reads red in the roof-angle capture.
+- The Model X has a broader rounded hatch-glass shoulder, softer and lighter glazing, a lower spoiler, fitted front bumper returns and recessed hatch seams. Silhouette IoU is **96.65 / 96.96 / 96.59 / 96.20%** in side, front, rear and top order. Blender exported 160,468 / 14,973 / 1,648 triangles for the hero, near and far models.
+- Chevron selection uses the rendered marker position and viewer projection. Pointer clicks selected B076 at 2.26 mph in both the seat and screen. Waiting traffic plans a swept route around a stationary car where there is enough space and backs off otherwise. Six stationary cases had zero overlap frames, no stuck cars and a maximum sampled vehicle wait of 4.58 s.
+
+| Measurement | Clip B or target | Release |
+| --- | --- | --- |
+| Early cruise chevrons | 6–10 in view | 6, 6, 7, 7, 5, 4 across the six-frame strip |
+| Cruise speed | 6 mph on straights | 4.63 mph mean, 6.00 max, pull-away in 0.53 s |
+| Cruise asphalt samples, near / middle / far | b02 137–158 / 162 / 156. Release target 110–135 near and 80% of near for the other two. | 119 / 73 / 122 at the matched six-second frame. Projected samples can land on vehicles or kerbs elsewhere in the strip. |
+| Cruise cloud ratio, B−R and width | b02 1.30–1.45, +34 and about two car widths | Matched sample 1.70, +10 and an estimated 2.8 car widths. The cyan pool remains visible on the straight. |
+
+The 120-second live run recorded **zero overlaps, no stuck traffic, no console errors**, a 0 s standstill and a 0.552 m minimum clearance at the sampled times. The planner check passed **43/43**, with 0.260 m minimum swept parking clearance at B053, 0.377 m minimum cruise clearance and zero endpoint error. Chase framing passed 46/46 and overhead 29/29. The hybrid run parked B004 in 131.18 simulation seconds with zero endpoint error, overlap frames, fallbacks or console errors. Typecheck, production build and 45 dive projections passed. The worst dive handover error was 0.001966% of window height, and all 75 tablet rays passed.
+
+At 2560 × 1440, High, DPR 1 in mesh mode, the RTX 4070 Laptop recorded **144.1 fps** over three seconds of reverse and **133.7 fps** across the transition to Parked. The queue check found no competing heavy job during the samples. The screen world averaged 4.83 ms GPU for 151 draws.
+
+Local proof in `shots/p1.6.1/` includes `cruise-strip.jpg`, `lot-light.jpg`, `cloud-cruise.jpg`, `model-x-vs-photos.jpg`, `model-x-parked-top.jpg`, the close crown and sign, pointer captures and the two-minute drive log. The Vite release was built in `tmp` and copied to `dist` with the entry page last. The original music file path stayed locked, so the same track uses a fresh URL.
+
+### Remaining differences
+
+1. The opening frames show the required chevrons, but coverage dips below four at some connectors over a full run. The first straight has bays on one side and the lot still reads more tightly occupied than clip B.
+2. Middle-distance pavement is dark in some sampled views. The matched cloud is less blue than b02 and is wider by the patch estimate. Some asphalt detail flattens under the added fill.
+3. The Model X still has sharper transitions at the rear glass and hatch edge than the photos. The parked view retains small bright optic highlights on the glass. Blender warned about the trim mesh in both LOD exports. The hybrid run loaded the LODs without a fallback.
+
 # Phase 1.6 — AI driver, headlight cloud, traffic that gives way
 
 The kept preview at [http://localhost:4106/](http://localhost:4106/) serves production entry `assets/index-44Ac6HQG.js` from `dist`. [Live bot](http://localhost:4106/?bot=1) · [Splat world, mesh cars](http://localhost:4106/?bot=1&world=splat&cars=mesh) · [Browser studio](http://localhost:4106/?studio=side)

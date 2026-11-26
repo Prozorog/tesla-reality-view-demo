@@ -72,9 +72,12 @@ try {
   await page.evaluate(() => { window.__rv.advance(220, { mode: 'parked' }); window.__rv.advance(3) })
   const parked = await page.evaluate(() => window.__rv.state())
   if (parked.mode === 'parked') await screenshot('model-x-parked-top')
-  await clicks('screen')
-  await clicks('seat')
-  writeFileSync(resolve(out, 'lot-tails.json'), JSON.stringify({ frames, taps, parked, errors }, null, 2))
+  try {
+    await clicks('screen')
+    await clicks('seat')
+  } finally {
+    writeFileSync(resolve(out, 'lot-tails.json'), JSON.stringify({ frames, taps, parked, errors }, null, 2))
+  }
   assert.equal(parked.mode, 'parked')
   assert.deepEqual(errors, [])
   console.log(JSON.stringify({ chevrons: frames.map(f => f.chevrons), taps, parked: parked.bay, errors }))
