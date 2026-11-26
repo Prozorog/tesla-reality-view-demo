@@ -246,16 +246,16 @@ export class SceneView {
     }
     this.rearInsetWasVisible = insetVisible
     if (refreshTablet || directVisible) {
+      this.profile?.begin('markers')
+      this.markers.draw(drive, this.cameras.reality, this.cameras.parkingMix, this.markerFade,
+        this.hud.hover?.kind === 'bay' ? this.hud.hover.id : undefined)
+      this.profile?.end()
       this.profile?.begin('hud canvas')
       // The tablet target limits text resolution until the final part of the dive.
       this.hud.setDensity(directVisible || uiBlend > 0
         ? Math.max(1.25, this.screenPicture.width / HUD_WIDTH, this.screenPicture.height / HUD_HEIGHT)
         : this.tablet.width / HUD_WIDTH)
-      this.hud.draw(drive, this.cameras.reality, this.cameras.rear, uiFrame, this.cameras.parkingMix, music, proximity, forceRefresh)
-      this.profile?.end()
-      this.profile?.begin('markers')
-      this.markers.draw(drive, this.cameras.reality, this.cameras.parkingMix, this.markerFade,
-        this.hud.hover?.kind === 'bay' ? this.hud.hover.id : undefined)
+      this.hud.draw(drive, this.markers.visible, this.cameras.rear, uiFrame, music, proximity, forceRefresh)
       this.profile?.end()
     }
     if (refreshTablet) {

@@ -12,6 +12,7 @@ import type { Bay, Lot } from '../simulation/lot.ts'
 
 export const CHEVRON_RANGE = 35
 export const MARKER_GROUND = 0.054
+export type VisibleBayMarker = { id: string; x: number; y: number; radius: number; chevron: boolean }
 
 function entrance(bay: Bay) {
   return localPoint({ x: bay.center[0], z: bay.center[1], h: bay.heading }, bay.depth * 0.5 - 0.38, 0)
@@ -119,6 +120,7 @@ function tileTexture() {
 
 export class BayMarkers {
   readonly root = new Group()
+  readonly visible: VisibleBayMarker[] = []
   private readonly tiles: Map<string, Mesh<PlaneGeometry, MeshBasicMaterial>>
   private readonly chevrons: InstancedMesh<ExtrudeGeometry, MeshBasicMaterial[]>
   private readonly transform = new Object3D()
@@ -128,6 +130,14 @@ export class BayMarkers {
   private readonly fades: InstancedBufferAttribute
   private readonly probe = new Vector3()
   private readonly probeTop = new Vector3()
+
+  private showMarker(camera: PerspectiveCamera, id: string, x: number, y: number, z: number, width: number, chevron: boolean) {
+    const centre = this.probe.set(x, y, z).project(camera)
+    if (centre.z < -1 || centre.z >= 1 || Math.abs(centre.x) > 1 || Math.abs(centre.y) > 1) return
+    const matrix = camera.matrixWorld.elements
+    const edge = this.probeTop.set(x + matrix[0] * width, y + matrix[1] * width, z + matrix[2] * width).project(camera)
+    this.visible.push({ id, x: centre.x, y: centre.y, radius: Math.abs(edge.x - centre.x), chevron })
+  }
   private readonly outline = new Mesh(new PlaneGeometry(1, 1).rotateX(-Math.PI / 2), new ShaderMaterial({
     transparent: true, depthWrite: false,
     uniforms: { width: { value: 1 }, depth: { value: 1 }, tint: { value: new Color('#3e8bff') } },
@@ -194,6 +204,7 @@ export class BayMarkers {
 
   draw(drive: Drive, camera: PerspectiveCamera, parking: number, fade: number, hover?: string) {
     camera.updateMatrixWorld()
+    this.visible.length = 0
     const blend = ease(parking)
     const selected = drive.selectedBay
     const chevronOpacity = (1 - blend) * Math.max(0, (fade - 0.41) / 0.59)
@@ -217,6 +228,7 @@ export class BayMarkers {
           this.chevrons.setMatrixAt(count, this.transform.matrix)
           this.fades.setX(count, fit.fade)
           this.chevrons.setColorAt(count++, bright ? this.white : this.shaded)
+          if (fit.fade * chevronOpacity > 0.12) this.showMarker(camera, bay.id, mx, my, mz, 0.65 * scale * fit.scale, true)
         }
       }
       tile.visible = available && distance <= MARKER_RANGE && blend > 0.005
@@ -224,6 +236,7 @@ export class BayMarkers {
         tile.position.set(x, MARKER_GROUND, z)
         tile.scale.setScalar(scale)
         tile.material.opacity = (bright ? 1 : 0.70) * blend * fade
+        if (blend >= 0.5) this.showMarker(camera, bay.id, x, MARKER_GROUND, z, 0.86 * scale, false)
       }
     }
     this.chevrons.count = count

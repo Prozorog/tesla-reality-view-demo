@@ -318,6 +318,7 @@ export class Drive {
       box: obstacle('player', carRectangle(this.pose)), corridor: this.corridor(), station: this.laneStation, zone: this.zone,
       bay: this.manualBay?.id ?? this.plan?.bay.id ?? (this.bot === 'park' && !this.botPicked ? this.firstFreeBay : undefined),
       blockedBy: this.blocked, blockedTime: this.blockedTime,
+      stationary: Math.abs(this.speed) < 0.025 && !this.plan,
       reversing: this.speed < -0.05 || this.mode === 'manual' && this.gear === 'R' || this.mode === 'reverse',
     }
   }

@@ -35,7 +35,8 @@ try {
     await page.waitForTimeout(500)
     const s = await page.evaluate(() => {
       const st = window.__rv.state(), tr = window.__rv.traffic
-      return { t: st.time, mode: st.mode, status: st.status, speed: st.speed, steer: st.steer, gear: st.gear,
+      return { t: st.time, mode: st.mode, status: st.status, speed: st.speed, steer: st.steer, gear: st.gear, pose: st.pose,
+        clearance: window.__rv.clearance, chevrons: window.__rv.chevrons?.().length,
         stuck: tr.stuck, maxWait: tr.maxWait, overlap: window.__rv.overlapFrames, block: window.__rv.blockReason?.() ?? '' }
     })
     s.t -= started
@@ -57,6 +58,8 @@ try {
     maxSpeedMph: Math.max(...speeds) / 0.44704,
     steerRange: [Math.min(...steers), Math.max(...steers)],
     maxAccel: Math.max(...accel), maxBrake: -Math.min(...accel),
+    minClearance: Math.min(...samples.map(s => s.clearance ?? Infinity)),
+    minCruisingChevrons: Math.min(...samples.filter(s => s.mode === 'cruise').map(s => s.chevrons ?? Infinity)),
     modes: [...new Set(samples.map(s => s.mode))], statuses: [...new Set(samples.map(s => s.status))],
     finalStuck: samples.at(-1).stuck, finalMaxWait: samples.at(-1).maxWait, overlapFrames: samples.at(-1).overlap, errors,
   }

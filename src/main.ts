@@ -2,7 +2,7 @@ import { createAssets } from './assets/index.ts'
 import { CabinAudio } from './audio/cabin-audio.ts'
 import { Vector3 } from 'three'
 import { Drive } from './simulation/drive.ts'
-import { localPoint } from './simulation/geometry.ts'
+import { carRectangle, localPoint, polygonClearance } from './simulation/geometry.ts'
 import type { Controls, Mode } from './simulation/drive.ts'
 import type { Lot } from './simulation/lot.ts'
 import { Dive, HUD_HEIGHT, HUD_WIDTH } from './render/dive.ts'
@@ -259,6 +259,7 @@ async function main() {
     get overlapFrames() { return drive.overlapFrames },
     blockReason: () => drive.blocked ?? '',
     get longestStandstill() { return drive.longestStandstill },
+    get clearance() { return polygonClearance(carRectangle(drive.pose), drive.traffic.parkedCollision.concat(drive.traffic.movingBoxes), 10) },
     get traffic() { return { ...drive.traffic.stats, reverseStops: drive.reverseTrafficStops } },
     get endPose() { return drive.parkingResult() },
     state: () => ({
@@ -288,6 +289,13 @@ async function main() {
       view.cameras.update(0, drive, view.aspect)
       dirty = true
     },
+    frameDetail: (eye: [number, number, number], target: [number, number, number]) => {
+      if (!shot || !paused) return
+      view.cameras.reality.position.set(...eye)
+      view.cameras.reality.lookAt(...target)
+      view.cameras.reality.updateMatrixWorld()
+      draw()
+    },
     /** Window position of a ground point `along` m ahead of the car origin and `across` m to its left. */
     groundPoint: (along: number, across: number, height = 0.02) => {
       const [x, z] = localPoint(drive.pose, along, across)
@@ -298,6 +306,7 @@ async function main() {
       const point = view.hud.targetPoint(target)
       return point ? view.windowPoint(point, dive) : undefined
     },
+    chevrons: () => view.hud.chevrons().map(({ id, point }) => ({ id, ...view.windowPoint(point, dive) })),
     tabletFraming: () => {
       const rect = view.canvas.getBoundingClientRect()
       const corners = [0, HUD_WIDTH].flatMap(x => [0, HUD_HEIGHT].map(y => view.windowPoint({ x, y }, dive)))

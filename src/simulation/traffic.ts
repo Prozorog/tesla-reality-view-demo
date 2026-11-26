@@ -1,4 +1,4 @@
-import { clamp, COLLISION_REAR, lotObstacles, MARGIN, overlaps, passengerBox, polygonClearance, wrapAngle } from './geometry.ts'
+import { clamp, COLLISION_REAR, localPoint, lotObstacles, MARGIN, overlaps, passengerBox, polygonClearance, wrapAngle } from './geometry.ts'
 import type { Obstacle } from './geometry.ts'
 import { carCatalog, parkedPose, pickPassenger, seededRandom } from './lot.ts'
 import type { Bay, Lot, ParkedCar, Pose } from './lot.ts'
@@ -23,6 +23,7 @@ const PROBE_STEP = 0.5
 type Phase = 'enter' | 'route' | 'park' | 'depart' | 'leave'
 type BayTurn = { bay: Bay; path: TrafficPath }
 type GiveWay = { left: number; stalled: number; hold: number }
+type Bypass = { start: number; outward: number; merge: number; length: number; offset: number }
 export type TrafficCar = {
   id: string
   car: ParkedCar
@@ -41,6 +42,8 @@ export type TrafficCar = {
   /** Seconds this car has been held back by the player or the player's path. */
   heldByPlayer: number
   giveWay?: GiveWay
+  bypass?: Bypass
+  bypassAfter?: number
   /** What this car is waiting for: 'player', 'parked' or another car's id. */
   cause?: string
   /** The last cause seen during the current wait (kept until the car moves). */
@@ -56,6 +59,7 @@ export type Player = {
   corridor: Obstacle[]
   /** True while the player is backing up along the loop. */
   reversing?: boolean
+  stationary?: boolean
   station?: number
   bay?: string
   zone?: TrafficZone
@@ -182,12 +186,13 @@ export class Traffic {
     // Mutual block: the player waits for this car while it waits for the player.
     if (player.blockedBy && (player.blockedTime ?? 0) > GIVE_WAY_AFTER) {
       const c = this.moving.find(other => other.id === player.blockedBy)
-      if (c && !c.giveWay && c.heldByPlayer > GIVE_WAY_AFTER) this.yieldTo(c)
+      if (c && !c.giveWay && !c.bypass && c.heldByPlayer > GIVE_WAY_AFTER) this.yieldTo(c)
     }
     for (const c of this.moving) {
       const before = c.pose
       const speed = c.speed
-      if (c.giveWay) this.giveWay(c, dt, player)
+      if (c.bypass) this.followBypass(c, dt, player)
+      else if (c.giveWay) this.giveWay(c, dt, player)
       else if (c.phase === 'route') this.onRoute(c, dt, player, stops.get(c))
       else this.onPath(c, dt, player)
       c.braking = Math.abs(c.speed) < 0.05 || Math.abs(speed) - Math.abs(c.speed) > 0.015
@@ -387,6 +392,13 @@ export class Traffic {
     c.cause = undefined
     this.holdFor(c, dt, byPlayer)
     if (room < 1) c.cause = this.causeOf(c, probe <= room + 0.01, aisle <= room + 0.01 ? this.lastRoomCar : undefined)
+    if (player.stationary && !player.zone && c.heldByPlayer >= 4) {
+      if (this.tryBypass(c, player, remaining)) return
+      if (c.heldByPlayer >= 4.8) {
+        this.yieldTo(c)
+        return
+      }
+    }
     const bend = Math.abs(this.route.curvature(c.station + 1.5))
     const move = this.stepSpeed(c, dt, CRUISE_SPEED / (1 + 2.4 * bend), room)
     const next = remaining <= move + 0.00001 ? event : this.route.wrap(c.station + move)
@@ -519,6 +531,74 @@ export class Traffic {
     this.givenWay++
   }
 
+  private bypassPose(path: Bypass, distance: number): Pose {
+    const position = (d: number) => {
+      const smooth = (part: number) => {
+        const t = clamp(part, 0, 1)
+        return t * t * t * (t * (6 * t - 15) + 10)
+      }
+      const fraction = smooth(d / path.outward) * (1 - smooth((d - path.merge) / (path.length - path.merge)))
+      return localPoint(this.route.pose(path.start + d), 0, path.offset * fraction)
+    }
+    const [x, z] = position(distance), [ax, az] = position(distance - 0.1), [bx, bz] = position(distance + 0.1)
+    return { x, z, h: Math.atan2(az - bz, bx - ax) }
+  }
+
+  private tryBypass(c: TrafficCar, player: Player, remaining: number) {
+    if (this.time < (c.bypassAfter ?? 0)) return false
+    c.bypassAfter = this.time + 1
+    const { minX, maxX, minZ, maxZ } = player.box.bounds
+    const dx = (minX + maxX) / 2 - c.pose.x, dz = (minZ + maxZ) / 2 - c.pose.z
+    const sin = Math.sin(c.pose.h), cos = Math.cos(c.pose.h)
+    const ahead = dx * cos - dz * sin
+    if (ahead < 5 || ahead > 16) return false
+    const away = dx * sin + dz * cos < 0 ? -1 : 1
+    const outward = clamp(ahead - 3.5, 5, 9)
+    const merge = ahead + 8
+    const length = merge + 9
+    if (length > remaining) return false
+    const moving = [player.box, ...player.corridor, ...this.moving.filter(other => other !== c).map(other => other.box)]
+    for (const offset of [away * 2.5, away * 3.0, -away * 2.5, -away * 3.0]) {
+      const path = { start: c.station, outward, merge, length, offset }
+      const clear = Array.from({ length: Math.ceil(length / 0.3) + 1 }, (_, i) => Math.min(i * 0.3, length)).every(d => {
+        if (Math.abs(this.route.curvature(c.station + d)) > 0.04) return false
+        const box = passengerBox(c.id, c.car.type, this.bypassPose(path, d))
+        return polygonClearance(box.polygon, this.parkedCollision, 0.3) >= 0.3 && polygonClearance(box.polygon, moving, CAR_GAP + 0.05) >= CAR_GAP + 0.05
+      })
+      if (clear) {
+        c.bypass = path
+        c.giveWay = undefined
+        c.indicator = Math.sign(offset)
+        this.givenWay++
+        return true
+      }
+    }
+    return false
+  }
+
+  private followBypass(c: TrafficCar, dt: number, player: Player) {
+    const path = c.bypass!
+    const distance = this.route.ahead(path.start, c.station)
+    const remaining = Math.max(0, path.length - distance)
+    const poseAt = (d: number) => this.bypassPose(path, Math.min(path.length, distance + d))
+    const room = Math.min(remaining, this.probe(c, poseAt, Math.min(this.reach(c), remaining), player))
+    const move = this.stepSpeed(c, dt, 1.9, room)
+    c.indicator = distance < path.outward ? Math.sign(path.offset) : distance >= path.merge ? -Math.sign(path.offset) : 0
+    c.cause = room < 0.6 ? this.causeOf(c, true) : undefined
+    if (move > 0) {
+      const pose = poseAt(move)
+      if (this.check(c, pose, player) === 'ok') {
+        this.place(c, pose)
+        c.station = this.route.wrap(c.station + move)
+      } else c.speed = 0
+    }
+    if (this.route.ahead(path.start, c.station) >= path.length - 0.001) {
+      c.bypass = undefined
+      c.indicator = 0
+      c.heldByPlayer = 0
+    }
+  }
+
   /**
    * Give way to the player: back off along the car's own path (up to BACK_OFF
    * metres), then wait there until the player's body and next 5 m are clear
@@ -546,7 +626,7 @@ export class Traffic {
         way.stalled += dt
         // Ask a car right behind to make room as well.
         if (this.lastBlock === 'traffic' && way.stalled > 0.5) {
-          const behind = this.moving.find(other => other !== c && !other.giveWay &&
+          const behind = this.moving.find(other => other !== c && !other.giveWay && !other.bypass &&
             polygonClearance(other.box.polygon, [passengerBox(c.id, c.car.type, back(1))], CAR_GAP) < CAR_GAP)
           if (behind) this.yieldTo(behind)
         }
@@ -556,6 +636,10 @@ export class Traffic {
     }
     c.speed = 0
     way.hold += dt
+    if (c.phase === 'route' && player.stationary && !player.zone && way.hold > 1) {
+      const event = c.turn?.path.station ?? this.branches.exit.station
+      if (this.tryBypass(c, player, this.route.ahead(c.station, event))) return
+    }
     // Still in the player's way after backing off (e.g. the player keeps reversing toward it): back off again.
     if (player.blockedBy === c.id && (player.blockedTime ?? 0) > GIVE_WAY_AFTER && way.hold > GIVE_WAY_AFTER) {
       way.left = BACK_OFF

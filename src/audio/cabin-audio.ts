@@ -3,7 +3,7 @@ import type { Drive, Mode } from '../simulation/drive.ts'
 import { clamp } from '../simulation/geometry.ts'
 
 const TRACKS = [
-  { file: 'night-on-the-docks-piano.mp3', title: 'Night on the Docks - Piano', artist: 'Kevin MacLeod', duration: 174 },
+  { file: 'incompetech-night-on-the-docks.mp3', title: 'Night on the Docks - Piano', artist: 'Kevin MacLeod', duration: 174 },
   { file: 'dream-culture.mp3', title: 'Dream Culture', artist: 'Kevin MacLeod', duration: 214 },
 ] as const
 

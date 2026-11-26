@@ -6,18 +6,17 @@ import type { PerspectiveCamera, Texture } from 'three'
 import type { NowPlaying } from '../audio/cabin-audio.ts'
 import type { Drive } from '../simulation/drive.ts'
 import { clamp, integrate, localPoint, REAR, WHEELBASE } from '../simulation/geometry.ts'
-import type { Bay } from '../simulation/lot.ts'
 import { ease, HUD_HEIGHT, HUD_WIDTH, TABLET_ASPECT } from '../render/dive.ts'
 import type { Frame } from '../render/dive.ts'
 import { MARKER_RANGE } from '../simulation/occupancy.ts'
-import { CHEVRON_RANGE, markerAnchor } from '../render/markers.ts'
+import type { VisibleBayMarker } from '../render/markers.ts'
 import { safeArea } from '../render/safe-area.ts'
 import { contains, Panels } from './panels.ts'
 import type { PanelHit } from './panels.ts'
 
 export type ScreenPoint = { x: number; y: number }
 export type Interaction = PanelHit | { kind: 'inset' } | { kind: 'bay'; id: string }
-type Marker = { bay: Bay; point: ScreenPoint; radius: number }
+type Marker = { id: string; point: ScreenPoint; radius: number; chevron: boolean }
 const GROUND = new Plane(new Vector3(0, 1, 0), 0)
 const REAR_LENS_SCALE = 0.69
 const REAR_LENS_CURVATURE = 0.22
@@ -146,9 +145,13 @@ export class RealityInterface {
     this.camera.updateProjectionMatrix()
   }
 
-  draw(drive: Drive, camera: PerspectiveCamera, rear: PerspectiveCamera, frame: Frame, parking: number,
+  draw(drive: Drive, markers: readonly VisibleBayMarker[], rear: PerspectiveCamera, frame: Frame,
     music: NowPlaying, proximity: number, forceRefresh: boolean) {
-    this.projectMarkers(drive, camera, parking)
+    this.markers.length = 0
+    for (const { id, x, y, radius, chevron } of markers) {
+      const point = { x: (x + 1) * HUD_WIDTH / 2, y: (1 - y) * HUD_HEIGHT / 2 }
+      if (contains(frame, point)) this.markers.push({ id, point, chevron, radius: clamp(radius * HUD_WIDTH / 2 + 6, 15, 110) })
+    }
     // State changes refresh immediately. Clocks, progress, the inset guides,
     // and the touch cursor can share the slower animation cadence.
     const notice = drive.time < this.parkingNoticeUntil
@@ -174,27 +177,6 @@ export class RealityInterface {
     this.drawTouch()
     this.rasterCount++
     this.texture.needsUpdate = true
-  }
-
-  private project(camera: PerspectiveCamera, x: number, y: number, z: number) {
-    const ndc = this.vector.set(x, y, z).project(camera)
-    return { x: (ndc.x + 1) * HUD_WIDTH / 2, y: (1 - ndc.y) * HUD_HEIGHT / 2, visible: ndc.z >= -1 && ndc.z < 1 }
-  }
-
-  private projectMarkers(drive: Drive, camera: PerspectiveCamera, parking: number) {
-    this.markers.length = 0
-    const blend = ease(parking)
-    if (drive.selectedBay && blend < 0.5) return
-    const right = new Vector3().setFromMatrixColumn(camera.matrixWorld, 0)
-    const range = blend >= 0.5 ? MARKER_RANGE : CHEVRON_RANGE
-    for (const bay of drive.freeBays) {
-      if (bay === drive.selectedBay || Math.hypot(bay.center[0] - drive.pose.x, bay.center[1] - drive.pose.z) > range) continue
-      const [x, lift, z] = markerAnchor(bay, blend)
-      const point = this.project(camera, x, lift, z)
-      if (!point.visible || !contains({ x: -35, y: -35, width: HUD_WIDTH + 70, height: HUD_HEIGHT + 70 }, point)) continue
-      const edge = this.project(camera, x + right.x * 0.68, lift, z + right.z * 0.68)
-      this.markers.push({ bay, point, radius: clamp(Math.abs(edge.x - point.x) + 6, 15, 110) })
-    }
   }
 
   private drawRear(drive: Drive, camera: PerspectiveCamera, viewport: Frame, proximity: number) {
@@ -278,16 +260,16 @@ export class RealityInterface {
     const control = this.panels.hit(point)
     if (control) return control
     if (!drive.canChoose) return
-    let best: Bay | undefined, gap = Infinity
+    let best: string | undefined, gap = Infinity
     for (const marker of this.markers) {
-      if (!drive.traffic.isAvailable(marker.bay.id)) continue
+      if (!drive.traffic.isAvailable(marker.id)) continue
       const distance = Math.hypot(point.x - marker.point.x, point.y - marker.point.y)
       if (distance <= marker.radius && distance < gap) {
-        best = marker.bay
+        best = marker.id
         gap = distance
       }
     }
-    if (best) return { kind: 'bay', id: best.id }
+    if (best) return { kind: 'bay', id: best }
     this.raycaster.setFromCamera(new Vector2(2 * point.x / HUD_WIDTH - 1, 1 - 2 * point.y / HUD_HEIGHT), camera)
     const ground = this.raycaster.ray.intersectPlane(GROUND, this.vector)
     if (!ground) return
@@ -302,6 +284,8 @@ export class RealityInterface {
   }
 
   targetPoint(target: string): ScreenPoint | undefined {
-    return this.panels.point(target) ?? this.markers.find(marker => marker.bay.id === target)?.point
+    return this.panels.point(target) ?? this.markers.find(marker => marker.id === target)?.point
   }
+
+  chevrons() { return this.markers.filter(marker => marker.chevron && !this.panels.hit(marker.point)) }
 }
