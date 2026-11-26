@@ -1,6 +1,7 @@
 import { Group, Vector3 } from 'three'
 import type { Object3D } from 'three'
 import type { Lot } from '../simulation/lot.ts'
+import type { SfMap } from '../simulation/sf-map.ts'
 import { LotOcclusion } from '../render/lot-occlusion.ts'
 import { cabinBoxes, exteriorBoxes } from './car-boxes.ts'
 import { loadCabin, loadExterior } from './car-models.ts'
@@ -32,7 +33,7 @@ function fallbackCabin(): Cabin {
   }
 }
 
-export async function createAssets(lot: Lot) {
+export async function createAssets(lot: Lot, sfMap?: SfMap) {
   const fallbacks: string[] = []
   function load<T>(file: string, result: Promise<T>, fallback: () => T | Promise<T>) {
     return result.catch(error => {
@@ -41,9 +42,13 @@ export async function createAssets(lot: Lot) {
       return fallback()
     })
   }
+  const city = sfMap ? new (await import('./sf-world.ts')).SfWorld(sfMap, lot) : undefined
+  const lotAssets = city
+    ? { world: city.root, parkedCars: {}, occlusion: new LotOcclusion() }
+    : load<{ world: Object3D; parkedCars: Record<string, ParkedBake>; occlusion: LotOcclusion }>('lot.glb', loadLot(), () =>
+      ({ world: lotBoxes(lot), parkedCars: {}, occlusion: new LotOcclusion() }))
   const [{ world, parkedCars, occlusion }, exterior, cabin, passengers] = await Promise.all([
-    load<{ world: Object3D; parkedCars: Record<string, ParkedBake>; occlusion: LotOcclusion }>('lot.glb', loadLot(), () =>
-      ({ world: lotBoxes(lot), parkedCars: {}, occlusion: new LotOcclusion() })),
+    lotAssets,
     load<Exterior>('hero.glb', loadExterior(), exteriorBoxes),
     load('cabin.glb', loadCabin(), fallbackCabin),
     load('cars.glb', loadPassengers(), () => new PassengerPack().loadPaint(true)),
@@ -53,7 +58,7 @@ export async function createAssets(lot: Lot) {
   putOnLayer(cabin.root, CABIN_LAYER)
   const car = new Group()
   car.add(exterior.root, cabin.root)
-  return { world, parkedCars, occlusion, car, exterior, cabin, passengers, fallbacks }
+  return { world, city, parkedCars, occlusion, car, exterior, cabin, passengers, fallbacks }
 }
 
 export type Assets = Awaited<ReturnType<typeof createAssets>>

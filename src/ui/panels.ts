@@ -17,6 +17,10 @@ const FONT = 'Inter, "Segoe UI", system-ui, sans-serif'
 const CLOCK = new Intl.DateTimeFormat('en-US', { hour: 'numeric', minute: '2-digit', hour12: true })
 const BATTERY = '78%'
 
+function tripClock(seconds: number) {
+  return CLOCK.format(new Date(2026, 0, 1, 22, 3, Math.floor(seconds))).toLowerCase()
+}
+
 export function contains(rect: Frame, point: ScreenPoint) {
   return point.x >= rect.x && point.x <= rect.x + rect.width && point.y >= rect.y && point.y <= rect.y + rect.height
 }
@@ -75,12 +79,12 @@ export class Panels {
     this.viewport = viewport
     const s = this.scale = Math.min(viewport.width / HUD_WIDTH, viewport.height / HUD_HEIGHT)
     const width = viewport.width / s, height = viewport.height / s
-    const clock = CLOCK.format(new Date()).toLowerCase()
+    const clock = drive.street ? tripClock(drive.time) : CLOCK.format(new Date()).toLowerCase()
     c.save()
     c.translate(viewport.x, viewport.y)
     c.scale(s, s)
     this.readouts(drive, width, clock, touch)
-    this.cards(width, height, clock, music, notice, touch)
+    this.cards(drive, width, height, clock, music, notice, touch)
     c.restore()
   }
 
@@ -153,6 +157,7 @@ export class Panels {
     const c = this.ctx
     const auto = !drive.isManual && drive.gear !== 'P'
     const parked = drive.mode === 'parked'
+    const nav = drive.onStreet ? drive.street?.navigation : undefined
     c.save()
     c.shadowColor = 'rgba(0,0,0,.72)'
     c.shadowBlur = 6
@@ -169,10 +174,11 @@ export class Panels {
     this.text(String(Math.round(Math.abs(drive.speed) / 0.44704)), speedX, 87, 84, 300)
     this.text('MPH', speedX + 4, 133, 15, 600)
     this.text(auto ? 'Self-Driving' : 'Manual', 24, 164, 17, 600, auto ? BLUE : WHITE)
-    this.text('Parking Lot', 24, 186, 14, 500, SECONDARY)
-    this.text('4.3 mi Streak', 24, 205, 14, 500, SECONDARY)
+    this.text(nav ? 'San Francisco' : 'Parking Lot', 24, 186, 14, 500, SECONDARY)
+    if (!drive.street) this.text('4.3 mi Streak', 24, 205, 14, 500, SECONDARY)
     this.text(clock, width - 114, 25, 15, 600, WHITE, 'right')
     this.text('47°F', width - 24, 25, 15, 600, WHITE, 'right')
+    if (drive.street) this.text('© OpenStreetMap contributors', width - 24, 52, 11, 500, SECONDARY, 'right')
     c.restore()
     const mid = width / 2
     this.icon('lock', 'lock', mid - 22, 25, 19, touch)
@@ -185,17 +191,25 @@ export class Panels {
       this.text(drive.status, mid, 68, 19, 600, WHITE, 'center')
     }
     if (drive.canCancel && drive.mode !== 'reverse') this.button('cancel', 'Cancel Selection', mid - 87, 93, 174, 39, touch)
-    if (drive.canStart) this.button('start', 'Start Self-Driving', 20, 226, 184, 44, touch)
-    const signY = drive.canStart ? 287 : 229
+    if (nav?.turn) {
+      this.shape(20, 199, 252, 38, 8, CARD)
+      const arrow = nav.direction > 0 ? '↰' : nav.direction < 0 ? '↱' : '↑'
+      const distance = nav.turnDistance >= 100 ? `${(nav.turnDistance / 1609.344).toFixed(1)} mi` : `${Math.round(nav.turnDistance * 3.28084 / 10) * 10} ft`
+      this.text(arrow, 41, 218, 23, 700, '#a8cbff', 'center')
+      this.text(`${distance}  ${nav.turn}`, 61, 218, 14, 600)
+    }
+    if (drive.canStart) this.button('start', 'Start Self-Driving', 20, nav ? 248 : 226, 184, 44, touch)
+    const signY = nav ? (drive.canStart ? 307 : 252) : (drive.canStart ? 287 : 229)
     this.shape(23, signY, 47, 57, 6, '#f2f4f7')
     this.text('SPEED', 46.5, signY + 11, 8, 700, '#282e39', 'center')
     this.text('LIMIT', 46.5, signY + 20, 8, 700, '#282e39', 'center')
-    this.text('15', 46.5, signY + 40, 25, 600, '#1c222c', 'center')
+    this.text(nav ? '25' : '15', 46.5, signY + 40, 25, 600, '#1c222c', 'center')
     this.icon('headlight', 'headlight', 38, signY + 78, 23, touch, undefined, '#59ea99', 40)
     this.icon('fog', 'fog', 38, signY + 108, 23, touch, undefined, '#8dd6af', 40)
+    if (nav?.reason && auto) this.text(nav.reason, 24, signY + 140, 14, 600, '#c8d9f5')
   }
 
-  private cards(width: number, height: number, clock: string, music: NowPlaying, notice: boolean, touch?: ScreenPoint) {
+  private cards(drive: Drive, width: number, height: number, clock: string, music: NowPlaying, notice: boolean, touch?: ScreenPoint) {
     const dockY = height - 56, bottom = dockY - 14
     const x = width / 2 - 246, tripX = x + 514, y = bottom - 150
     const middle = 'rgba(201,214,234,.15)'
@@ -240,8 +254,14 @@ export class Panels {
 
     this.hotspot('trip-card', tripX, y, 300, 150)
     this.shape(tripX, y, 300, 150, 10, CARD)
-    this.text(clock, tripX + 17, y + 28, 15, 500, SECONDARY)
-    this.text('Northgate Plaza', tripX + 17, y + 62, 20, 600)
+    const arrival = drive.street && drive.onStreet ? tripClock(drive.time + drive.street.navigation.eta) : clock
+    this.text(arrival, tripX + 17, y + 28, 15, 500, SECONDARY)
+    this.text(drive.street ? 'Palace of Fine Arts' : 'Northgate Plaza', tripX + 17, y + 62, 20, 600)
+    if (drive.street) {
+      const nav = drive.street.navigation
+      const eta = drive.onStreet ? `${Math.max(1, Math.ceil(nav.eta / 60))} min · ${(nav.remaining / 1609.344).toFixed(1)} mi` : 'Arrived'
+      this.text(eta, tripX + 17, y + 83, 13, 600, SECONDARY)
+    }
     this.battery(tripX + 229, y + 28, '#dfe7f2')
     this.line(tripX + 14, y + 97, tripX + 286, y + 97, middle)
     this.icon('pin', 'trip-pin', tripX + 35, y + 124, 22, touch, undefined, SECONDARY, 47)

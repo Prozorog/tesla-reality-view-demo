@@ -89,6 +89,12 @@ export class Ribbon {
   }
 
   update(dt: number, drive: Drive) {
+    if (drive.street && drive.onStreet && !drive.isManual && drive.gear === 'D') {
+      const reach = Math.min(42, Math.max(0, drive.street.navigation.remaining - FRONT))
+      this.length = Math.min(reach, this.length + (reach - this.length) * (1 - Math.exp(-dt * 6)))
+      this.mesh.visible = this.length > 0.07
+      return
+    }
     const active = drive.status === 'Parking' || drive.status === 'Reversing'
     const moving = clamp(Math.abs(drive.speed) / 0.35, 0, 1)
     const remaining = Math.max(0, this.remaining(drive))
@@ -104,6 +110,7 @@ export class Ribbon {
 
   draw(drive: Drive) {
     if (!this.mesh.visible) return
+    const street = drive.onStreet ? drive.street : undefined
     const reverse = drive.mode === 'reverse'
     const exiting = drive.mode === 'exiting'
     const path = drive.motionPath
@@ -130,18 +137,19 @@ export class Ribbon {
     const along = reverse ? REAR : FRONT
     for (let i = 0; i <= SEGMENTS; i++) {
       const s = length * i / SEGMENTS
-      const pose: Pose = i === 0 ? drive.pose : reverse && path ? pathPoint(path, drive.pathDistance + s) :
+      const pose: Pose = i === 0 ? drive.pose : street ? street.preview(s + FRONT) : reverse && path ? pathPoint(path, drive.pathDistance + s) :
         exiting && path ? pathPoint(path, drive.pathDistance - s) : s > stop ? beyond(s - stop) : drive.lanePose(drive.station + s)
-      const half = HALF_BAND * (1 - TAPER * i / SEGMENTS)
+      const half = HALF_BAND * (1 - (street ? 0.12 : TAPER) * i / SEGMENTS)
       const shift = 0
       for (let edge = 0; edge < 2; edge++) {
         const offset = (edge - 0.5) * 2 * (half + FEATHER)
-        const [x, z] = localPoint(pose, along, offset + shift)
+        const [x, z] = localPoint(pose, street && i > 0 ? 0 : along, offset + shift)
         this.positions.set([x, 0.032, z], i * 6 + edge * 3)
         this.lateral.set([offset, half], i * 4 + edge * 2)
       }
     }
     this.material.uniforms.length.value = length
+    this.material.uniforms.blue.value.set(street ? '#2b76b8' : '#1f7bff')
     this.geometry.getAttribute('position').needsUpdate = true
     this.geometry.getAttribute('band').needsUpdate = true
   }

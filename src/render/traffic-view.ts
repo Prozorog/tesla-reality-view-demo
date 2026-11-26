@@ -5,6 +5,7 @@ import { shadeTeslaPaint } from '../assets/meshy-passengers.ts'
 import type { ParkedBake } from '../assets/lot-model.ts'
 import type { PassengerPack } from '../assets/passengers.ts'
 import type { Drive } from '../simulation/drive.ts'
+import type { SfTrip } from '../simulation/sf-trip.ts'
 import { carCatalog, carTypes, parkedPose } from '../simulation/lot.ts'
 import type { CarColor, CarType, Lot, Pose } from '../simulation/lot.ts'
 import { disposeDecals } from './vehicle-decals.ts'
@@ -149,6 +150,7 @@ export class TrafficView {
     private readonly lighting: LotLighting,
     private readonly decals: VehicleDecals,
     baked: Record<string, ParkedBake>,
+    street?: SfTrip,
   ) {
     this.root.name = 'passenger_cars'
     this.baked = lot.bays.flatMap(bay => {
@@ -162,7 +164,10 @@ export class TrafficView {
       const [x, y, z] = entry.position
       return [this.place(entry.type, color, { x, z, h: entry.heading }, probes, y, !!heroColor)]
     })
-    for (let i = 0; i < 4; i++) {
+    if (street) {
+      for (const { car, pose } of street.parkedCars) this.baked.push(this.place(car.type, car.color, pose))
+    }
+    for (let i = 0; i < (street ? 0 : 4); i++) {
       const type = carTypes[i]
       this.streetCars.push(this.vehicle(type, carCatalog[type].variants[0].color as CarColor))
     }
@@ -325,16 +330,17 @@ export class TrafficView {
 
   draw(drive: Drive) {
     const traffic = drive.traffic
+    const moving = drive.street?.cars ?? traffic.moving
     if (this.revision !== traffic.revision) {
       this.rebuildParked(drive)
       this.revision = traffic.revision
     }
     for (const [id, vehicle] of this.fleet) {
-      if (traffic.moving.some(c => c.id === id)) continue
+      if (moving.some(c => c.id === id)) continue
       vehicle.dispose()
       this.fleet.delete(id)
     }
-    for (const car of traffic.moving) {
+    for (const car of moving) {
       let vehicle = this.fleet.get(car.id)
       if (!vehicle) {
         vehicle = this.vehicle(car.car.type, car.car.color)

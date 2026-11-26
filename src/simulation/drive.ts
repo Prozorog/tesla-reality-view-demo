@@ -11,6 +11,7 @@ import { CruiseRoute } from './route.ts'
 import { CRUISE_SPEED, Traffic } from './traffic.ts'
 import { streetBranches } from './traffic-paths.ts'
 import type { Player, TrafficZone } from './traffic.ts'
+import type { SfTrip } from './sf-trip.ts'
 
 const REVERSE_SPEED = 0.88
 const BACKTRACK_SPEED = 1.45
@@ -80,7 +81,7 @@ export class Drive {
   longestStandstill = 0
   private standstill = 0
 
-  constructor(readonly lot: Lot, private readonly bot: 'park' | 'cruise' | undefined, seed: number, bayId?: string) {
+  constructor(readonly lot: Lot, private readonly bot: 'park' | 'cruise' | undefined, seed: number, bayId?: string, readonly street?: SfTrip) {
     this.route = new CruiseRoute(lot.route, lot.aisles)
     this.traffic = new Traffic(lot, this.route, seed, bayId)
     this.firstFreeBay = this.freeBays[0]?.id
@@ -92,8 +93,8 @@ export class Drive {
     const plan = bay && this.freeBays.includes(bay) && planParking(lot, this.route, bay, this.traffic.parkedObstacles)
     if (plan) this.station = this.route.wrap(plan.station - APPROACH - 4)
     else if (bay) this.station = this.route.wrap(this.route.closest(bay.center).station - 4)
-    this.pose = this.lanePose(this.station)
-    this.traffic.seedRoute(this.station, this.playerState())
+    this.pose = street?.pose ?? this.lanePose(this.station)
+    if (!street) this.traffic.seedRoute(this.station, this.playerState())
     this.auditOverlap()
     if (bot) this.start()
   }
@@ -101,8 +102,9 @@ export class Drive {
   get runtimeCars(): ReadonlyMap<string, ParkedCar> { return this.traffic.parked }
   get freeBays() { return this.lot.bays.filter(bay => !bay.taken && this.traffic.isAvailable(bay.id)) }
   get noOverlap() { return this.overlapFrames === 0 }
+  get onStreet() { return !!this.street && !this.street.arrived }
   get selectedBay() { return this.mode === 'idle' || this.releasing ? undefined : this.manualBay ?? this.plan?.bay }
-  get canChoose() { return this.mode === 'idle' && !this.stoppedMode || this.mode === 'cruise' || this.mode === 'ready' }
+  get canChoose() { return !this.onStreet && (this.mode === 'idle' && !this.stoppedMode || this.mode === 'cruise' || this.mode === 'ready') }
   get canStart() { return this.mode === 'idle' || this.mode === 'parked' || this.mode === 'manual' }
   get canCancel() { return !!this.plan && ['ready', 'pull-past', 'shift', 'reverse'].includes(this.mode) }
   get isManual() { return this.mode === 'idle' || this.mode === 'manual' || this.mode === 'parked' && !!this.manualBay }
@@ -146,6 +148,7 @@ export class Drive {
   }
 
   get indicator() {
+    if (this.onStreet) return this.street!.indicator
     if (this.mode === 'cruise' || this.mode === 'ready' && this.approachRemaining > 20) return this.cruiseIndicator()
     if (!this.plan || !['ready', 'pull-past', 'shift', 'reverse'].includes(this.mode)) return 0
     const launch = this.plan.reverse[0]
@@ -154,6 +157,11 @@ export class Drive {
   }
 
   start() {
+    if (this.street && this.onStreet) {
+      this.street.start()
+      this.syncStreet(this.street)
+      return
+    }
     if (this.mode === 'idle') {
       const stopped = this.stoppedMode
       this.stoppedMode = undefined
@@ -224,6 +232,11 @@ export class Drive {
   }
 
   endTrip() {
+    if (this.street && this.onStreet) {
+      this.street.endTrip()
+      this.syncStreet(this.street)
+      return
+    }
     if (this.mode === 'idle') return
     this.stoppedMode = this.mode
     this.mode = 'idle'
@@ -267,6 +280,22 @@ export class Drive {
 
   update(dt: number, controls: Controls) {
     this.time += dt
+    if (this.street) {
+      const onStreet = this.onStreet
+      this.street.update(dt, controls)
+      if (onStreet) {
+        this.syncStreet(this.street)
+        if (this.street.arrived) {
+          this.station = this.route.closest([this.pose.x, this.pose.z], this.pose.h).station
+          this.pose = this.route.pose(this.station)
+          this.speed = Math.min(this.speed, CRUISE_SPEED)
+          this.mode = 'cruise'
+          this.gear = 'D'
+          this.waitingFor = ''
+        }
+        return
+      }
+    }
     const before = this.speed
     const blocked = this.reverseBlocked
     this.reverseBlocked = false
@@ -310,8 +339,19 @@ export class Drive {
     this.standstill = selfDriving && !moving ? this.standstill + dt : 0
     this.longestStandstill = Math.max(this.longestStandstill, this.standstill)
     const state = this.playerState()
-    this.traffic.update(dt, this.time, state)
+    if (!this.street) this.traffic.update(dt, this.time, state)
     this.auditOverlap(state.box)
+  }
+
+  private syncStreet(street: SfTrip) {
+    this.pose = street.pose
+    this.speed = street.speed
+    this.steer = street.steer
+    this.roll = street.roll
+    this.gear = street.gear
+    this.mode = street.mode
+    this.braking = street.braking
+    this.waitingFor = street.navigation.reason
   }
 
   private playerState(): Player {

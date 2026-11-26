@@ -84,14 +84,14 @@ export class SceneView {
   constructor(app: HTMLElement, drive: Drive, override: string | null, private readonly assets: Assets, instrument = false) {
     const context = this.canvas.getContext('webgl2', { alpha: false, antialias: true, powerPreference: 'high-performance' })
     if (!context) throw new Error('This simulator requires WebGL2.')
-    this.cameras = new Cameras(assets.occlusion, assets.exterior.footprint)
+    this.cameras = new Cameras(assets.occlusion, assets.exterior.footprint, !!assets.city)
     if (instrument) this.profile = new RenderProfile(context)
     const debug = context.getExtension('WEBGL_debug_renderer_info')
     this.rendererName = context.getParameter(debug?.UNMASKED_RENDERER_WEBGL ?? context.RENDERER) as string
     this.tier = override === 'high' || override === 'low' ? override : /NVIDIA|GeForce|Radeon RX/i.test(this.rendererName) ? 'high' : 'low'
     console.info(`Reality View WebGL renderer: ${this.rendererName} (${this.tier})`)
     this.renderer = new WebGLRenderer({ canvas: this.canvas, context })
-    this.canvas.setAttribute('aria-label', 'Drive and park at Northgate')
+    this.canvas.setAttribute('aria-label', assets.city ? 'Drive through San Francisco to the Palace of Fine Arts' : 'Drive and park at Northgate')
     app.prepend(this.canvas)
     const quality = TIERS[this.tier]
     this.picture = new WorldPicture(this.tier === 'high')
@@ -110,7 +110,7 @@ export class SceneView {
     if (assets.exterior.reflectors) {
       this.reflections = new CarReflections(drive.lot, assets.world, assets.exterior.reflectors, this.tier === 'high')
     }
-    this.traffic = new TrafficView(drive.lot, assets.passengers, this.lighting, decals, assets.parkedCars)
+    this.traffic = new TrafficView(drive.lot, assets.passengers, this.lighting, decals, assets.parkedCars, drive.street)
     this.pavementLights = new PavementLights(assets.world, assets.exterior.footprint)
     this.playerDecals = decals.player(assets.car, this.scene, assets.exterior.footprint)
     this.wheelRest = assets.exterior.wheels.map(wheel => wheel.quaternion.clone())
@@ -118,8 +118,8 @@ export class SceneView {
     assets.cabin.tablet.surface.material.map = this.tablet.texture
     assets.cabin.bindMirror(this.rear.texture)
     this.raycaster.layers.set(CABIN_LAYER)
-    this.scene.background = new Color('#030306')
-    this.scene.fog = new Fog('#0c0b0e', NIGHT_FOG_NEAR, NIGHT_FOG_FAR)
+    this.scene.background = new Color(assets.city ? '#202124' : '#030306')
+    this.scene.fog = assets.city ? new Fog('#202124', 220, 6000) : new Fog('#0c0b0e', NIGHT_FOG_NEAR, NIGHT_FOG_FAR)
     this.scene.environment = nightEnvironment()
     this.scene.add(assets.world, assets.car, this.traffic.root)
     this.overlays.add(this.ribbon.mesh, this.markers.root)
@@ -221,6 +221,7 @@ export class SceneView {
     const seatVisible = dive.blend < 1
     this.profile?.begin('world sync')
     this.syncCar(drive, seatVisible)
+    if (drive.street) this.assets.city?.update(drive.street)
     this.traffic.draw(drive)
     this.ribbon.draw(drive)
     this.profile?.end()
@@ -247,15 +248,18 @@ export class SceneView {
     this.rearInsetWasVisible = insetVisible
     if (refreshTablet || directVisible) {
       this.profile?.begin('markers')
-      this.markers.draw(drive, this.cameras.reality, this.cameras.parkingMix, this.markerFade,
-        this.hud.hover?.kind === 'bay' ? this.hud.hover.id : undefined)
+      this.markers.root.visible = !drive.onStreet
+      if (!drive.onStreet) {
+        this.markers.draw(drive, this.cameras.reality, this.cameras.parkingMix, this.markerFade,
+          this.hud.hover?.kind === 'bay' ? this.hud.hover.id : undefined)
+      }
       this.profile?.end()
       this.profile?.begin('hud canvas')
       // The tablet target limits text resolution until the final part of the dive.
       this.hud.setDensity(directVisible || uiBlend > 0
         ? Math.max(1.25, this.screenPicture.width / HUD_WIDTH, this.screenPicture.height / HUD_HEIGHT)
         : this.tablet.width / HUD_WIDTH)
-      this.hud.draw(drive, this.markers.visible, this.cameras.rear, uiFrame, music, proximity, forceRefresh)
+      this.hud.draw(drive, drive.onStreet ? [] : this.markers.visible, this.cameras.rear, uiFrame, music, proximity, forceRefresh)
       this.profile?.end()
     }
     if (refreshTablet) {
@@ -288,6 +292,7 @@ export class SceneView {
 
   private renderWorld(camera: PerspectiveCamera, pass: string) {
     this.profile?.begin(`${pass} visibility`)
+    this.assets.city?.prepare(camera)
     const prepareParked = (hideBaked: boolean) => this.traffic.prepare(camera, pass, hideBaked)
     if (!this.splats || this.splats.mode === 'mesh') prepareParked(false)
     this.profile?.end()

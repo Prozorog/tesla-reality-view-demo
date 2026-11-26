@@ -155,12 +155,15 @@ export class RealityInterface {
     // State changes refresh immediately. Clocks, progress, the inset guides,
     // and the touch cursor can share the slower animation cadence.
     const notice = drive.time < this.parkingNoticeUntil
+    const navigation = drive.onStreet ? drive.street?.navigation : undefined
     const state = [
       drive.mode, drive.gear, drive.isManual, drive.canStart, drive.canCancel,
       Math.round(Math.abs(drive.speed) / 0.44704), music.index, music.playing, this.rearVisible, notice,
+      navigation?.turn, navigation?.reason, Math.round((navigation?.turnDistance ?? 0) / 10),
+      Math.round((navigation?.remaining ?? 0) / 50), Math.ceil((navigation?.eta ?? 0) / 60),
     ].join('|')
     const motion = [
-      frame.x, frame.y, frame.width, frame.height, Math.floor(Date.now() / 60_000),
+      frame.x, frame.y, frame.width, frame.height, Math.floor(drive.street ? drive.time / 60 : Date.now() / 60_000),
       Math.floor(music.time * 15), music.duration, this.touch?.x, this.touch?.y, this.pulseTime, this.pulsePoint?.x, this.pulsePoint?.y,
       this.insetProgress, this.rearVisible && Math.round(drive.steer * 200), this.rearVisible && Math.round(proximity * 32),
     ].join('|')

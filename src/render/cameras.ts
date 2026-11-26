@@ -20,6 +20,8 @@ const CRUISE_BACK = 13.4
 const CRUISE_LIFT = 5.8
 const CRUISE_DISTANCE = Math.hypot(CRUISE_BACK, CRUISE_LIFT)
 const CRUISE_ELEVATION = Math.atan2(CRUISE_LIFT, CRUISE_BACK)
+const STREET_RANGE = 20.8
+const STREET_ELEVATION = Math.atan2(6.2, 19.85)
 const CAR_CENTER_Y = 0.64
 const CRUISE_SCREEN_Y = 0.58
 const FAR_VIEW = 220
@@ -103,11 +105,16 @@ export class Cameras {
   private readonly eye = new Vector3()
   private readonly marker = new Vector3()
 
-  constructor(private readonly occlusion: LotOcclusion, private readonly footprint: Assets['exterior']['footprint']) {
+  constructor(private readonly occlusion: LotOcclusion, private readonly footprint: Assets['exterior']['footprint'], city = false) {
     this.reality.layers.enable(EXTERIOR_LAYER)
     this.reality.layers.enable(RIBBON_LAYER)
     this.seat.layers.enable(CABIN_LAYER)
     this.rear.layers.enable(EXTERIOR_LAYER)
+    if (city) {
+      this.reality.far = this.seat.far = 6500
+      this.reality.updateProjectionMatrix()
+      this.seat.updateProjectionMatrix()
+    }
   }
 
   head(x: number, y: number, held: boolean) {
@@ -136,6 +143,7 @@ export class Cameras {
 
   update(dt: number, drive: Drive, aspect: number) {
     const parking = drive.isParkingView
+    const street = drive.onStreet
     if (this.parking !== parking) {
       this.resetOrbit()
       if (parking) this.parkHeading = this.travelHeading = drive.pose.h
@@ -151,7 +159,7 @@ export class Cameras {
     // Chase looks along the direction of travel; overhead keeps the nose pointing up.
     this.travelHeading += wrapAngle(drive.pose.h - this.travelHeading) * (this.initialized ? 1 - Math.exp(-dt * 2.4) : 1)
     this.parkHeading = this.travelHeading
-    const launchHeading = blend < 1 && this.orbitYaw === undefined
+    const launchHeading = street ? this.travelHeading : blend < 1 && this.orbitYaw === undefined
       ? cruiseHeading(drive.pose, drive.freeBays, aspect, this.initialized ? this.yaw : drive.pose.h) : drive.pose.h
     const defaultYaw = launchHeading + wrapAngle(this.parkHeading - launchHeading) * blend
     // Cruise: ease slowly toward the chosen heading and never swing more than 25° off the car.
@@ -161,7 +169,7 @@ export class Cameras {
       this.yaw = drive.pose.h + clamp(wrapAngle(this.yaw - drive.pose.h), -radians(25), radians(25))
     }
     const parkElevation = lerp(CHASE_ELEVATION, radians(84 + 4 * this.parkedPitch), top)
-    this.elevation = lerp(this.elevation, this.orbitElevation ?? lerp(CRUISE_ELEVATION, parkElevation, blend), easing)
+    this.elevation = lerp(this.elevation, this.orbitElevation ?? lerp(street ? STREET_ELEVATION : CRUISE_ELEVATION, parkElevation, blend), easing)
 
     const [x, z] = localPoint(drive.pose, CENTER_OFFSET, 0)
     this.pivot.lerp(new Vector3(x, 0, z), easing)
@@ -170,7 +178,7 @@ export class Cameras {
     const frame = coverFrame(aspect)
     // Same share of the visible picture on either display path.
     const crop = HUD_HEIGHT / frame.height
-    const range = lerp(CRUISE_DISTANCE, lerp(CHASE_RANGE, OVERHEAD_RANGE, top) * crop, blend)
+    const range = lerp(street ? STREET_RANGE : CRUISE_DISTANCE, lerp(CHASE_RANGE, OVERHEAD_RANGE, top) * crop, blend)
     const cos = Math.cos(this.yaw), sin = Math.sin(this.yaw)
     // Slide the aim along the ground so the car centre sits at its target height in the frame.
     const screenY = lerp(CHASE_SCREEN_Y, OVERHEAD_SCREEN_Y, top)
@@ -205,7 +213,7 @@ export class Cameras {
       this.reality.position.addScaledVector(this.marker.setFromMatrixColumn(this.reality.matrixWorld, 2), this.parkingDolly)
       this.reality.updateMatrixWorld()
     }
-    const needed = !parking && this.parkingMix === 0
+    const needed = !street && !parking && this.parkingMix === 0
       ? this.fitCruise(drive, aspect) : BASE_REALITY_FOV
     const fov = Math.max(needed, lerp(this.reality.fov, needed, easing))
     if (Math.abs(this.reality.fov - fov) > 0.001) {

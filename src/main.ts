@@ -5,6 +5,9 @@ import { Drive } from './simulation/drive.ts'
 import { carRectangle, localPoint, polygonClearance } from './simulation/geometry.ts'
 import type { Controls, Mode } from './simulation/drive.ts'
 import type { Lot } from './simulation/lot.ts'
+import { createSfLot } from './simulation/sf-lot.ts'
+import type { SfMap } from './simulation/sf-map.ts'
+import { SfTrip } from './simulation/sf-trip.ts'
 import { Dive, HUD_HEIGHT, HUD_WIDTH } from './render/dive.ts'
 import type { WorldMode } from './render/splat-views.ts'
 import { SceneView } from './render/scene.ts'
@@ -32,6 +35,12 @@ function element<K extends keyof HTMLElementTagNameMap>(tag: K, className: strin
   return result
 }
 
+async function loadData<T>(file: string): Promise<T> {
+  const response = await fetch(`${import.meta.env.BASE_URL}${file}`)
+  if (!response.ok) throw new Error(`Could not load ${file} (${response.status}).`)
+  return response.json()
+}
+
 async function main() {
   const params = new URLSearchParams(location.search)
   const studio = params.get('studio')
@@ -42,14 +51,15 @@ async function main() {
   }
   const shot = params.get('shot') === '1'
   const bayId = params.get('bay') ?? undefined
-  const response = await fetch(`${import.meta.env.BASE_URL}models/lot.json`)
-  if (!response.ok) throw new Error(`Could not load lot.json (${response.status}).`)
-  const lot: Lot = await response.json()
-  const seed = shot ? lot.seed : crypto.getRandomValues(new Uint32Array(1))[0]
+  const scene = params.get('scene') === 'lot' ? 'lot' : 'sf'
+  const sfMap = scene === 'sf' ? await loadData<SfMap>('data/sf/world.json') : undefined
+  const lot = sfMap ? createSfLot(sfMap) : await loadData<Lot>('models/lot.json')
+  const seed = params.has('seed') ? Number(params.get('seed')) >>> 0 : shot ? lot.seed : crypto.getRandomValues(new Uint32Array(1))[0]
   const bot = params.get('bot')
-  const drive = new Drive(lot, bot === '1' ? 'park' : bot === 'cruise' ? 'cruise' : undefined, seed, bayId)
+  const street = sfMap ? new SfTrip(sfMap, seed, lot.start!) : undefined
+  const drive = new Drive(lot, bot === '1' ? 'park' : bot === 'cruise' ? 'cruise' : undefined, seed, bayId, street)
   const dive = new Dive(params.get('view') === 'screen', readHint())
-  const [assets] = await Promise.all([createAssets(lot), document.fonts.load('500 15px Inter')])
+  const [assets] = await Promise.all([createAssets(lot, sfMap), document.fonts.load('500 15px Inter')])
   const view = new SceneView(app, drive, params.get('q'), assets, params.get('profile') === '1')
   const hint = element('aside', 'seat-hint', 'Scroll to enter the screen')
   const debug = element('pre', 'debug-overlay')
@@ -68,7 +78,8 @@ async function main() {
     worldSelect.value = mode
     void view.setWorld(mode, invalidate)
   }
-  selectWorld(params.get('world') === 'splat' ? params.get('cars') === 'mesh' ? 'hybrid' : 'splat' : 'mesh')
+  worldSelect.disabled = !!sfMap
+  selectWorld(!sfMap && params.get('world') === 'splat' ? params.get('cars') === 'mesh' ? 'hybrid' : 'splat' : 'mesh')
   worldSelect.onchange = () => {
     const mode = worldSelect.value as WorldMode
     const url = new URL(location.href)
@@ -80,12 +91,26 @@ async function main() {
   }
   const worldLabel = document.createElement('label')
   worldLabel.append('World ', worldSelect)
+  const sceneSelect = document.createElement('select')
+  sceneSelect.setAttribute('aria-label', 'Scene')
+  sceneSelect.add(new Option('San Francisco', 'sf'))
+  sceneSelect.add(new Option('Northgate lot', 'lot'))
+  sceneSelect.value = scene
+  sceneSelect.onchange = () => {
+    const url = new URL(location.href)
+    url.searchParams.set('scene', sceneSelect.value)
+    location.assign(url)
+  }
+  const sceneLabel = document.createElement('label')
+  sceneLabel.append(' Scene ', sceneSelect)
   const details = document.createElement('span')
-  debug.append(details, document.createElement('br'), worldLabel)
+  debug.append(details, document.createElement('br'), worldLabel, sceneLabel)
   let last = performance.now()
   let elapsed = 0
   let fps = 0, frameCount = 0, sampleTime = 0
   let clickTimer = 0
+  let parkedAt: number | undefined
+  let returnedToSeat = false
   const audio = new CabinAudio(import.meta.env.BASE_URL, () => { dirty = true })
   let gesture: { id: number; x: number; y: number; lastX: number; lastY: number; dragged: boolean; hit?: Interaction } | undefined
 
@@ -100,6 +125,16 @@ async function main() {
 
   function tick() {
     drive.update(STEP, controls())
+    if (street && drive.mode === 'parked') {
+      parkedAt ??= drive.time
+      if (!returnedToSeat && drive.time - parkedAt >= 2) {
+        returnedToSeat = true
+        chooseView(0)
+      }
+    } else {
+      returnedToSeat = false
+      parkedAt = undefined
+    }
     dive.update(STEP)
     view.update(STEP, drive)
   }
@@ -119,10 +154,11 @@ async function main() {
     if (!debug.hidden) {
       const { tablet, rear, stride } = view.targetSizes
       const traffic = drive.traffic.stats
+      const streetTraffic = street ? `${street.cars.length} street vehicles · ${street.stats.overlapFrames} overlap frames · ${street.stats.stuck.length} stuck` : undefined
       const pass = (label: string, count: { calls: number; triangles: number }) =>
         `${label} ${count.calls} draws / ${count.triangles.toLocaleString()} tris`
       const { reality, seat, rear: rearPass, parkingPeak } = view.passes
-      details.textContent = `${view.rendererName}\n${view.tier.toUpperCase()}${fps ? ` · ${fps.toFixed(1)} FPS` : ''} · tablet ${tablet.join('×')} · rear ${rear.join('×')} · refresh 1/${stride}\n${pass('Reality View', reality)} · ${pass('Parking peak', parkingPeak)}\n${pass('Seat', seat)} · ${pass('Rear', rearPass)}\n${drive.mode} · ${drive.pose.x.toFixed(2)}, ${drive.pose.z.toFixed(2)} m · ${drive.freeBays.length} free\n${traffic.moving}/${traffic.active} moving · ${drive.overlapFrames} overlap frames · ${traffic.stuck.length} waiting over 18 s`
+      details.textContent = `${view.rendererName}\n${view.tier.toUpperCase()}${fps ? ` · ${fps.toFixed(1)} FPS` : ''} · tablet ${tablet.join('×')} · rear ${rear.join('×')} · refresh 1/${stride}\n${pass('Reality View', reality)} · ${pass('Parking peak', parkingPeak)}\n${pass('Seat', seat)} · ${pass('Rear', rearPass)}\n${drive.mode} · ${drive.pose.x.toFixed(2)}, ${drive.pose.z.toFixed(2)} m · ${drive.onStreet ? 0 : drive.freeBays.length} free\n${streetTraffic ?? `${traffic.moving}/${traffic.active} moving · ${drive.overlapFrames} overlap frames · ${traffic.stuck.length} waiting over 18 s`}`
     }
     dirty = false
   }
@@ -241,6 +277,7 @@ async function main() {
   window.addEventListener('resize', () => { view.resize(); dirty = true })
 
   const diagnostics = {
+    scene,
     worldPresented: (pass: string) => view.worldPresented(pass),
     get worldStatus() { return view.worldStatus },
     renderer: view.rendererName,
@@ -261,6 +298,7 @@ async function main() {
     get longestStandstill() { return drive.longestStandstill },
     get clearance() { return polygonClearance(carRectangle(drive.pose), drive.traffic.parkedCollision.concat(drive.traffic.movingBoxes), 10) },
     get traffic() { return { ...drive.traffic.stats, reverseStops: drive.reverseTrafficStops } },
+    get street() { return street ? { ...street.stats, onStreet: drive.onStreet, navigation: street.navigation } : undefined },
     get endPose() { return drive.parkingResult() },
     state: () => ({
       mode: drive.mode, status: drive.status, gear: drive.gear, speed: drive.speed, steer: drive.steer, station: drive.station, pose: { ...drive.pose },
@@ -269,7 +307,7 @@ async function main() {
       rearBlocked: drive.reverseBlocked, bayInFrame: view.chosenBayInFrame(drive, dive),
       dive: dive.progress, blend: dive.blend, rearVisible: view.hud.rearVisible, time: drive.time,
       runtimeCars: drive.runtimeCars.size,
-      audioStarted: audio.started, musicTrack: audio.music.title, musicPlaying: audio.music.playing,
+      audioStarted: audio.started, musicTrack: audio.music.title, musicPlaying: audio.music.playing, onStreet: drive.onStreet,
     }),
     framing: () => view.framingSample(drive),
     pause: (value: boolean) => { paused = value; elapsed = 0 },
@@ -300,6 +338,12 @@ async function main() {
     groundPoint: (along: number, across: number, height = 0.02) => {
       const [x, z] = localPoint(drive.pose, along, across)
       const p = new Vector3(x, height, z).project(view.cameras.reality)
+      return view.windowPoint({ x: (p.x + 1) * HUD_WIDTH / 2, y: (1 - p.y) * HUD_HEIGHT / 2 }, dive)
+    },
+    horizonPoint: () => {
+      const [x, z] = localPoint(drive.pose, 1_000, 0)
+      const camera = view.cameras.reality
+      const p = new Vector3(x, camera.position.y, z).project(camera)
       return view.windowPoint({ x: (p.x + 1) * HUD_WIDTH / 2, y: (1 - p.y) * HUD_HEIGHT / 2 }, dive)
     },
     point: (target: string) => {
@@ -346,6 +390,7 @@ async function main() {
   view.update(STEP, drive)
   draw()
   app.dataset.ready = 'true'
+  app.dataset.scene = scene
   requestAnimationFrame(frame)
 }
 

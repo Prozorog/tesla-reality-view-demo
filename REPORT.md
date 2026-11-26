@@ -46,6 +46,34 @@ Local proof in `shots/p1.6.1/` includes `cruise-strip.jpg`, `lot-light.jpg`, `cl
 2. Middle-distance pavement is dark in some sampled views. The matched cloud is less blue than b02 and is wider by the patch estimate. Some asphalt detail flattens under the added fill.
 3. The Model X still has sharper transitions at the rear glass and hatch edge than the photos. The parked view retains small bright optic highlights on the glass. Blender warned about the trim mesh in both LOD exports. The hybrid run loaded the LODs without a fallback.
 
+# Phase 2 — San Francisco night drive
+
+[Public repository](https://github.com/Prozorog/tesla-reality-view-demo) · [San Francisco preview](http://localhost:4106/?scene=sf) · [Northgate preview](http://localhost:4106/?scene=lot)
+
+## Route and source
+
+The Model X starts in Park at the Chestnut Street kerb just east of Fillmore. Self-driving dives into Reality View, signals and pulls out, crosses Fillmore, turns right at Divisadero and left onto Marina Boulevard. The legal approach continues left on Baker, right on Bay and right onto Palace Drive around the lagoon. It turns into the public lot from the west. Lyon's short connection is one-way northbound, so the route takes the public approach around the lagoon. [Map sources and route audit](data/osm/README.md)
+
+- The Overpass extract provides 2,499 m of driven centreline, 1,016 footprints, 207 mapped crossings and 150 trees. The compiler checks access, direction, applicable turn restrictions and controls. © OpenStreetMap contributors (ODbL).
+- Junctions without controls in the extract get all-way stops. Fillmore has a cycling signal. The test route uses a 25 mph display limit as requested even on the part of Chestnut tagged 20 mph.
+- The sourced look photos are kept only in the external reference folder. The Marina Boulevard photo is daylight and the bridge night photo was taken from nearby Crissy Field.
+
+## Stage 1 — Greybox and street driving
+
+The street network uses driveable lane splines, crossing thresholds, sidewalks, kerbs and building footprints. Traffic in both directions uses the existing car pack, with independent parked cars and pedestrians. The player obeys signal cycles, full-stop order, pedestrian crossings and lead-car gaps. The turn banner and countdown appear on the drive. Manual controls take over, and Start Self-Driving reconnects with the route. The F2 Scene switch and `?scene=lot` keep Northgate available.
+
+Arrival uses the existing lot cruise and swept parking planner. The rotated lot has four selectable bays and two occupied bays facing the rotunda. The loop extends up to 11.18 m landward of the mapped lot to fit the parking maneuvers. There is no moving NPC traffic in the small arrival lot. The view rises to the cabin after Parked.
+
+| Seed | Lot arrival | Parked | Longest explained stop | Pedestrian yields |
+| --- | ---: | ---: | ---: | ---: |
+| 7 | 405.70 s | 443.22 s | 9.53 s | 7 |
+| 29 | 461.82 s | 499.33 s | 4.00 s | 1 |
+| 113 | 437.45 s | 474.97 s | 11.62 s | 3 |
+
+The three fixed-step runs reached 23.5 mph on the street, with 20 full stops each. All parked at B201 within the exact endpoint tolerance. Street and parking overlap, unsafe-gap, stuck and intersection-violation counts were zero. The minimum street footprint gap was 0.702 m and the longest unexplained pause was 0.17 s. The 6¾–7¾ minute arrivals exceed the requested 3–4 minutes. The simulation keeps the legal approach, actual distances and full stops.
+
+Three accelerated browser trips covered the whole route at the simulation timestep, clicked a free chevron, showed the overhead reverse and returned to the seat without console errors. Seed 29 used keyboard takeover and a second Start Self-Driving click on Chestnut. A focused run also exercised takeover before a stop sign, End Trip and restart. The browser review caught pavement seams and an incorrect morning clock. The loop now uses a continuous surface, service aisles omit sidewalks, and the San Francisco clock starts at 10:03 pm with an arrival-time estimate.
+
 # Phase 1.6 — AI driver, headlight cloud, traffic that gives way
 
 The kept preview at [http://localhost:4106/](http://localhost:4106/) serves production entry `assets/index-44Ac6HQG.js` from `dist`. [Live bot](http://localhost:4106/?bot=1) · [Splat world, mesh cars](http://localhost:4106/?bot=1&world=splat&cars=mesh) · [Browser studio](http://localhost:4106/?studio=side)
