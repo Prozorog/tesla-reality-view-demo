@@ -15,6 +15,8 @@ Run `node tools/public-audit.mjs` in a working tree, or pass a commit or branch 
 
 The staged tree passed the audit across 289 files. The pre-push hook rejected a disposable branch containing `shots/hook-dummy.txt`. The local receiving repository still had zero refs, and the disposable branch was deleted.
 
+GitHub confirmed a public repository with default branch `main` and all six requested topics. A fresh HTTPS clone of `c29a630` passed the 289-file audit with zero findings. `npm ci` installed 40 packages and `npm run build` succeeded, with Vite's bundle-size warning. The clone under `tmp/clone-check` was removed after the check.
+
 # Phase 1.6 — AI driver, headlight cloud, traffic that gives way
 
 The kept preview at [http://localhost:4106/](http://localhost:4106/) serves production entry `assets/index-44Ac6HQG.js` from `dist`. [Live bot](http://localhost:4106/?bot=1) · [Splat world, mesh cars](http://localhost:4106/?bot=1&world=splat&cars=mesh) · [Browser studio](http://localhost:4106/?studio=side)
