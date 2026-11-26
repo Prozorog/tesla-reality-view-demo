@@ -15,7 +15,7 @@ const BUMPER = hero.stations.front_bumper
 // Seat: the real low beams, two long lobes reaching about 20 m.
 export const CLOUD = { halfWidth: 1.2, growth: 0.14, gain: 1.55, floor: 0.13, color: [0.30, 0.76, 1.0] as const }
 const REALITY_SHAPE = { growth: CLOUD.growth, base: CLOUD.halfWidth, gain: CLOUD.gain, floor: CLOUD.floor }
-const CRUISE_SHAPE = REALITY_SHAPE
+const CRUISE_SHAPE = { growth: 0.16, base: 1.75, gain: 1.85, floor: 0.13 }
 const SEAT_SHAPE = { growth: 0.05, base: 0.42, gain: 3.0, floor: 4.5 }
 const SEAT_REACH = 25
 // Where along the throw the pool starts to fade (fraction of the reach).
