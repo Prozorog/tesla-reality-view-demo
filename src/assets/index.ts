@@ -42,13 +42,22 @@ export async function createAssets(lot: Lot, sfMap?: SfMap) {
       return fallback()
     })
   }
-  const city = sfMap ? new (await import('./sf-world.ts')).SfWorld(sfMap, lot) : undefined
-  const lotAssets = city
-    ? { world: city.root, parkedCars: {}, occlusion: new LotOcclusion() }
-    : load<{ world: Object3D; parkedCars: Record<string, ParkedBake>; occlusion: LotOcclusion }>('lot.glb', loadLot(), () =>
-      ({ world: lotBoxes(lot), parkedCars: {}, occlusion: new LotOcclusion() }))
-  const [{ world, parkedCars, occlusion }, exterior, cabin, passengers] = await Promise.all([
-    lotAssets,
+  const cityAssets = sfMap ? (async () => {
+    const [{ SfWorld }, { loadSfFacadeKit }, { loadSfLandmarks }, { createSfFurniture }] = await Promise.all([
+      import('./sf-world.ts'), import('./sf-facades.ts'), import('./sf-landmarks.ts'), import('./sf-furniture.ts'),
+    ])
+    const [facades, landmarks] = await Promise.all([
+      load('sf/facades.glb', loadSfFacadeKit(), () => undefined),
+      load('sf landmarks', loadSfLandmarks(sfMap), () => undefined),
+    ])
+    const city = new SfWorld(sfMap, lot, facades, landmarks)
+    city.root.add(createSfFurniture(sfMap, lot))
+    return city
+  })() : Promise.resolve(undefined)
+  const [city, northgate, exterior, cabin, passengers] = await Promise.all([
+    cityAssets,
+    sfMap ? undefined : load<{ world: Object3D; parkedCars: Record<string, ParkedBake>; occlusion: LotOcclusion }>(
+      'lot.glb', loadLot(), () => ({ world: lotBoxes(lot), parkedCars: {}, occlusion: new LotOcclusion() })),
     load<Exterior>('hero.glb', loadExterior(), exteriorBoxes),
     load('cabin.glb', loadCabin(), fallbackCabin),
     load('cars.glb', loadPassengers(), () => new PassengerPack().loadPaint(true)),
@@ -58,6 +67,7 @@ export async function createAssets(lot: Lot, sfMap?: SfMap) {
   putOnLayer(cabin.root, CABIN_LAYER)
   const car = new Group()
   car.add(exterior.root, cabin.root)
+  const { world, parkedCars, occlusion } = city ? { world: city.root, parkedCars: {}, occlusion: new LotOcclusion() } : northgate!
   return { world, city, parkedCars, occlusion, car, exterior, cabin, passengers, fallbacks }
 }
 

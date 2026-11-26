@@ -3,6 +3,7 @@ import {
   Frustum, Group, InstancedMesh, Matrix4, Mesh, MeshBasicMaterial, PerspectiveCamera,
   PlaneGeometry, Quaternion, Shape, ShapeGeometry, SphereGeometry, Vector2, Vector3, BufferGeometry,
 } from 'three'
+import type { Object3D } from 'three'
 import { mergeGeometries } from 'three/addons/utils/BufferGeometryUtils.js'
 import { bayRectangle } from '../simulation/geometry.ts'
 import type { Lot, Point } from '../simulation/lot.ts'
@@ -10,6 +11,8 @@ import type { SfMap, SfRoad } from '../simulation/sf-map.ts'
 import type { SfTrip } from '../simulation/sf-trip.ts'
 import { batch, canvasTexture } from './boxes.ts'
 import type { BoxSpec } from './boxes.ts'
+import { facadeTint, SfFacades } from './sf-facades.ts'
+import type { SfFacadeKit } from './sf-facades.ts'
 
 const CHUNK_SIZE = 128
 const CURB_LANE_STREETS = new Set(['Chestnut Street', 'Divisadero Street', 'Marina Boulevard', 'Baker Street', 'Bay Street'])
@@ -95,9 +98,12 @@ export class SfWorld {
   private readonly rotation = new Quaternion()
   private readonly up = new Vector3(0, 1, 0)
   private readonly color = new Color()
+  private readonly facades?: SfFacades
 
-  constructor(private readonly map: SfMap, lot: Lot) {
-    this.root.name = 'San Francisco greybox'
+  constructor(private readonly map: SfMap, lot: Lot, private readonly facadeKit?: SfFacadeKit, landmarks?: Object3D) {
+    this.root.name = 'San Francisco'
+    if (landmarks) this.root.add(landmarks)
+    const skipped = new Set(landmarks ? ['288371295', '288371310', '288371313', '288371306', '288371314'] : [])
     const ground = new Mesh(new PlaneGeometry(3000, 2200).rotateX(-Math.PI / 2),
       new MeshBasicMaterial({ color: '#33383d' }))
     ground.position.set(500, -0.04, 180)
@@ -105,14 +111,20 @@ export class SfWorld {
     this.root.add(ground)
 
     for (const building of map.buildings) {
+      if (skipped.has(String(building.id))) continue
       const geometry = polygon(building.outline, building.height, 0.12)
       const normals = geometry.getAttribute('normal')
       const colors = new Float32Array(normals.count * 3)
+      const tint = facadeKit ? facadeTint(building.id) : new Color('#ffffff')
       for (let i = 0; i < normals.count; i++) {
         const shade = 0.47 + Math.max(0, normals.getY(i)) * 0.16 + Math.max(0, normals.getX(i) * 0.4 - normals.getZ(i) * 0.5) * 0.12
-        this.color.setRGB(shade, shade * 1.015, shade * 1.035).toArray(colors, i * 3)
+        this.color.setRGB(shade * tint.r, shade * 1.015 * tint.g, shade * 1.035 * tint.b).toArray(colors, i * 3)
       }
       geometry.setAttribute('color', new Float32BufferAttribute(colors, 3))
+      if (facadeKit) {
+        geometry.setAttribute('facadeWindow', new Float32BufferAttribute(new Float32Array(normals.count), 1))
+        geometry.setAttribute('instanceWindow', new Float32BufferAttribute(new Float32Array(normals.count), 1))
+      }
       this.add('buildings', centre(building.outline), geometry)
     }
     for (const road of map.roads) this.road(road)
@@ -173,6 +185,7 @@ export class SfWorld {
     this.pedestrians.count = 0
     this.pedestrians.frustumCulled = false
     this.root.add(this.pedestrians)
+    if (facadeKit) this.facades = new SfFacades(facadeKit, map, point => this.chunk(point).root, skipped)
     this.finishChunks()
   }
 
@@ -343,7 +356,7 @@ export class SfWorld {
 
   private finishChunks() {
     const materials: Record<Surface, MeshBasicMaterial> = {
-      buildings: new MeshBasicMaterial({ vertexColors: true }),
+      buildings: this.facadeKit?.material ?? new MeshBasicMaterial({ vertexColors: true }),
       roads: new MeshBasicMaterial({ color: '#3c4249' }),
       sidewalks: new MeshBasicMaterial({ color: '#777e84', side: DoubleSide }),
       paint: new MeshBasicMaterial({ color: '#c9cbd0', side: DoubleSide }),
@@ -369,6 +382,7 @@ export class SfWorld {
   }
 
   prepare(camera: PerspectiveCamera) {
+    this.facades?.prepare(camera)
     this.projection.multiplyMatrices(camera.projectionMatrix, camera.matrixWorldInverse)
     this.frustum.setFromProjectionMatrix(this.projection)
     for (const chunk of this.chunks.values()) chunk.root.visible = this.frustum.intersectsBox(chunk.bounds)

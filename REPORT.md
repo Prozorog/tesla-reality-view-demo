@@ -74,6 +74,15 @@ The three fixed-step runs reached 23.5 mph on the street, with 20 full stops eac
 
 Three accelerated browser trips covered the whole route at the simulation timestep, clicked a free chevron, showed the overhead reverse and returned to the seat without console errors. Seed 29 used keyboard takeover and a second Start Self-Driving click on Chestnut. A focused run also exercised takeover before a stop sign, End Trip and restart. The browser review caught pavement seams and an incorrect morning clock. The loop now uses a continuous surface, service aisles omit sidewalks, and the San Francisco clock starts at 10:03 pm with an arrival-time estimate.
 
+## Stage 2 — Street kit and landmarks
+
+- The original Blender kit places pastel stucco, bay and sash windows, cornices, garages, awnings and invented signs on edges of the mapped footprints. The near façades are instanced by 128 m chunk. Simpler distant windows take over at 210 m. Street furniture includes cobra heads, waterfront acorns, hydrants, street signs, parking meters and fictional transit stops. Trees use mapped points and staggered infill. The second full-size review opened sightlines to the façades and thinned infill on the waterfront.
+- The Palace asset places a 49.38 m rotunda with open arches, two curved colonnades and terminal pylons at the lagoon. Parked drivers get a gently raised sightline. The front colonnade crosses that sightline and the dome and rotunda arches are visible behind it. [National Park Service survey](https://npgallery.nps.gov/GetAsset/51817f34-fdb5-4b0f-b8cd-f7561356cc1e)
+- The bridge follows the mapped tower axis northwest of the Marina. It uses the 1,280 m main span, 2,737 m overall length and 227 m towers, with deck lanes, main cables and suspenders. The stage includes the yacht harbors, Marina Green, headland shapes and Pacific Heights with house lights. [Bridge design and construction statistics](https://www.goldengate.org/bridge/history-research/statistics-data/design-construction-stats/) · [Landmark manifest](public/models/sf/landmarks.json)
+- `build_sf_facades.py` and `build_sf_landmarks.py` regenerate the models in Blender 5.2. The landmark packer keeps 190,960 triangles in 15 material batches and compresses the GLB to 8.87 MB. The loader verified the original node names, the second UV set and a ray from the parked eye to the dome.
+
+The uncached local Stage 2 browser run reached ready in **4.94 s** and transferred **28.0 MB** at 2560 × 1440, High, DPR 1. It reached B201 and returned to the seat without console errors or asset fallbacks. Typecheck and the production build passed. Proof frames are in the ignored `shots/p2/s2-release/` folder.
+
 # Phase 1.6 — AI driver, headlight cloud, traffic that gives way
 
 The kept preview at [http://localhost:4106/](http://localhost:4106/) serves production entry `assets/index-44Ac6HQG.js` from `dist`. [Live bot](http://localhost:4106/?bot=1) · [Splat world, mesh cars](http://localhost:4106/?bot=1&world=splat&cars=mesh) · [Browser studio](http://localhost:4106/?studio=side)

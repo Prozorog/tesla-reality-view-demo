@@ -1,5 +1,5 @@
 import { ClampToEdgeWrapping, Mesh, MeshStandardMaterial, SRGBColorSpace, TextureLoader } from 'three'
-import type { BufferGeometry, Object3D, Texture, WebGLRenderer } from 'three'
+import type { BufferGeometry, Material, Object3D, Texture, WebGLRenderer } from 'three'
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js'
 
 const gltf = new GLTFLoader()
@@ -49,9 +49,9 @@ export function standardMeshes(root: Object3D) {
   return meshes
 }
 
-type Shader = Parameters<MeshStandardMaterial['onBeforeCompile']>[0]
+type Shader = Parameters<Material['onBeforeCompile']>[0]
 
-export function editShader(material: MeshStandardMaterial, key: string, edit: (shader: Shader) => void) {
+export function editShader(material: Material, key: string, edit: (shader: Shader) => void) {
   const before = material.onBeforeCompile.bind(material)
   const previousKey = material.customProgramCacheKey()
   material.onBeforeCompile = (shader: Shader, renderer: WebGLRenderer) => {

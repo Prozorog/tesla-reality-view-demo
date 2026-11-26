@@ -31,7 +31,7 @@ export type SfMap = {
   roads: SfRoad[]
   controls: SfControl[]
   crosswalks: { pos: Point; road: string | number }[]
-  buildings: { id: number; outline: Point[]; height: number; levels: number; commercial: boolean }[]
+  buildings: { id: number | string; outline: Point[]; height: number; levels: number; commercial: boolean }[]
   parks: { name: string; outline: Point[] }[]
   water: { id: string; name: string; outline: Point[]; kind: 'lagoon' | 'marina' }[]
   trees: Point[]

@@ -1,0 +1,269 @@
+{
+  "axes": "x east, y up, z south, metres",
+  "origin": [
+    37.80418,
+    -122.44849
+  ],
+  "source_urls": {
+    "bridge_dimensions": "https://www.goldengate.org/bridge/history-research/statistics-data/design-construction-stats/",
+    "palace_dimensions": "https://npgallery.nps.gov/GetAsset/51817f34-fdb5-4b0f-b8cd-f7561356cc1e",
+    "map_data": "https://www.openstreetmap.org/copyright",
+    "bridge_tower_legs": [
+      1329545860,
+      1329761876,
+      1330832677,
+      1330832682
+    ]
+  },
+  "palace": {
+    "center": [
+      7.85,
+      140.36
+    ],
+    "height": 49.3776,
+    "diameter": 48.768,
+    "piers": [
+      [
+        30.04168775885495,
+        136.96419458544995
+      ],
+      [
+        25.943089936479176,
+        153.6506958640425
+      ],
+      [
+        11.24580541455007,
+        162.55168775885497
+      ],
+      [
+        -5.440695864042478,
+        158.4530899364792
+      ],
+      [
+        -14.341687758854947,
+        143.75580541455008
+      ],
+      [
+        -10.243089936479178,
+        127.06930413595754
+      ],
+      [
+        4.454194585449917,
+        118.16831224114507
+      ],
+      [
+        21.14069586404247,
+        122.26691006352083
+      ]
+    ],
+    "north_colonnade": [
+      [
+        -26.1,
+        116.7
+      ],
+      [
+        -20.1,
+        93.3
+      ],
+      [
+        -9.2,
+        74.9
+      ],
+      [
+        9.5,
+        60.5
+      ],
+      [
+        24.1,
+        58
+      ],
+      [
+        21.5,
+        31.1
+      ]
+    ],
+    "south_colonnade": [
+      [
+        -17.3,
+        173.3
+      ],
+      [
+        -3.6,
+        191.3
+      ],
+      [
+        14.4,
+        208
+      ],
+      [
+        32.9,
+        214.9
+      ],
+      [
+        55.1,
+        239
+      ]
+    ],
+    "terminal_pylons": [
+      [
+        4.5,
+        34.4
+      ],
+      [
+        38,
+        241.7
+      ]
+    ],
+    "replaces": [
+      288371295,
+      288371306,
+      288371310,
+      288371313,
+      288371314
+    ]
+  },
+  "bridge": {
+    "midpoint": [
+      -2644.9906015087863,
+      -1734.1851213484256
+    ],
+    "axis": [
+      -0.09192688018083572,
+      -0.9957658052444458
+    ],
+    "span": 1280,
+    "side_span": 343,
+    "length": 2737,
+    "tower_height": 227,
+    "deck_width": 27,
+    "road_width": 19,
+    "main_cable_diameter": 0.92,
+    "suspender_spacing": 15.24,
+    "source_tower_centres": [
+      [
+        -2585.959820847274,
+        -1094.754834282656
+      ],
+      [
+        -2704.0213821702987,
+        -2373.6154084141954
+      ]
+    ]
+  },
+  "stats": {
+    "columns": 76,
+    "open_arches": 8,
+    "boats": 264,
+    "terrain": "Authored coarse geographic backdrop, not a DEM",
+    "marina_green": {
+      "outline": [
+        [
+          748,
+          -415
+        ],
+        [
+          1092,
+          -415
+        ],
+        [
+          1096,
+          -197
+        ],
+        [
+          766,
+          -225
+        ]
+      ],
+      "surveyed_boundary": false
+    },
+    "triangles": 190960,
+    "parts": {
+      "Palace_Illuminated_Stone": 24516,
+      "Palace_Cornices_And_Arch_Light": 47824,
+      "Palace_Capitals_And_Reliefs": 31700,
+      "Palace_Copper_Dome": 10944,
+      "Palace_Uplight_Emitters": 228,
+      "Golden_Gate_International_Orange": 17720,
+      "Golden_Gate_Cables_And_Suspenders": 20672,
+      "Golden_Gate_Deck_And_Lanes": 1656,
+      "Golden_Gate_Deck_Lights": 2264,
+      "Marin_Headlands_And_Pacific_Heights": 15166,
+      "San_Francisco_Bay": 10,
+      "Yacht_Harbor_Docks": 300,
+      "Yacht_Harbor_Hulls_And_Masts": 13728,
+      "Pacific_Heights_House_Lights": 4206,
+      "Marina_Green_Lawn": 26
+    },
+    "file_bytes": 8871060,
+    "seconds": 3.87
+  },
+  "parked_sightline_rays": [
+    {
+      "target_height": 33,
+      "first_hit": "Palace_Cornices_And_Arch_Light",
+      "distance": 58.315
+    },
+    {
+      "target_height": 40,
+      "first_hit": "Palace_Illuminated_Stone",
+      "distance": 57.056
+    },
+    {
+      "target_height": 48,
+      "first_hit": "Palace_Copper_Dome",
+      "distance": 125.777
+    }
+  ],
+  "limitations": [
+    "Sculpted figures and capitals use simplified original geometric reliefs.",
+    "Colonnade anchor paths follow the mapped footprints, with grouped open columns instead of solid walls.",
+    "The bridge approach deck is straight along its mapped axis. Close-up rivets and tower stairs are reserved for a later crossing phase.",
+    "Headlands and Pacific Heights use coarse authored landforms, with no elevation raster.",
+    "Lighting currently uses material-separated vertex tones and named emitters. UV1 is available for subsequent lightmaps."
+  ],
+  "quantization": {
+    "extension": "KHR_mesh_quantization",
+    "decoder": "Built into three.js GLTFLoader",
+    "source_bytes": 20746696,
+    "file_bytes": 8871060,
+    "unchanged_topology": true,
+    "position": "signed 16-bit with a uniform per-node dequantization transform",
+    "normals": "signed normalized 8-bit",
+    "colors": "unsigned normalized 8-bit",
+    "uv0_and_uv1": "unsigned normalized 16-bit, deduplicated only when identical",
+    "largest_coordinate_error_metres_by_part": {
+      "Golden_Gate_Cables_And_Suspenders": 0.014956,
+      "Golden_Gate_Deck_And_Lanes": 0.020812,
+      "Golden_Gate_Deck_Lights": 0.020469,
+      "Golden_Gate_International_Orange": 0.020815,
+      "Marin_Headlands_And_Pacific_Heights": 0.065996,
+      "Marina_Green_Lawn": 0.002415,
+      "Pacific_Heights_House_Lights": 0.01754,
+      "Palace_Capitals_And_Reliefs": 0.001654,
+      "Palace_Copper_Dome": 0.000312,
+      "Palace_Cornices_And_Arch_Light": 0.00166,
+      "Palace_Illuminated_Stone": 0.001659,
+      "Palace_Uplight_Emitters": 0.001583,
+      "San_Francisco_Bay": 0.076907,
+      "Yacht_Harbor_Docks": 0.009504,
+      "Yacht_Harbor_Hulls_And_Masts": 0.009798
+    },
+    "nodes": [
+      "Golden_Gate_Cables_And_Suspenders",
+      "Golden_Gate_Deck_And_Lanes",
+      "Golden_Gate_Deck_Lights",
+      "Golden_Gate_International_Orange",
+      "Marin_Headlands_And_Pacific_Heights",
+      "Marina_Green_Lawn",
+      "Pacific_Heights_House_Lights",
+      "Palace_Capitals_And_Reliefs",
+      "Palace_Copper_Dome",
+      "Palace_Cornices_And_Arch_Light",
+      "Palace_Illuminated_Stone",
+      "Palace_Uplight_Emitters",
+      "San_Francisco_Bay",
+      "Yacht_Harbor_Docks",
+      "Yacht_Harbor_Hulls_And_Masts"
+    ]
+  }
+}

@@ -95,6 +95,7 @@ export class Cameras {
   private lookPitch = 0
   private wantYaw = 0
   private wantPitch = 0
+  private arrivalLook = 0
   private lookHeld = false
   private initialized = false
   private readonly pivot = new Vector3()
@@ -105,7 +106,7 @@ export class Cameras {
   private readonly eye = new Vector3()
   private readonly marker = new Vector3()
 
-  constructor(private readonly occlusion: LotOcclusion, private readonly footprint: Assets['exterior']['footprint'], city = false) {
+  constructor(private readonly occlusion: LotOcclusion, private readonly footprint: Assets['exterior']['footprint'], private readonly city = false) {
     this.reality.layers.enable(EXTERIOR_LAYER)
     this.reality.layers.enable(RIBBON_LAYER)
     this.seat.layers.enable(CABIN_LAYER)
@@ -152,6 +153,7 @@ export class Cameras {
     this.parkingMix = clamp(this.parkingMix + (parking ? 1 : -1) * dt / 1.5, 0, 1)
     const blend = ease(this.parkingMix)
     const easing = this.initialized ? 1 - Math.exp(-dt * 7) : 1
+    this.arrivalLook = lerp(this.arrivalLook, this.city && drive.mode === 'parked' ? 1 : 0, easing * 0.52)
     this.parkedPitch = lerp(this.parkedPitch, drive.mode === 'parked' ? 1 : 0, easing * 0.45)
     const overhead = parking && OVERHEAD_MODES.has(drive.mode)
     this.overheadMix = this.initialized ? clamp(this.overheadMix + (overhead ? 1 : -1) * dt / 1.3, 0, 1) : overhead ? 1 : 0
@@ -314,8 +316,8 @@ export class Cameras {
   }
 
   placeCabin(assets: Assets, drive: Drive, dive: Dive, aspect: number) {
-    const yaw = drive.pose.h - radians(11.5) + this.lookYaw
-    const pitch = -radians(16) + this.lookPitch
+    const yaw = drive.pose.h - radians(11.5 + 4 * this.arrivalLook) + this.lookYaw
+    const pitch = radians(-16 + 11 * this.arrivalLook) + this.lookPitch
     assets.cabin.eye.getWorldPosition(this.eye)
     this.seat.aspect = aspect
     this.seat.position.copy(this.eye)
