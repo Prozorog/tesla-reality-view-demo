@@ -1,0 +1,355 @@
+{
+  "output": "shots/p1.3",
+  "viewport": [
+    1280,
+    720
+  ],
+  "profileMs": 3000,
+  "shots": [
+    {
+      "name": "chase",
+      "query": {
+        "view": "screen",
+        "q": "high",
+        "bay": "B011"
+      },
+      "steps": [
+        {
+          "call": [
+            "start"
+          ]
+        },
+        {
+          "call": [
+            "advance",
+            2.2
+          ]
+        },
+        {
+          "call": [
+            "selectBay",
+            "B011"
+          ]
+        },
+        {
+          "call": [
+            "advance",
+            25,
+            {
+              "mode": "pull-past"
+            }
+          ]
+        },
+        {
+          "call": [
+            "advance",
+            0.5
+          ]
+        },
+        {
+          "expect": {
+            "mode": "pull-past"
+          }
+        },
+        {
+          "call": [
+            "advance",
+            0.12
+          ]
+        },
+        {
+          "passes": "Parking chase"
+        }
+      ]
+    },
+    {
+      "name": "free-bays",
+      "query": {
+        "view": "screen",
+        "q": "high",
+        "bay": "B011"
+      },
+      "steps": [
+        {
+          "call": [
+            "start"
+          ]
+        },
+        {
+          "call": [
+            "advance",
+            2.2
+          ]
+        },
+        {
+          "expect": {
+            "mode": "cruise",
+            "rearVisible": false
+          }
+        },
+        {
+          "passes": "Free-bay chase"
+        }
+      ]
+    },
+    {
+      "name": "overhead",
+      "query": {
+        "view": "screen",
+        "q": "high",
+        "bay": "B058"
+      },
+      "steps": [
+        {
+          "call": [
+            "start"
+          ]
+        },
+        {
+          "call": [
+            "advance",
+            2.2
+          ]
+        },
+        {
+          "call": [
+            "selectBay",
+            "B058"
+          ]
+        },
+        {
+          "call": [
+            "advance",
+            60,
+            {
+              "mode": "reverse",
+              "reverseProgress": 0.85
+            }
+          ]
+        },
+        {
+          "passes": "Overhead reversing"
+        }
+      ]
+    },
+    {
+      "name": "reverse",
+      "query": {
+        "view": "screen",
+        "q": "high",
+        "bay": "B004"
+      },
+      "steps": [
+        {
+          "call": [
+            "start"
+          ]
+        },
+        {
+          "call": [
+            "advance",
+            2.2
+          ]
+        },
+        {
+          "call": [
+            "selectBay",
+            "B004"
+          ]
+        },
+        {
+          "call": [
+            "advance",
+            40,
+            {
+              "mode": "reverse",
+              "reverseProgress": 0.35
+            }
+          ]
+        },
+        {
+          "expect": {
+            "mode": "reverse",
+            "rearVisible": true,
+            "bayInFrame": true
+          }
+        },
+        {
+          "passes": "Reverse inset"
+        }
+      ]
+    },
+    {
+      "name": "seat",
+      "query": {
+        "q": "high"
+      },
+      "steps": [
+        {
+          "call": [
+            "start"
+          ]
+        },
+        {
+          "call": [
+            "advance",
+            2.2
+          ]
+        }
+      ]
+    },
+    {
+      "name": "chase-effects-100pct",
+      "query": {
+        "view": "screen",
+        "q": "high",
+        "bay": "B011"
+      },
+      "steps": [
+        {
+          "call": [
+            "start"
+          ]
+        },
+        {
+          "call": [
+            "advance",
+            2.2
+          ]
+        },
+        {
+          "call": [
+            "selectBay",
+            "B011"
+          ]
+        },
+        {
+          "call": [
+            "advance",
+            25,
+            {
+              "mode": "pull-past"
+            }
+          ]
+        },
+        {
+          "call": [
+            "advance",
+            0.5
+          ]
+        },
+        {
+          "expect": {
+            "mode": "pull-past"
+          }
+        },
+        {
+          "call": [
+            "advance",
+            0.12
+          ]
+        },
+        {
+          "passes": "Parking chase"
+        }
+      ],
+      "viewport": [
+        2560,
+        1440
+      ],
+      "clip": {
+        "x": 1000,
+        "y": 440,
+        "width": 560,
+        "height": 460
+      }
+    }
+  ],
+  "checks": [
+    {
+      "name": "chevron-tap",
+      "query": {
+        "view": "screen",
+        "q": "high",
+        "bay": "B011"
+      },
+      "steps": [
+        {
+          "call": [
+            "start"
+          ]
+        },
+        {
+          "call": [
+            "advance",
+            2.2
+          ]
+        },
+        {
+          "click": "B011"
+        },
+        {
+          "expect": {
+            "bay": "B011",
+            "mode": "ready"
+          }
+        }
+      ]
+    },
+    {
+      "name": "live-bot-park",
+      "viewport": [
+        2560,
+        1440
+      ],
+      "query": {
+        "bot": 1,
+        "pause": 0,
+        "view": "screen",
+        "q": "high",
+        "profile": 1
+      },
+      "tier": "high",
+      "steps": [
+        {
+          "key": [
+            "press",
+            "F2"
+          ]
+        },
+        {
+          "waitFor": {
+            "mode": "reverse",
+            "rearVisible": true
+          },
+          "timeoutMs": 120000
+        },
+        {
+          "profile": "reverse"
+        },
+        {
+          "passes": "Live reverse"
+        },
+        {
+          "call": [
+            "pause",
+            false
+          ]
+        },
+        {
+          "waitFor": {
+            "mode": "parked",
+            "bayInFrame": true
+          },
+          "timeoutMs": 60000
+        },
+        {
+          "parked": true
+        },
+        {
+          "passes": "Live park peak"
+        }
+      ]
+    }
+  ]
+}

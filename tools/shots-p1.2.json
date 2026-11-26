@@ -1,0 +1,423 @@
+{
+    "output":  "shots/p1.2",
+    "viewport":  [
+                     1280,
+                     720
+                 ],
+    "profileMs":  3000,
+    "shots":  [
+                  {
+                      "name":  "chase",
+                      "query":  {
+                                    "view":  "screen",
+                                    "q":  "high",
+                                    "bay":  "B011"
+                                },
+                      "steps":  [
+                                    {
+                                        "call":  [
+                                                     "start"
+                                                 ]
+                                    },
+                                    {
+                                        "call":  [
+                                                     "advance",
+                                                     2.2
+                                                 ]
+                                    },
+                                    {
+                                        "call":  [
+                                                     "selectBay",
+                                                     "B011"
+                                                 ]
+                                    },
+                                    {
+                                        "call":  [
+                                                     "advance",
+                                                     25,
+                                                     {
+                                                         "mode":  "pull-past"
+                                                     }
+                                                 ]
+                                    },
+                                    {
+                                        "call":  [
+                                                     "advance",
+                                                     0.67
+                                                 ]
+                                    },
+                                    {
+                                        "expect":  {
+                                                       "mode":  "pull-past"
+                                                   }
+                                    },
+                                    {
+                                        "call":  [
+                                                     "orbit",
+                                                     -29,
+                                                     -53
+                                                 ]
+                                    },
+                                    {
+                                        "call":  [
+                                                     "advance",
+                                                     0.12
+                                                 ]
+                                    },
+                                    {
+                                        "passes":  "Parking chase"
+                                    }
+                                ]
+                  },
+                  {
+                      "name":  "free-bays",
+                      "query":  {
+                                    "view":  "screen",
+                                    "q":  "high",
+                                    "bay":  "B011"
+                                },
+                      "steps":  [
+                                    {
+                                        "call":  [
+                                                     "start"
+                                                 ]
+                                    },
+                                    {
+                                        "call":  [
+                                                     "advance",
+                                                     2.2
+                                                 ]
+                                    },
+                                    {
+                                        "expect":  {
+                                                       "mode":  "cruise",
+                                                       "rearVisible":  false
+                                                   }
+                                    },
+                                    {
+                                        "passes":  "Free-bay chase"
+                                    }
+                                ]
+                  },
+                  {
+                      "name":  "overhead",
+                      "query":  {
+                                    "view":  "screen",
+                                    "q":  "high",
+                                    "bay":  "B058"
+                                },
+                      "steps":  [
+                                    {
+                                        "call":  [
+                                                     "start"
+                                                 ]
+                                    },
+                                    {
+                                        "call":  [
+                                                     "advance",
+                                                     2.2
+                                                 ]
+                                    },
+                                    {
+                                        "call":  [
+                                                     "selectBay",
+                                                     "B058"
+                                                 ]
+                                    },
+                                    {
+                                        "call":  [
+                                                     "advance",
+                                                     25,
+                                                     {
+                                                         "mode":  "pull-past"
+                                                     }
+                                                 ]
+                                    },
+                                    {
+                                        "call":  [
+                                                     "advance",
+                                                     1.45
+                                                 ]
+                                    },
+                                    {
+                                        "expect":  {
+                                                       "mode":  "pull-past"
+                                                   }
+                                    },
+                                    {
+                                        "call":  [
+                                                     "orbit",
+                                                     0,
+                                                     20
+                                                 ]
+                                    },
+                                    {
+                                        "call":  [
+                                                     "advance",
+                                                     0.12
+                                                 ]
+                                    },
+                                    {
+                                        "passes":  "Overhead pulling past"
+                                    }
+                                ]
+                  },
+                  {
+                      "name":  "reverse",
+                      "query":  {
+                                    "view":  "screen",
+                                    "q":  "high",
+                                    "bay":  "B004"
+                                },
+                      "steps":  [
+                                    {
+                                        "call":  [
+                                                     "start"
+                                                 ]
+                                    },
+                                    {
+                                        "call":  [
+                                                     "advance",
+                                                     2.2
+                                                 ]
+                                    },
+                                    {
+                                        "call":  [
+                                                     "selectBay",
+                                                     "B004"
+                                                 ]
+                                    },
+                                    {
+                                        "call":  [
+                                                     "advance",
+                                                     40,
+                                                     {
+                                                         "mode":  "reverse",
+                                                         "reverseProgress":  0.35
+                                                     }
+                                                 ]
+                                    },
+                                    {
+                                        "expect":  {
+                                                       "mode":  "reverse",
+                                                       "rearVisible":  true,
+                                                       "bayInFrame":  true
+                                                   }
+                                    },
+                                    {
+                                        "passes":  "Reverse inset"
+                                    }
+                                ]
+                  },
+                  {
+                      "name":  "hero-chase-100pct",
+                      "viewport":  [
+                                       2560,
+                                       1440
+                                   ],
+                      "query":  {
+                                    "view":  "screen",
+                                    "q":  "high",
+                                    "bay":  "B011"
+                                },
+                      "steps":  [
+                                    {
+                                        "call":  [
+                                                     "start"
+                                                 ]
+                                    },
+                                    {
+                                        "call":  [
+                                                     "advance",
+                                                     2.2
+                                                 ]
+                                    }
+                                ],
+                      "clip":  {
+                                   "x":  946,
+                                   "y":  575,
+                                   "width":  668,
+                                   "height":  450
+                               }
+                  },
+                  {
+                      "name":  "hero-low-orbit-100pct",
+                      "viewport":  [
+                                       2560,
+                                       1440
+                                   ],
+                      "query":  {
+                                    "view":  "screen",
+                                    "q":  "high",
+                                    "bay":  "B058"
+                                },
+                      "steps":  [
+                                    {
+                                        "call":  [
+                                                     "start"
+                                                 ]
+                                    },
+                                    {
+                                        "call":  [
+                                                     "advance",
+                                                     2.2
+                                                 ]
+                                    },
+                                    {
+                                        "call":  [
+                                                     "selectBay",
+                                                     "B058"
+                                                 ]
+                                    },
+                                    {
+                                        "call":  [
+                                                     "advance",
+                                                     40,
+                                                     {
+                                                         "mode":  "reverse",
+                                                         "reverseProgress":  0.16
+                                                     }
+                                                 ]
+                                    },
+                                    {
+                                        "expect":  {
+                                                       "mode":  "reverse",
+                                                       "rearVisible":  true,
+                                                       "bayInFrame":  true
+                                                   }
+                                    },
+                                    {
+                                        "call":  [
+                                                     "orbit",
+                                                     47,
+                                                     -50
+                                                 ]
+                                    },
+                                    {
+                                        "call":  [
+                                                     "advance",
+                                                     0.1
+                                                 ]
+                                    },
+                                    {
+                                        "orbitSweep":  [
+                                                           5,
+                                                           72
+                                                       ]
+                                    }
+                                ],
+                      "clip":  {
+                                   "x":  1290,
+                                   "y":  492,
+                                   "width":  590,
+                                   "height":  421
+                               }
+                  },
+                  {
+                      "name":  "seat-visual",
+                      "query":  {
+                                    "q":  "high"
+                                },
+                      "steps":  [
+                                    {
+                                        "call":  [
+                                                     "start"
+                                                 ]
+                                    },
+                                    {
+                                        "call":  [
+                                                     "advance",
+                                                     2.2
+                                                 ]
+                                    }
+                                ]
+                  }
+              ],
+    "checks":  [
+                   {
+                       "name":  "chevron-tap",
+                       "query":  {
+                                     "view":  "screen",
+                                     "q":  "high",
+                                     "bay":  "B011"
+                                 },
+                       "steps":  [
+                                     {
+                                         "call":  [
+                                                      "start"
+                                                  ]
+                                     },
+                                     {
+                                         "call":  [
+                                                      "advance",
+                                                      2.2
+                                                  ]
+                                     },
+                                     {
+                                         "click":  "B011"
+                                     },
+                                     {
+                                         "expect":  {
+                                                        "bay":  "B011",
+                                                        "mode":  "ready"
+                                                    }
+                                     }
+                                 ]
+                   },
+                   {
+                       "name":  "live-bot-park",
+                       "viewport":  [
+                                        2560,
+                                        1440
+                                    ],
+                       "query":  {
+                                     "bot":  1,
+                                     "pause":  0,
+                                     "view":  "screen",
+                                     "q":  "high",
+                                     "profile":  1
+                                 },
+                       "tier":  "high",
+                       "steps":  [
+                                     {
+                                         "key":  [
+                                                     "press",
+                                                     "F2"
+                                                 ]
+                                     },
+                                     {
+                                         "waitFor":  {
+                                                         "mode":  "reverse",
+                                                         "rearVisible":  true
+                                                     },
+                                         "timeoutMs":  120000
+                                     },
+                                     {
+                                         "profile":  "reverse"
+                                     },
+                                     {
+                                         "passes":  "Live reverse"
+                                     },
+                                     {
+                                         "call":  [
+                                                      "pause",
+                                                      false
+                                                  ]
+                                     },
+                                     {
+                                         "waitFor":  {
+                                                         "mode":  "parked",
+                                                         "bayInFrame":  true
+                                                     },
+                                         "timeoutMs":  60000
+                                     },
+                                     {
+                                         "parked":  true
+                                     },
+                                     {
+                                         "passes":  "Live park peak"
+                                     }
+                                 ]
+                   }
+               ]
+}

@@ -1,0 +1,89 @@
+{
+  "source": "Meshy_AI_White_Tesla_Model_S_Collage_20261123_texture.glb",
+  "uniform_scale": 2.4837868213653564,
+  "units": "metres",
+  "gltf_mapping": "(x,z,-y)",
+  "source_triangles": 1029118,
+  "triangles": {
+    "body": 49867,
+    "caliper_FL": 1316,
+    "caliper_FR": 444,
+    "caliper_RL": 513,
+    "caliper_RR": 387,
+    "glass": 17335,
+    "indicators_left": 337,
+    "indicators_right": 341,
+    "lights_brake": 804,
+    "lights_head": 921,
+    "lights_reverse": 248,
+    "lights_tail": 804,
+    "mirror_L": 590,
+    "mirror_R": 576,
+    "trim_black": 32725,
+    "wheel_FL_barrel": 108,
+    "wheel_FL": 8643,
+    "wheel_FR_barrel": 108,
+    "wheel_FR": 8901,
+    "wheel_RL_barrel": 108,
+    "wheel_RL": 10597,
+    "wheel_RR_barrel": 108,
+    "wheel_RR": 11106,
+    "Wheelhouse liners": 432,
+    "wordmark": 620
+  },
+  "total_triangles": 147939,
+  "lod_triangles": 12830,
+  "far_triangles": 1460,
+  "bounding_box": {
+    "min": [
+      -1.012731671333313,
+      -1.0558006763458252,
+      0.0
+    ],
+    "max": [
+      3.7072677612304688,
+      1.0535329580307007,
+      1.4837397336959839
+    ],
+    "size": [
+      4.719999313354492,
+      2.1093335151672363,
+      1.4837397336959839
+    ],
+    "body_width": 1.885
+  },
+  "stations": {
+    "front_bumper": 3.7072677612304688,
+    "rear_bumper": -1.012731671333313,
+    "trunk_lip": [
+      -0.89,
+      0,
+      1.034
+    ]
+  },
+  "wheel_centres": {
+    "wheel_FL": [
+      2.824313994574547,
+      0.826,
+      0.39740589141845706
+    ],
+    "wheel_FR": [
+      2.824313994574547,
+      -0.826,
+      0.39740589141845706
+    ],
+    "wheel_RL": [
+      0,
+      0.826,
+      0.39740589141845706
+    ],
+    "wheel_RR": [
+      0,
+      -0.826,
+      0.39740589141845706
+    ]
+  },
+  "wheel_radius": 0.39740589141845706,
+  "wheelbase": 2.824313994574547,
+  "track": 1.652
+}

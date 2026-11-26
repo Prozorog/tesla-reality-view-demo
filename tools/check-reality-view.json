@@ -1,0 +1,66 @@
+{
+  "output": "shots/s4",
+  "viewport": [1280, 800],
+  "setups": {
+    "controls": [
+      { "expect": { "audioStarted": false, "musicPlaying": false, "mode": "idle", "gear": "P" } },
+      { "click": "start" },
+      { "waitFor": { "mode": "cruise", "audioStarted": true, "musicPlaying": true } },
+      { "call": ["advance", 0.95] },
+      { "click": "B058" },
+      { "waitFor": { "mode": "ready", "bay": "B058" } },
+      { "click": "cancel" },
+      { "waitFor": { "mode": "cruise", "bay": null } },
+      { "click": "music-next" },
+      { "waitFor": { "musicTrack": "Dream Culture", "musicPlaying": true } },
+      { "click": "music-toggle" },
+      { "waitFor": { "musicPlaying": false } },
+      { "click": "music-prev" },
+      { "waitFor": { "musicTrack": "Night on the Docks - Piano", "musicPlaying": false } },
+      { "click": "music-toggle" },
+      { "waitFor": { "musicPlaying": true } },
+      { "click": "end-trip" },
+      { "waitFor": { "mode": "idle", "gear": "P", "speed": 0 } }
+    ]
+  },
+  "shots": [],
+  "checks": [
+    { "name": "seat-controls", "query": { "view": "seat", "bay": "B058", "q": "high" }, "tier": "high", "setup": "controls" },
+    { "name": "full-window-controls", "query": { "view": "screen", "bay": "B058", "q": "low" }, "tier": "low", "setup": "controls" },
+    {
+      "name": "behind-bay",
+      "query": { "view": "screen", "bay": "B058" },
+      "steps": [
+        { "call": ["start"] },
+        { "call": ["advance", 8.4] },
+        { "call": ["selectBay", "B058"] },
+        { "inRange": { "backingApproach": [9, 12] } },
+        { "call": ["advance", 7, { "mode": "reverse", "reverseProgress": 0.05 }] },
+        { "expect": { "mode": "reverse", "gear": "R", "bayInFrame": true } },
+        { "call": ["advance", 30, { "mode": "parked" }] },
+        { "parked": "B058" }
+      ]
+    },
+    {
+      "name": "live-autopark",
+      "query": { "bot": 1, "pause": 0, "view": "screen" },
+      "steps": [
+        { "waitFor": { "mode": "reverse", "bayInFrame": true }, "timeoutMs": 135000 },
+        { "key": ["press", "Escape"] },
+        { "waitFor": { "mode": "reverse", "blend": 0 } },
+        { "key": ["press", "2"] },
+        { "waitFor": { "mode": "reverse", "blend": 1 } },
+        { "waitFor": { "mode": "parked", "bayInFrame": true }, "timeoutMs": 30000 },
+        { "parked": true },
+        { "click": "start" },
+        { "waitFor": { "mode": "exiting" } },
+        { "waitFor": { "mode": "cruise", "bay": null }, "timeoutMs": 25000 }
+      ]
+    },
+    {
+      "name": "unattended-cruise",
+      "query": { "bot": "cruise", "pause": 0, "view": "screen" },
+      "steps": [{ "waitForTime": 180, "timeoutMs": 270000 }, { "trafficFlow": true }]
+    }
+  ]
+}

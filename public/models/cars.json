@@ -1,0 +1,698 @@
+{
+  "units": "metres",
+  "axes": {
+    "forward": "+X",
+    "up": "+Y",
+    "left": "-Z"
+  },
+  "origin": "ground under bounding-box centre",
+  "lightPositionOrder": [
+    "left",
+    "right"
+  ],
+  "materialChannels": {
+    "roughness": "G",
+    "metallic": "B"
+  },
+  "palette": {
+    "white": "#e8e6e1",
+    "silver": "#a9adb2",
+    "black": "#0d0e10",
+    "darkgrey": "#3a3d42",
+    "darkblue": "#16233f",
+    "red": "#6e1f1c"
+  },
+  "credit": "Generic passenger car pack by Comrade1280, CC BY. Adapted for this project.",
+  "source": "https://sketchfab.com/3d-models/generic-passenger-car-pack-20f9af9b8a404d5cb022ac6fe87f21f5",
+  "types": {
+    "sedan": {
+      "length": 4.7,
+      "width": 2.09337,
+      "height": 1.44714,
+      "wheelbase": 2.81962,
+      "nodes": {
+        "root": "sedan",
+        "body": "sedan_body",
+        "glass": "sedan_glass",
+        "lenses": "sedan_lenses",
+        "lights_head": "sedan_lights_head",
+        "lights_tail": "sedan_lights_tail",
+        "lights_brake": "sedan_lights_brake",
+        "wheels": "sedan_wheels"
+      },
+      "triangles": 7178,
+      "variants": [
+        {
+          "color": "silver",
+          "map": "textures/cars/sedan_silver.jpg"
+        },
+        {
+          "color": "white",
+          "map": "textures/cars/sedan_white.jpg"
+        },
+        {
+          "color": "black",
+          "map": "textures/cars/sedan_black.jpg"
+        },
+        {
+          "color": "red",
+          "map": "textures/cars/sedan_red.jpg"
+        }
+      ],
+      "roughnessMap": "textures/cars/sedan_mr.webp",
+      "metallicMap": "textures/cars/sedan_mr.webp",
+      "lightPositions": {
+        "head": [
+          [
+            2.10515,
+            0.64363,
+            -0.60713
+          ],
+          [
+            2.10434,
+            0.64363,
+            0.60924
+          ]
+        ],
+        "tail": [
+          [
+            -2.18548,
+            0.65401,
+            -0.66084
+          ],
+          [
+            -2.18636,
+            0.65401,
+            0.65722
+          ]
+        ],
+        "brake": [
+          [
+            -2.18834,
+            0.71338,
+            -0.65422
+          ],
+          [
+            -2.18921,
+            0.71338,
+            0.65059
+          ]
+        ]
+      },
+      "wheelMap": "textures/cars/wheel_a.jpg",
+      "wheelMetallicRoughnessMap": "textures/cars/wheel_a_mr.webp"
+    },
+    "wagon": {
+      "length": 4.75,
+      "width": 2.11341,
+      "height": 1.49572,
+      "wheelbase": 2.85426,
+      "nodes": {
+        "root": "wagon",
+        "body": "wagon_body",
+        "glass": "wagon_glass",
+        "lenses": "wagon_lenses",
+        "lights_head": "wagon_lights_head",
+        "lights_tail": "wagon_lights_tail",
+        "lights_brake": "wagon_lights_brake",
+        "wheels": "wagon_wheels"
+      },
+      "triangles": 7022,
+      "variants": [
+        {
+          "color": "darkblue",
+          "map": "textures/cars/wagon_darkblue.jpg"
+        },
+        {
+          "color": "silver",
+          "map": "textures/cars/wagon_silver.jpg"
+        },
+        {
+          "color": "darkgrey",
+          "map": "textures/cars/wagon_darkgrey.jpg"
+        }
+      ],
+      "roughnessMap": "textures/cars/wagon_mr.webp",
+      "metallicMap": "textures/cars/wagon_mr.webp",
+      "lightPositions": {
+        "head": [
+          [
+            2.1274,
+            0.64835,
+            -0.61401
+          ],
+          [
+            2.1274,
+            0.64835,
+            0.61401
+          ]
+        ],
+        "tail": [
+          [
+            -2.20015,
+            0.65752,
+            -0.71281
+          ],
+          [
+            -2.20015,
+            0.65752,
+            0.71281
+          ]
+        ],
+        "brake": [
+          [
+            -2.20397,
+            0.71856,
+            -0.70311
+          ],
+          [
+            -2.20397,
+            0.71856,
+            0.70311
+          ]
+        ]
+      },
+      "wheelMap": "textures/cars/wheel_a.jpg",
+      "wheelMetallicRoughnessMap": "textures/cars/wheel_a_mr.webp"
+    },
+    "hatchback": {
+      "length": 4.25,
+      "width": 1.87083,
+      "height": 1.45277,
+      "wheelbase": 2.58228,
+      "nodes": {
+        "root": "hatchback",
+        "body": "hatchback_body",
+        "glass": "hatchback_glass",
+        "lenses": "hatchback_lenses",
+        "lights_head": "hatchback_lights_head",
+        "lights_tail": "hatchback_lights_tail",
+        "lights_brake": "hatchback_lights_brake",
+        "wheels": "hatchback_wheels"
+      },
+      "triangles": 6856,
+      "variants": [
+        {
+          "color": "white",
+          "map": "textures/cars/hatchback_white.jpg"
+        },
+        {
+          "color": "darkgrey",
+          "map": "textures/cars/hatchback_darkgrey.jpg"
+        },
+        {
+          "color": "darkblue",
+          "map": "textures/cars/hatchback_darkblue.jpg"
+        }
+      ],
+      "roughnessMap": "textures/cars/hatchback_mr.webp",
+      "metallicMap": "textures/cars/hatchback_mr.webp",
+      "lightPositions": {
+        "head": [
+          [
+            1.80632,
+            0.74437,
+            -0.57678
+          ],
+          [
+            1.80632,
+            0.74437,
+            0.57678
+          ]
+        ],
+        "tail": [
+          [
+            -1.89704,
+            0.85674,
+            -0.59169
+          ],
+          [
+            -1.89704,
+            0.85674,
+            0.59169
+          ]
+        ],
+        "brake": [
+          [
+            -1.86607,
+            0.94096,
+            -0.58559
+          ],
+          [
+            -1.86607,
+            0.94096,
+            0.58559
+          ]
+        ]
+      },
+      "wheelMap": "textures/cars/wheel_b.jpg",
+      "wheelMetallicRoughnessMap": "textures/cars/wheel_b_mr.webp"
+    },
+    "compact": {
+      "length": 3.9,
+      "width": 1.92484,
+      "height": 1.5749,
+      "wheelbase": 2.49419,
+      "nodes": {
+        "root": "compact",
+        "body": "compact_body",
+        "glass": "compact_glass",
+        "lenses": "compact_lenses",
+        "lights_head": "compact_lights_head",
+        "lights_brake": "compact_lights_brake",
+        "lights_tail": "compact_lights_tail",
+        "wheels": "compact_wheels"
+      },
+      "triangles": 7289,
+      "variants": [
+        {
+          "color": "darkgrey",
+          "map": "textures/cars/compact_darkgrey.jpg"
+        },
+        {
+          "color": "white",
+          "map": "textures/cars/compact_white.jpg"
+        },
+        {
+          "color": "silver",
+          "map": "textures/cars/compact_silver.jpg"
+        }
+      ],
+      "roughnessMap": "textures/cars/compact_mr.webp",
+      "metallicMap": "textures/cars/compact_mr.webp",
+      "lightPositions": {
+        "head": [
+          [
+            1.64146,
+            0.70715,
+            -0.53451
+          ],
+          [
+            1.64146,
+            0.70715,
+            0.53451
+          ]
+        ],
+        "tail": [
+          [
+            -1.73165,
+            0.78916,
+            -0.68222
+          ],
+          [
+            -1.73165,
+            0.78916,
+            0.68222
+          ]
+        ],
+        "brake": [
+          [
+            -1.70831,
+            0.93594,
+            -0.67213
+          ],
+          [
+            -1.70831,
+            0.93594,
+            0.67213
+          ]
+        ]
+      },
+      "wheelMap": "textures/cars/wheel_c.jpg",
+      "wheelMetallicRoughnessMap": "textures/cars/wheel_c_mr.webp"
+    },
+    "coupe": {
+      "length": 4.5,
+      "width": 2.00014,
+      "height": 1.35637,
+      "wheelbase": 2.56118,
+      "nodes": {
+        "root": "coupe",
+        "body": "coupe_body",
+        "glass": "coupe_glass",
+        "lenses": "coupe_lenses",
+        "lights_head": "coupe_lights_head",
+        "lights_brake": "coupe_lights_brake",
+        "lights_tail": "coupe_lights_tail",
+        "wheels": "coupe_wheels"
+      },
+      "triangles": 6054,
+      "variants": [
+        {
+          "color": "red",
+          "map": "textures/cars/coupe_red.jpg"
+        },
+        {
+          "color": "silver",
+          "map": "textures/cars/coupe_silver.jpg"
+        },
+        {
+          "color": "black",
+          "map": "textures/cars/coupe_black.jpg"
+        },
+        {
+          "color": "darkblue",
+          "map": "textures/cars/coupe_darkblue.jpg"
+        }
+      ],
+      "roughnessMap": "textures/cars/coupe_mr.webp",
+      "metallicMap": "textures/cars/coupe_mr.webp",
+      "lightPositions": {
+        "head": [
+          [
+            2.01549,
+            0.65057,
+            -0.43913
+          ],
+          [
+            2.01549,
+            0.65057,
+            0.43913
+          ]
+        ],
+        "tail": [
+          [
+            -2.08711,
+            0.71065,
+            -0.50365
+          ],
+          [
+            -2.08711,
+            0.71065,
+            0.50365
+          ]
+        ],
+        "brake": [
+          [
+            -2.08763,
+            0.76362,
+            -0.50343
+          ],
+          [
+            -2.08763,
+            0.76362,
+            0.50343
+          ]
+        ]
+      },
+      "wheelMap": "textures/cars/wheel_1.jpg",
+      "wheelMetallicRoughnessMap": "textures/cars/wheel_1_mr.webp"
+    },
+    "minivan": {
+      "length": 5.1,
+      "width": 2.06734,
+      "height": 1.95061,
+      "wheelbase": 3.14268,
+      "nodes": {
+        "root": "minivan",
+        "body": "minivan_body",
+        "glass": "minivan_glass",
+        "lights_head": "minivan_lights_head",
+        "lenses": "minivan_lenses",
+        "lights_brake": "minivan_lights_brake",
+        "lights_tail": "minivan_lights_tail",
+        "wheels": "minivan_wheels"
+      },
+      "triangles": 7457,
+      "variants": [
+        {
+          "color": "white",
+          "map": "textures/cars/minivan_white.jpg"
+        },
+        {
+          "color": "silver",
+          "map": "textures/cars/minivan_silver.jpg"
+        },
+        {
+          "color": "darkgrey",
+          "map": "textures/cars/minivan_darkgrey.jpg"
+        }
+      ],
+      "roughnessMap": "textures/cars/minivan_mr.webp",
+      "metallicMap": "textures/cars/minivan_mr.webp",
+      "lightPositions": {
+        "head": [
+          [
+            2.2724,
+            0.69818,
+            -0.76187
+          ],
+          [
+            2.2724,
+            0.69818,
+            0.76187
+          ]
+        ],
+        "tail": [
+          [
+            -2.33866,
+            0.88659,
+            -0.79889
+          ],
+          [
+            -2.33866,
+            0.88659,
+            0.7989
+          ]
+        ],
+        "brake": [
+          [
+            -2.33399,
+            1.09914,
+            -0.79103
+          ],
+          [
+            -2.33399,
+            1.09914,
+            0.79103
+          ]
+        ]
+      },
+      "wheelMap": "textures/cars/wheel_d.jpg",
+      "wheelMetallicRoughnessMap": "textures/cars/wheel_d_mr.webp"
+    },
+    "pickup": {
+      "length": 5.4,
+      "width": 2.1554,
+      "height": 1.76967,
+      "wheelbase": 3.32986,
+      "nodes": {
+        "root": "pickup",
+        "body": "pickup_body",
+        "glass": "pickup_glass",
+        "lenses": "pickup_lenses",
+        "lights_head": "pickup_lights_head",
+        "lights_brake": "pickup_lights_brake",
+        "lights_tail": "pickup_lights_tail",
+        "wheels": "pickup_wheels"
+      },
+      "triangles": 6941,
+      "variants": [
+        {
+          "color": "darkgrey",
+          "map": "textures/cars/pickup_darkgrey.jpg"
+        },
+        {
+          "color": "silver",
+          "map": "textures/cars/pickup_silver.jpg"
+        },
+        {
+          "color": "white",
+          "map": "textures/cars/pickup_white.jpg"
+        }
+      ],
+      "roughnessMap": "textures/cars/pickup_mr.webp",
+      "metallicMap": "textures/cars/pickup_mr.webp",
+      "lightPositions": {
+        "head": [
+          [
+            2.47686,
+            0.86324,
+            -0.67601
+          ],
+          [
+            2.47686,
+            0.86324,
+            0.67601
+          ]
+        ],
+        "tail": [
+          [
+            -2.50956,
+            0.90574,
+            -0.76803
+          ],
+          [
+            -2.50956,
+            0.90574,
+            0.76803
+          ]
+        ],
+        "brake": [
+          [
+            -2.52262,
+            1.11585,
+            -0.7635
+          ],
+          [
+            -2.52262,
+            1.11585,
+            0.7635
+          ]
+        ]
+      },
+      "wheelMap": "textures/cars/wheel_e.jpg",
+      "wheelMetallicRoughnessMap": "textures/cars/wheel_e_mr.webp"
+    },
+    "suv": {
+      "length": 4.7,
+      "width": 2.1074,
+      "height": 1.76659,
+      "wheelbase": 2.78309,
+      "nodes": {
+        "root": "suv",
+        "body": "suv_body",
+        "glass": "suv_glass",
+        "lenses": "suv_lenses",
+        "lights_head": "suv_lights_head",
+        "lights_brake": "suv_lights_brake",
+        "lights_tail": "suv_lights_tail",
+        "wheels": "suv_wheels"
+      },
+      "triangles": 7950,
+      "variants": [
+        {
+          "color": "black",
+          "map": "textures/cars/suv_black.jpg"
+        },
+        {
+          "color": "white",
+          "map": "textures/cars/suv_white.jpg"
+        },
+        {
+          "color": "darkblue",
+          "map": "textures/cars/suv_darkblue.jpg"
+        },
+        {
+          "color": "silver",
+          "map": "textures/cars/suv_silver.jpg"
+        }
+      ],
+      "roughnessMap": "textures/cars/suv_mr.webp",
+      "metallicMap": "textures/cars/suv_mr.webp",
+      "lightPositions": {
+        "head": [
+          [
+            2.13581,
+            0.79066,
+            -0.67074
+          ],
+          [
+            2.13581,
+            0.79066,
+            0.67074
+          ]
+        ],
+        "tail": [
+          [
+            -2.17789,
+            0.83931,
+            -0.76574
+          ],
+          [
+            -2.17789,
+            0.83931,
+            0.76574
+          ]
+        ],
+        "brake": [
+          [
+            -2.19141,
+            1.08467,
+            -0.75704
+          ],
+          [
+            -2.19141,
+            1.08467,
+            0.75704
+          ]
+        ]
+      },
+      "wheelMap": "textures/cars/wheel_e.jpg",
+      "wheelMetallicRoughnessMap": "textures/cars/wheel_e_mr.webp"
+    },
+    "offroad": {
+      "length": 4.6,
+      "width": 2.28868,
+      "height": 1.8328,
+      "wheelbase": 2.70988,
+      "nodes": {
+        "root": "offroad",
+        "body": "offroad_body",
+        "glass": "offroad_glass",
+        "lenses": "offroad_lenses",
+        "lights_head": "offroad_lights_head",
+        "lights_brake": "offroad_lights_brake",
+        "lights_tail": "offroad_lights_tail",
+        "wheels": "offroad_wheels"
+      },
+      "triangles": 6526,
+      "variants": [
+        {
+          "color": "silver",
+          "map": "textures/cars/offroad_silver.jpg"
+        },
+        {
+          "color": "black",
+          "map": "textures/cars/offroad_black.jpg"
+        },
+        {
+          "color": "darkgrey",
+          "map": "textures/cars/offroad_darkgrey.jpg"
+        }
+      ],
+      "roughnessMap": "textures/cars/offroad_mr.webp",
+      "metallicMap": "textures/cars/offroad_mr.webp",
+      "lightPositions": {
+        "head": [
+          [
+            1.85455,
+            0.9827,
+            -0.60276
+          ],
+          [
+            1.85455,
+            0.9827,
+            0.60276
+          ]
+        ],
+        "tail": [
+          [
+            -1.91052,
+            1.04325,
+            -0.7107
+          ],
+          [
+            -1.91052,
+            1.04325,
+            0.7107
+          ]
+        ],
+        "brake": [
+          [
+            -1.91052,
+            1.09642,
+            -0.7107
+          ],
+          [
+            -1.91052,
+            1.09642,
+            0.7107
+          ]
+        ]
+      },
+      "wheelMap": "textures/cars/wheel_g.jpg",
+      "wheelMetallicRoughnessMap": "textures/cars/wheel_g_mr.webp"
+    }
+  }
+}

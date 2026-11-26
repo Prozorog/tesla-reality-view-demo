@@ -1,0 +1,76 @@
+{
+  "output": "shots/p1.1",
+  "viewport": [1280, 800],
+  "profileMs": 3000,
+  "setups": {
+    "reverse": [
+      { "call": ["start"] },
+      { "call": ["advance", 2.2] },
+      { "call": ["selectBay", "B058"] },
+      { "call": ["advance", 35, { "mode": "reverse", "reverseProgress": 0.16 }] },
+      { "expect": { "mode": "reverse", "rearVisible": true, "bayInFrame": true } }
+    ],
+    "cruise": [
+      { "call": ["start"] },
+      { "call": ["advance", 3.25] }
+    ]
+  },
+  "shots": [
+    {
+      "name": "overhead-reversing-inset", "query": { "view": "screen", "bay": "B058", "q": "high" },
+      "setup": "reverse", "steps": [{ "passes": "Overhead reversing" }]
+    },
+    {
+      "name": "overhead-turned-40", "query": { "view": "screen", "bay": "B058", "q": "high" },
+      "setup": "reverse", "steps": [{ "call": ["orbit", 40, -7] }, { "call": ["advance", 0.35] }, { "passes": "Orbit +40°" }]
+    },
+    {
+      "name": "cruise-chevrons", "query": { "view": "screen", "q": "high" },
+      "steps": [
+        { "call": ["start"] }, { "call": ["advance", 63] }, { "call": ["orbit", 17] }, { "call": ["advance", 0.35] },
+        { "expect": { "mode": "cruise", "rearVisible": false } }, { "passes": "Cruise" }
+      ]
+    },
+    {
+      "name": "seat-16x10", "query": { "bay": "B058", "q": "high" }, "setup": "cruise",
+      "steps": [{ "expect": { "mode": "cruise", "dive": 0 } }, { "passes": "Seat 16:10" }]
+    },
+    {
+      "name": "seat-16x9", "viewport": [1280, 720], "query": { "bay": "B058", "q": "high" }, "setup": "cruise",
+      "steps": [{ "expect": { "mode": "cruise", "dive": 0 } }, { "passes": "Seat 16:9" }]
+    },
+    {
+      "name": "mid-dive", "query": { "bay": "B058", "q": "high" }, "setup": "cruise",
+      "steps": [{ "call": ["setDive", 0.66] }, { "call": ["advance", 0] }, { "expect": { "dive": 0.66 } }, { "passes": "Mid-dive" }]
+    },
+    {
+      "name": "parked", "query": { "view": "screen", "bay": "B058", "q": "high" }, "setup": "reverse",
+      "steps": [
+        { "call": ["advance", 25, { "mode": "parked" }] }, { "call": ["advance", 1.55] },
+        { "expect": { "mode": "parked", "gear": "P", "rearVisible": false } }, { "passes": "Parked" }
+      ]
+    },
+    {
+      "name": "hero-overhead-100pct", "viewport": [2560, 1600], "clip": { "x": 1290, "y": 320, "width": 440, "height": 456 },
+      "query": { "view": "screen", "bay": "B058", "q": "high" }, "setup": "reverse"
+    },
+    {
+      "name": "hero-low-orbit-100pct", "viewport": [2560, 1600], "clip": { "x": 1040, "y": 420, "width": 800, "height": 560 },
+      "query": { "view": "screen", "bay": "B058", "q": "high" }, "setup": "reverse",
+      "steps": [{ "call": ["orbit", 40, -45] }, { "call": ["advance", 0.35] }, { "orbitSweep": [5, 72] }]
+    }
+  ],
+  "checks": [
+    {
+      "name": "live-park-with-traffic", "viewport": [2560, 1440],
+      "query": { "bot": 1, "pause": 0, "view": "screen", "q": "high", "profile": 1 }, "tier": "high",
+      "steps": [
+        { "key": ["press", "F2"] },
+        { "waitFor": { "mode": "reverse", "rearVisible": true }, "timeoutMs": 120000 },
+        { "profile": "reverse" }, { "passes": "Live reverse" }, { "call": ["pause", false] },
+        { "waitFor": { "mode": "parked", "bayInFrame": true }, "timeoutMs": 60000 },
+        { "parked": true }, { "passes": "Live park peak" }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,29 @@
+{
+  "output": "shots/s3b",
+  "profileMs": 10000,
+  "shots": [],
+  "setups": {
+    "cruise": [
+      { "call": ["start"] },
+      { "call": ["advance", 22.4] },
+      { "profile": "cruise" }
+    ],
+    "reverse": [
+      { "call": ["start"] },
+      { "call": ["advance", 2.2] },
+      { "call": ["selectBay", "B058"] },
+      { "call": ["advance", 35, { "mode": "reverse", "reverseProgress": 0.08 }] },
+      { "profile": "reverse" }
+    ]
+  },
+  "checks": [
+    { "name": "high-seat-cruise", "viewport": [2560, 1440], "query": { "bay": "B058", "profile": 1 }, "tier": "high", "setup": "cruise" },
+    { "name": "high-seat-reverse", "viewport": [2560, 1440], "query": { "bay": "B058", "q": "high", "profile": 1 }, "tier": "high", "setup": "reverse" },
+    { "name": "high-screen-cruise", "viewport": [2560, 1440], "query": { "view": "screen", "bay": "B058", "q": "high", "profile": 1 }, "tier": "high", "setup": "cruise" },
+    { "name": "high-screen-reverse", "viewport": [2560, 1440], "query": { "view": "screen", "bay": "B058", "q": "high", "profile": 1 }, "tier": "high", "setup": "reverse" },
+    { "name": "low-seat-cruise", "viewport": [1920, 1080], "query": { "bay": "B058", "q": "low", "profile": 1 }, "tier": "low", "setup": "cruise" },
+    { "name": "low-seat-reverse", "viewport": [1920, 1080], "query": { "bay": "B058", "q": "low", "profile": 1 }, "tier": "low", "setup": "reverse" },
+    { "name": "low-screen-cruise", "viewport": [1920, 1080], "query": { "view": "screen", "bay": "B058", "q": "low", "profile": 1 }, "tier": "low", "setup": "cruise" },
+    { "name": "low-screen-reverse", "viewport": [1920, 1080], "query": { "view": "screen", "bay": "B058", "q": "low", "profile": 1 }, "tier": "low", "setup": "reverse" }
+  ]
+}

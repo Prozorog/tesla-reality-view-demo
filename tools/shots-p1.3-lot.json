@@ -1,0 +1,316 @@
+{
+  "output": "shots/p1.3-lot",
+  "viewport": [
+    1280,
+    720
+  ],
+  "profileMs": 3000,
+  "shots": [
+    {
+      "name": "chase",
+      "query": {
+        "view": "screen",
+        "q": "high",
+        "bay": "B011"
+      },
+      "steps": [
+        {
+          "call": [
+            "start"
+          ]
+        },
+        {
+          "call": [
+            "advance",
+            2.2
+          ]
+        },
+        {
+          "call": [
+            "selectBay",
+            "B011"
+          ]
+        },
+        {
+          "call": [
+            "advance",
+            25,
+            {
+              "mode": "pull-past"
+            }
+          ]
+        },
+        {
+          "call": [
+            "advance",
+            0.5
+          ]
+        },
+        {
+          "expect": {
+            "mode": "pull-past"
+          }
+        },
+        {
+          "passes": "Parking chase"
+        }
+      ]
+    },
+    {
+      "name": "free-bays",
+      "query": {
+        "view": "screen",
+        "q": "high",
+        "bay": "B011"
+      },
+      "steps": [
+        {
+          "call": [
+            "start"
+          ]
+        },
+        {
+          "call": [
+            "advance",
+            2.2
+          ]
+        },
+        {
+          "expect": {
+            "mode": "cruise",
+            "rearVisible": false
+          }
+        },
+        {
+          "passes": "Free-bay chase"
+        }
+      ]
+    },
+    {
+      "name": "overhead",
+      "query": {
+        "view": "screen",
+        "q": "high",
+        "bay": "B058"
+      },
+      "steps": [
+        {
+          "call": [
+            "start"
+          ]
+        },
+        {
+          "call": [
+            "advance",
+            2.2
+          ]
+        },
+        {
+          "call": [
+            "selectBay",
+            "B058"
+          ]
+        },
+        {
+          "call": [
+            "advance",
+            60,
+            {
+              "mode": "reverse",
+              "reverseProgress": 0.85
+            }
+          ]
+        },
+        {
+          "expect": {
+            "mode": "reverse"
+          }
+        },
+        {
+          "passes": "Overhead reverse"
+        }
+      ]
+    },
+    {
+      "name": "seat-visual",
+      "query": {
+        "q": "high"
+      },
+      "steps": [
+        {
+          "call": [
+            "start"
+          ]
+        },
+        {
+          "call": [
+            "advance",
+            2.2
+          ]
+        }
+      ]
+    },
+    {
+      "name": "roof-100pct-a",
+      "viewport": [
+        2560,
+        1440
+      ],
+      "query": {
+        "view": "screen",
+        "q": "high",
+        "bay": "B011"
+      },
+      "steps": [
+        {
+          "call": [
+            "start"
+          ]
+        },
+        {
+          "call": [
+            "advance",
+            2.2
+          ]
+        }
+      ],
+      "clip": {
+        "x": 1360,
+        "y": 0,
+        "width": 1200,
+        "height": 520
+      }
+    },
+    {
+      "name": "roof-100pct-b",
+      "viewport": [
+        2560,
+        1440
+      ],
+      "query": {
+        "view": "screen",
+        "q": "high",
+        "bay": "B011"
+      },
+      "steps": [
+        {
+          "call": [
+            "start"
+          ]
+        },
+        {
+          "call": [
+            "advance",
+            3.2
+          ]
+        }
+      ],
+      "clip": {
+        "x": 1360,
+        "y": 0,
+        "width": 1200,
+        "height": 520
+      }
+    },
+    {
+      "name": "horizon-100pct-a",
+      "viewport": [
+        2560,
+        1440
+      ],
+      "query": {
+        "view": "screen",
+        "q": "high",
+        "bay": "B011"
+      },
+      "steps": [
+        {
+          "call": [
+            "start"
+          ]
+        },
+        {
+          "call": [
+            "advance",
+            2.2
+          ]
+        }
+      ],
+      "clip": {
+        "x": 160,
+        "y": 40,
+        "width": 1280,
+        "height": 420
+      }
+    },
+    {
+      "name": "horizon-100pct-b",
+      "viewport": [
+        2560,
+        1440
+      ],
+      "query": {
+        "view": "screen",
+        "q": "high",
+        "bay": "B011"
+      },
+      "steps": [
+        {
+          "call": [
+            "start"
+          ]
+        },
+        {
+          "call": [
+            "advance",
+            3.2
+          ]
+        }
+      ],
+      "clip": {
+        "x": 160,
+        "y": 40,
+        "width": 1280,
+        "height": 420
+      }
+    },
+    {
+      "name": "seat-trees-a",
+      "query": {
+        "q": "high"
+      },
+      "steps": [
+        {
+          "call": [
+            "start"
+          ]
+        },
+        {
+          "call": [
+            "advance",
+            9
+          ]
+        }
+      ]
+    },
+    {
+      "name": "seat-trees-b",
+      "query": {
+        "q": "high"
+      },
+      "steps": [
+        {
+          "call": [
+            "start"
+          ]
+        },
+        {
+          "call": [
+            "advance",
+            16
+          ]
+        }
+      ]
+    }
+  ]
+}

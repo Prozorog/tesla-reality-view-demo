@@ -1,0 +1,264 @@
+{
+  "coordinates": "Blender car space, metres: +X forward, +Y left, +Z up. glTF = (x,z,-y).",
+  "stations": {
+    "cowl": [
+      2.32031,
+      0.995989
+    ],
+    "header": [
+      1.469429,
+      1.368962
+    ],
+    "roof_peak": [
+      0.9075002,
+      1.4418592
+    ],
+    "body_half_width": 0.9237884879112244,
+    "eye_driver": [
+      1.355,
+      0.365,
+      1.1629999999999998
+    ],
+    "steering_wheel_center": [
+      1.83,
+      0.391,
+      0.9
+    ],
+    "screen_center": [
+      1.93,
+      -0.009,
+      0.93
+    ],
+    "wheel_diameter": 0.37,
+    "column_tilt_deg": 22.0,
+    "inner_cabin_half_width_dash": 0.761999,
+    "inner_cabin_half_width_b_pillar": 0.750739,
+    "a_pillar_base": {
+      "left": [
+        2.226729,
+        0.817266,
+        0.933094
+      ],
+      "right": [
+        2.226712,
+        -0.817306,
+        0.933107
+      ]
+    },
+    "a_pillar_top": {
+      "left": [
+        1.469613,
+        0.686298,
+        1.309836
+      ],
+      "right": [
+        1.469625,
+        -0.686303,
+        1.309841
+      ]
+    },
+    "hood_front_edge": [
+      3.626918,
+      0.0,
+      0.717955
+    ],
+    "source": "public/models/model3.json",
+    "body_fields_used": {
+      "cowl": "cowl",
+      "header": "header",
+      "roof_peak": "roofPeak",
+      "body_half_width": "bounding_box.body_width / 2",
+      "inner_cabin_half_width_dash": "inner_cabin_half_width_dash",
+      "inner_cabin_half_width_b_pillar": "inner_cabin_half_width_b_pillar",
+      "a_pillar_base": "a_pillar_base",
+      "a_pillar_top": "a_pillar_top",
+      "hood_front_edge": "hood_front_edge"
+    }
+  },
+  "eye_driver": [
+    1.3430002,
+    0.365,
+    1.163
+  ],
+  "eye_driver_gltf": [
+    1.3430002,
+    1.163,
+    -0.365
+  ],
+  "driver_seat_h_point": [
+    1.2130002,
+    0.365,
+    0.528
+  ],
+  "steering_wheel": {
+    "pivot": [
+      1.83,
+      0.391,
+      0.9
+    ],
+    "pivot_gltf": [
+      1.83,
+      0.9,
+      -0.391
+    ],
+    "axis_blender_local": [
+      0,
+      0,
+      1
+    ],
+    "axis_gltf_local": [
+      0,
+      1,
+      0
+    ],
+    "axis_car_space": [
+      -0.9271839,
+      0.0,
+      0.3746066
+    ],
+    "axis_gltf_world": [
+      -0.9271839,
+      0.3746066,
+      -0.0
+    ]
+  },
+  "screen_surface": {
+    "width_m": 0.3317,
+    "height_m": 0.2073,
+    "tilt_deg": 8.0,
+    "material": "screen",
+    "corners": [
+      {
+        "position": [
+          1.9155747,
+          0.15685,
+          0.8273587
+        ],
+        "position_gltf": [
+          1.9155747,
+          0.8273587,
+          -0.15685
+        ],
+        "uv": [
+          0,
+          0
+        ]
+      },
+      {
+        "position": [
+          1.9155747,
+          -0.17485,
+          0.8273587
+        ],
+        "position_gltf": [
+          1.9155747,
+          0.8273587,
+          0.17485
+        ],
+        "uv": [
+          1,
+          0
+        ]
+      },
+      {
+        "position": [
+          1.9444252,
+          -0.17485,
+          1.0326413
+        ],
+        "position_gltf": [
+          1.9444252,
+          1.0326413,
+          0.17485
+        ],
+        "uv": [
+          1,
+          1
+        ]
+      },
+      {
+        "position": [
+          1.9444252,
+          0.15685,
+          1.0326413
+        ],
+        "position_gltf": [
+          1.9444252,
+          1.0326413,
+          -0.15685
+        ],
+        "uv": [
+          0,
+          1
+        ]
+      }
+    ]
+  },
+  "strip_color": "#ff2a1f",
+  "mesh_lightmaps": {
+    "dash_shell": "lightmaps/cabin_night.png",
+    "dash_light_channel": "lightmaps/cabin_night.png",
+    "door_card_right": "lightmaps/cabin_night.png",
+    "door_card_left": "lightmaps/cabin_night.png",
+    "light_strip": null,
+    "windshield_frame": "lightmaps/cabin_night.png",
+    "headliner_and_roof_reveal": "lightmaps/cabin_night.png",
+    "mirror_housing": "lightmaps/cabin_night.png",
+    "centre_console": "lightmaps/cabin_night.png",
+    "carpet_and_footwells": "lightmaps/cabin_night.png",
+    "pedals": "lightmaps/cabin_night.png",
+    "steering_wheel": null,
+    "column_shroud": "lightmaps/cabin_night.png",
+    "screen_bezel": "lightmaps/cabin_night.png",
+    "display_pedestal": "lightmaps/cabin_night.png",
+    "screen_surface": null,
+    "passenger_seat": "lightmaps/cabin_night.png",
+    "driver_seat": "lightmaps/cabin_night.png"
+  },
+  "lightmap": {
+    "file": "lightmaps/cabin_night.png",
+    "texCoord": 1,
+    "three_channel": 1,
+    "color_space": "sRGB",
+    "flipY": false,
+    "width": 2048,
+    "height": 2048,
+    "encoding": "RGB8 sRGB of normalized irradiance / pi",
+    "decode_scale": 9.2780179977417,
+    "three_lightMapIntensity": 29.147753181579205,
+    "bake_samples": 128,
+    "denoiser": "Open Image Denoise RT (HDR)",
+    "illuminated_texel_fraction": 0.3049,
+    "cycles_bake_seconds": 5.45,
+    "atlas_total_seconds": 11.23
+  },
+  "triangles": {
+    "dash_shell": 17230,
+    "dash_light_channel": 1296,
+    "door_card_right": 8438,
+    "door_card_left": 10142,
+    "light_strip": 3096,
+    "windshield_frame": 2452,
+    "headliner_and_roof_reveal": 3964,
+    "mirror_housing": 2048,
+    "centre_console": 7060,
+    "carpet_and_footwells": 1700,
+    "pedals": 3552,
+    "steering_wheel": 18104,
+    "column_shroud": 348,
+    "screen_bezel": 852,
+    "display_pedestal": 140,
+    "screen_surface": 2,
+    "passenger_seat": 5048,
+    "driver_seat": 5048
+  },
+  "validation": {
+    "screen_accessor_vertices": 4,
+    "screen_triangles": 2,
+    "mapped_meshes_with_two_uv_sets": 15,
+    "wheel_top_below_eye_horizon_m": 0.09165,
+    "wheel_screen_angular_gap_deg": 0.8929
+  },
+  "total_triangles": 90520,
+  "build_seconds": 14.02
+}

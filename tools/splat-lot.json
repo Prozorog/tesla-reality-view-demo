@@ -1,0 +1,71 @@
+{
+  "modelDir": "public/models",
+  "model": "lot.glb",
+  "lightmaps": "lot.lightmaps.json",
+  "output": "public/models/splats",
+  "budget": 4000000,
+  "groups": [
+    {
+      "id": "fixtures",
+      "nodes": "^(Kerbs_and_paving|Bollard|Lamp_column_\\d+|Street_columns|Cart_corral)$",
+      "spacing": 0.02,
+      "maxCount": 850000,
+      "width": 0.88,
+      "overrides": [
+        {
+          "nodes": "Kerbs_and_paving",
+          "spacing": 0.055
+        }
+      ],
+      "ambient": [
+        0.00012,
+        0.00115,
+        0.00195
+      ]
+    },
+    {
+      "id": "trees",
+      "nodes": "^Serviceberry_\\d+$",
+      "spacing": 0.04,
+      "maxCount": 420000,
+      "width": 1,
+      "ambient": [
+        0.00865,
+        0.0088,
+        0.0094
+      ]
+    },
+    {
+      "id": "storefront",
+      "nodes": "^(Northgate_masonry|Shopfront_joinery|Window_displays)$",
+      "spacing": 0.03,
+      "maxCount": 680000,
+      "width": 0.88,
+      "planar": true
+    },
+    {
+      "id": "horizon",
+      "nodes": "^(Horizon_roofs|Distant_trees|Distant_posts|Distant_storefront)$",
+      "spacing": 0.1,
+      "maxCount": 290000,
+      "width": 1.12,
+      "ambient": [
+        0.0024,
+        0.0024,
+        0.0027
+      ]
+    },
+    {
+      "id": "parked-cars",
+      "parked": {
+        "catalog": "cars.json",
+        "models": "cars.glb",
+        "heroBays": "parked_hero.json",
+        "hero": "hero_lod.glb"
+      },
+      "spacing": 0.025,
+      "maxCount": 1600000,
+      "width": 0.8
+    }
+  ]
+}

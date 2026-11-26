@@ -1,0 +1,71 @@
+{
+  "output": "shots/s3",
+  "viewport": [1280, 800],
+  "shots": [],
+  "setups": {
+    "liveParking": [
+      { "waitFor": { "mode": "reverse", "bayInFrame": true }, "timeoutMs": 145000 },
+      { "key": ["press", "1"] },
+      { "waitFor": { "blend": 0, "mode": "reverse" } },
+      { "fps": "Seat driving" },
+      { "passes": "Seat in live reverse" },
+      { "key": ["press", "2"] },
+      { "waitFor": { "blend": 1, "mode": "reverse" } },
+      { "absent": "cancel" },
+      { "fps": "Screen driving" },
+      { "passes": "Screen in live reverse" },
+      { "waitFor": { "mode": "parked", "bayInFrame": true }, "timeoutMs": 30000 },
+      { "parked": true },
+      { "passes": "Parked and run peaks" }
+    ],
+    "controls": [
+      { "expect": { "audioStarted": false, "musicPlaying": false, "mode": "idle", "gear": "P" } },
+      { "click": "start" },
+      { "waitFor": { "mode": "cruise", "audioStarted": true, "musicPlaying": true } },
+      { "call": ["advance", 0.95] },
+      { "click": "B058" },
+      { "waitFor": { "mode": "ready", "bay": "B058" } },
+      { "click": "cancel" },
+      { "waitFor": { "mode": "cruise", "bay": null } },
+      { "click": "music-next" },
+      { "waitFor": { "musicTrack": "Dream Culture", "musicPlaying": true } },
+      { "click": "music-toggle" },
+      { "waitFor": { "musicPlaying": false } },
+      { "click": "music-prev" },
+      { "waitFor": { "musicTrack": "Night on the Docks - Piano", "musicPlaying": false } },
+      { "click": "music-toggle" },
+      { "waitFor": { "musicPlaying": true } },
+      { "click": "end-trip" },
+      { "waitFor": { "mode": "idle", "gear": "P", "speed": 0 } }
+    ]
+  },
+  "checks": [
+    { "name": "seat-controls", "query": { "view": "seat", "bay": "B058", "q": "high" }, "tier": "high", "setup": "controls", "steps": [{ "tabletWidth": 0.28 }] },
+    { "name": "screen-controls", "query": { "view": "screen", "bay": "B058", "q": "low" }, "tier": "low", "setup": "controls" },
+    {
+      "name": "shallow-orbit-budget",
+      "query": { "view": "screen", "bay": "B076", "q": "high" },
+      "lodTypes": 9,
+      "steps": [
+        { "call": ["start"] }, { "call": ["selectBay", "B076"] }, { "call": ["advance", 4.68] },
+        { "call": ["orbit", 90, -45] }, { "call": ["advance", 0.45] }, { "expect": { "bayInFrame": true } },
+        { "passes": "Shallow parking orbit" },
+        { "orbitSweep": [5, 72] }
+      ]
+    },
+    {
+      "name": "shallow-orbit-reversing",
+      "query": { "view": "screen", "bay": "B058", "q": "high" },
+      "lodTypes": 9,
+      "steps": [
+        { "call": ["start"] }, { "call": ["advance", 2.2] }, { "call": ["selectBay", "B058"] },
+        { "call": ["advance", 35, { "mode": "reverse", "reverseProgress": 0.16 }] },
+        { "call": ["orbit", 0, -45] }, { "call": ["advance", 0.35] },
+        { "expect": { "mode": "reverse", "rearVisible": true, "bayInFrame": true } },
+        { "absent": "cancel" }, { "passes": "Shallow reverse" }, { "orbitSweep": [5, 72] }
+      ]
+    },
+    { "name": "live-parking-high", "query": { "bot": 1, "pause": 0, "view": "screen", "q": "high" }, "tier": "high", "setup": "liveParking" },
+    { "name": "live-parking-low", "query": { "bot": 1, "pause": 0, "view": "screen", "q": "low" }, "tier": "low", "setup": "liveParking" }
+  ]
+}

@@ -1,0 +1,46 @@
+{
+  "output": "shots/s4",
+  "viewport": [1280, 800],
+  "setups": {
+    "cruising": [
+      { "call": ["start"] },
+      { "call": ["advance", 3.25] },
+      { "expect": { "mode": "cruise" } }
+    ],
+    "ready": [
+      { "call": ["start"] },
+      { "call": ["advance", 2.2] },
+      { "call": ["selectBay", "B058"] },
+      { "call": ["advance", 0.98] },
+      { "expect": { "mode": "ready", "bay": "B058" } }
+    ],
+    "reversing": [
+      { "call": ["start"] },
+      { "call": ["advance", 2.2] },
+      { "call": ["selectBay", "B058"] },
+      { "call": ["advance", 35, { "mode": "reverse", "reverseProgress": 0.16 }] },
+      { "expect": { "mode": "reverse", "rearVisible": true, "bayInFrame": true } }
+    ]
+  },
+  "shots": [
+    { "name": "screen-idle-start-button", "query": { "view": "screen", "bay": "B058" }, "steps": [{ "expect": { "mode": "idle", "gear": "P" } }] },
+    { "name": "cruise-chevrons-traffic", "query": { "view": "screen", "bay": "B058" }, "setup": "cruising" },
+    { "name": "autopark-ready-cancel", "query": { "view": "screen", "bay": "B058" }, "setup": "ready" },
+    { "name": "overhead-reversing-inset-ribbon", "query": { "view": "screen", "bay": "B058" }, "setup": "reversing" },
+    {
+      "name": "overhead-turned-40-markers",
+      "query": { "view": "screen", "bay": "B058" }, "setup": "reversing",
+      "steps": [{ "call": ["orbit", 40, -7] }, { "expect": { "bayInFrame": true } }]
+    },
+    {
+      "name": "parked-overhead",
+      "query": { "view": "screen", "bay": "B058" }, "setup": "reversing",
+      "steps": [
+        { "call": ["advance", 25, { "mode": "parked" }] },
+        { "call": ["advance", 1.55] },
+        { "expect": { "mode": "parked", "gear": "P", "rearVisible": false, "bayInFrame": true } }
+      ]
+    },
+    { "name": "seat-traffic-headlights", "query": { "view": "seat", "bay": "B058" }, "setup": "reversing" }
+  ]
+}

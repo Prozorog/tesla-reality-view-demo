@@ -1,0 +1,16 @@
+{
+  "units": "metres",
+  "axes": {
+    "forward": "+X",
+    "up": "+Y",
+    "left": "-Z"
+  },
+  "origin": "ground under bounding-box centre",
+  "vehicles": [],
+  "failed": [],
+  "notes": [
+    "Paint, glass and wheel masks are inferred from colour and position.",
+    "Nose direction is inferred from red tail-lamp texture area; ambiguous inputs use +X.",
+    "Runtime uniformly fits oversized cars to the replaced pack collision rectangle."
+  ]
+}

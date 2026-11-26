@@ -1,0 +1,362 @@
+{
+  "output": "renders/hero",
+  "viewport": [
+    2560,
+    1440
+  ],
+  "shots": [
+    {
+      "name": "p13-glass-chase",
+      "viewport": [
+        2560,
+        1440
+      ],
+      "query": {
+        "view": "screen",
+        "q": "high",
+        "bay": "B011"
+      },
+      "steps": [
+        {
+          "call": [
+            "start"
+          ]
+        },
+        {
+          "call": [
+            "advance",
+            2.2
+          ]
+        }
+      ],
+      "clip": {
+        "x": 1130,
+        "y": 690,
+        "width": 300,
+        "height": 330
+      }
+    },
+    {
+      "name": "p13-glass-windscreen",
+      "viewport": [
+        2560,
+        1440
+      ],
+      "query": {
+        "view": "screen",
+        "q": "high",
+        "bay": "B011"
+      },
+      "steps": [
+        {
+          "call": [
+            "start"
+          ]
+        },
+        {
+          "call": [
+            "advance",
+            2.2
+          ]
+        },
+        {
+          "call": [
+            "orbit",
+            180,
+            -20
+          ]
+        },
+        {
+          "call": [
+            "advance",
+            0.05
+          ]
+        }
+      ],
+      "clip": {
+        "x": 1140,
+        "y": 640,
+        "width": 300,
+        "height": 380
+      }
+    },
+    {
+      "name": "p13-glass-side-window",
+      "viewport": [
+        2560,
+        1440
+      ],
+      "query": {
+        "view": "screen",
+        "q": "high",
+        "bay": "B011"
+      },
+      "steps": [
+        {
+          "call": [
+            "start"
+          ]
+        },
+        {
+          "call": [
+            "advance",
+            2.2
+          ]
+        },
+        {
+          "call": [
+            "orbit",
+            95,
+            -25
+          ]
+        },
+        {
+          "call": [
+            "advance",
+            0.05
+          ]
+        }
+      ],
+      "clip": {
+        "x": 900,
+        "y": 650,
+        "width": 760,
+        "height": 360
+      }
+    },
+    {
+      "name": "p13-glass-low-orbit",
+      "viewport": [
+        2560,
+        1440
+      ],
+      "query": {
+        "view": "screen",
+        "q": "high",
+        "bay": "B058"
+      },
+      "steps": [
+        {
+          "call": [
+            "start"
+          ]
+        },
+        {
+          "call": [
+            "advance",
+            2.2
+          ]
+        },
+        {
+          "call": [
+            "selectBay",
+            "B058"
+          ]
+        },
+        {
+          "call": [
+            "advance",
+            40,
+            {
+              "mode": "reverse",
+              "reverseProgress": 0.16
+            }
+          ]
+        },
+        {
+          "expect": {
+            "mode": "reverse",
+            "rearVisible": true,
+            "bayInFrame": true
+          }
+        },
+        {
+          "call": [
+            "orbit",
+            47,
+            -50
+          ]
+        },
+        {
+          "call": [
+            "advance",
+            0.1
+          ]
+        },
+        {
+          "orbitSweep": [
+            5,
+            72
+          ]
+        }
+      ],
+      "clip": {
+        "x": 1140,
+        "y": 580,
+        "width": 320,
+        "height": 220
+      }
+    },
+    {
+      "name": "p13-glass-wheel-low-orbit",
+      "viewport": [
+        2560,
+        1440
+      ],
+      "query": {
+        "view": "screen",
+        "q": "high",
+        "bay": "B058"
+      },
+      "steps": [
+        {
+          "call": [
+            "start"
+          ]
+        },
+        {
+          "call": [
+            "advance",
+            2.2
+          ]
+        },
+        {
+          "call": [
+            "selectBay",
+            "B058"
+          ]
+        },
+        {
+          "call": [
+            "advance",
+            40,
+            {
+              "mode": "reverse",
+              "reverseProgress": 0.16
+            }
+          ]
+        },
+        {
+          "expect": {
+            "mode": "reverse",
+            "rearVisible": true,
+            "bayInFrame": true
+          }
+        },
+        {
+          "call": [
+            "orbit",
+            47,
+            -50
+          ]
+        },
+        {
+          "call": [
+            "advance",
+            0.1
+          ]
+        },
+        {
+          "orbitSweep": [
+            5,
+            72
+          ]
+        }
+      ],
+      "clip": {
+        "x": 1320,
+        "y": 630,
+        "width": 110,
+        "height": 110
+      }
+    },
+    {
+      "name": "p13-glass-wheel-roll-a",
+      "viewport": [
+        2560,
+        1440
+      ],
+      "query": {
+        "view": "screen",
+        "q": "high",
+        "bay": "B011"
+      },
+      "steps": [
+        {
+          "call": [
+            "start"
+          ]
+        },
+        {
+          "call": [
+            "advance",
+            2.2
+          ]
+        },
+        {
+          "call": [
+            "orbit",
+            95,
+            -25
+          ]
+        },
+        {
+          "call": [
+            "advance",
+            0.05
+          ]
+        }
+      ],
+      "clip": {
+        "x": 1380,
+        "y": 830,
+        "width": 240,
+        "height": 200
+      }
+    },
+    {
+      "name": "p13-glass-wheel-roll-b",
+      "viewport": [
+        2560,
+        1440
+      ],
+      "query": {
+        "view": "screen",
+        "q": "high",
+        "bay": "B011"
+      },
+      "steps": [
+        {
+          "call": [
+            "start"
+          ]
+        },
+        {
+          "call": [
+            "advance",
+            2.2
+          ]
+        },
+        {
+          "call": [
+            "orbit",
+            95,
+            -25
+          ]
+        },
+        {
+          "call": [
+            "advance",
+            0.1
+          ]
+        }
+      ],
+      "clip": {
+        "x": 1380,
+        "y": 830,
+        "width": 240,
+        "height": 200
+      }
+    }
+  ]
+}

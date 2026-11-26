@@ -1,0 +1,64 @@
+{
+  "groups": [
+    {
+      "id": "fixtures",
+      "file": "fixtures.rad",
+      "count": 871182,
+      "bytes": 7094800,
+      "spacingFactor": 1.094,
+      "nodes": [
+        "Bollard",
+        "Cart_corral",
+        "Kerbs_and_paving",
+        "Lamp_column_1",
+        "Lamp_column_2",
+        "Street_columns"
+      ]
+    },
+    {
+      "id": "trees",
+      "file": "trees.rad",
+      "count": 247430,
+      "bytes": 2505352,
+      "spacingFactor": 1.169,
+      "nodes": [
+        "Serviceberry_1",
+        "Serviceberry_2",
+        "Serviceberry_3"
+      ]
+    },
+    {
+      "id": "storefront",
+      "file": "storefront.rad",
+      "count": 688980,
+      "bytes": 5490264,
+      "spacingFactor": 3.317,
+      "nodes": [
+        "Northgate_masonry",
+        "Shopfront_joinery",
+        "Window_displays"
+      ]
+    },
+    {
+      "id": "horizon",
+      "file": "horizon.rad",
+      "count": 240630,
+      "bytes": 2276536,
+      "spacingFactor": 3.157,
+      "nodes": [
+        "Distant_posts",
+        "Distant_storefront",
+        "Distant_trees",
+        "Horizon_roofs"
+      ]
+    },
+    {
+      "id": "parked-cars",
+      "file": "parked-cars.rad",
+      "count": 1595407,
+      "bytes": 18991848,
+      "spacingFactor": 1.783,
+      "nodes": []
+    }
+  ]
+}

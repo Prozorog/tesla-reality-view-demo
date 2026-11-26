@@ -1,0 +1,62 @@
+{
+  "output": "shots/s3",
+  "viewport": [1280, 800],
+  "setups": {
+    "cruise": [
+      { "call": ["start"] },
+      { "call": ["advance", 3.25] },
+      { "expect": { "mode": "cruise" } }
+    ],
+    "approach": [
+      { "call": ["start"] },
+      { "call": ["advance", 2.2] },
+      { "call": ["selectBay", "B058"] }
+    ],
+    "reverse": [
+      { "call": ["start"] },
+      { "call": ["advance", 2.2] },
+      { "call": ["selectBay", "B058"] },
+      { "call": ["advance", 35, { "mode": "reverse", "reverseProgress": 0.16 }] },
+      { "expect": { "mode": "reverse", "rearVisible": true, "bayInFrame": true } }
+    ]
+  },
+  "shots": [
+    { "name": "seat-cruise", "query": { "bay": "B058", "q": "high" }, "setup": "cruise", "steps": [{ "passes": "Seat cruise" }] },
+    {
+      "name": "seat-parking-wheel-turned", "query": { "bay": "B058", "q": "high" }, "setup": "approach",
+      "steps": [
+        { "call": ["advance", 35, { "mode": "reverse", "reverseProgress": 0.40 }] },
+        { "expect": { "mode": "reverse", "gear": "R", "dive": 0 } },
+        { "inRange": { "steer": [0.4, 0.5] } },
+        { "passes": "Seat in reverse" }
+      ]
+    },
+    {
+      "name": "mid-dive", "query": { "bay": "B058", "q": "high" }, "setup": "reverse",
+      "steps": [{ "call": ["setDive", 0.55] }, { "call": ["advance", 0] }, { "expect": { "dive": 0.55 } }, { "passes": "Mid-dive" }]
+    },
+    {
+      "name": "cruise-chevrons-toward-storefront", "query": { "view": "screen", "q": "high" },
+      "steps": [{ "call": ["start"] }, { "call": ["advance", 22.4] }, { "expect": { "mode": "cruise" } }, { "passes": "Screen cruise" }]
+    },
+    {
+      "name": "overhead-reversing-inset", "query": { "view": "screen", "bay": "B058", "q": "high" }, "setup": "reverse",
+      "steps": [{ "passes": "Screen reversing" }]
+    },
+    {
+      "name": "overhead-turned-40", "query": { "view": "screen", "bay": "B058", "q": "high" }, "setup": "reverse",
+      "steps": [{ "call": ["orbit", 40, -7] }, { "call": ["advance", 0] }, { "expect": { "bayInFrame": true } }, { "passes": "Screen orbit +40°" }]
+    },
+    {
+      "name": "parked-overhead", "query": { "view": "screen", "bay": "B058", "q": "high" }, "setup": "reverse",
+      "steps": [
+        { "call": ["advance", 25, { "mode": "parked" }] }, { "call": ["advance", 1.55] },
+        { "expect": { "mode": "parked", "gear": "P", "rearVisible": false, "bayInFrame": true } }, { "passes": "Screen parked" }
+      ]
+    },
+    {
+      "name": "seat-look-right-screen", "query": { "bay": "B058", "q": "high" }, "setup": "cruise",
+      "steps": [{ "move": [1248, 352] }, { "call": ["advance", 0.7] }, { "expect": { "dive": 0 } }, { "passes": "Seat looking right" }]
+    }
+  ]
+}

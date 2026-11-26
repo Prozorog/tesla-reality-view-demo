@@ -1,0 +1,238 @@
+{
+  "units": "metres",
+  "axes": {
+    "forward": "+X",
+    "up": "+Y",
+    "left": "-Z"
+  },
+  "origin": "ground under bounding-box centre",
+  "credit": "Generic passenger car pack by Comrade1280, CC BY. Adapted for this project.",
+  "source": "https://sketchfab.com/3d-models/generic-passenger-car-pack-20f9af9b8a404d5cb022ac6fe87f21f5",
+  "types": {
+    "sedan": {
+      "nodes": {
+        "root": "sedan",
+        "body": "sedan_lod_body",
+        "rest": "sedan_lod_rest"
+      },
+      "triangles": {
+        "body": 376,
+        "rest": 523,
+        "total": 899
+      },
+      "boundingBox": {
+        "min": [
+          -2.35,
+          0.0,
+          -1.04668
+        ],
+        "max": [
+          2.35,
+          1.44714,
+          1.04668
+        ]
+      },
+      "bodyMaps": "Use cars.json types.sedan.variants[].map and the shared metallicMap / roughnessMap."
+    },
+    "wagon": {
+      "nodes": {
+        "root": "wagon",
+        "body": "wagon_lod_body",
+        "rest": "wagon_lod_rest"
+      },
+      "triangles": {
+        "body": 356,
+        "rest": 544,
+        "total": 900
+      },
+      "boundingBox": {
+        "min": [
+          -2.375,
+          0.0,
+          -1.0567
+        ],
+        "max": [
+          2.375,
+          1.49572,
+          1.0567
+        ]
+      },
+      "bodyMaps": "Use cars.json types.wagon.variants[].map and the shared metallicMap / roughnessMap."
+    },
+    "hatchback": {
+      "nodes": {
+        "root": "hatchback",
+        "body": "hatchback_lod_body",
+        "rest": "hatchback_lod_rest"
+      },
+      "triangles": {
+        "body": 428,
+        "rest": 471,
+        "total": 899
+      },
+      "boundingBox": {
+        "min": [
+          -2.125,
+          0.0,
+          -0.93542
+        ],
+        "max": [
+          2.125,
+          1.45277,
+          0.93542
+        ]
+      },
+      "bodyMaps": "Use cars.json types.hatchback.variants[].map and the shared metallicMap / roughnessMap."
+    },
+    "compact": {
+      "nodes": {
+        "root": "compact",
+        "body": "compact_lod_body",
+        "rest": "compact_lod_rest"
+      },
+      "triangles": {
+        "body": 402,
+        "rest": 497,
+        "total": 899
+      },
+      "boundingBox": {
+        "min": [
+          -1.95,
+          0.0,
+          -0.96242
+        ],
+        "max": [
+          1.95,
+          1.5749,
+          0.96242
+        ]
+      },
+      "bodyMaps": "Use cars.json types.compact.variants[].map and the shared metallicMap / roughnessMap."
+    },
+    "coupe": {
+      "nodes": {
+        "root": "coupe",
+        "body": "coupe_lod_body",
+        "rest": "coupe_lod_rest"
+      },
+      "triangles": {
+        "body": 392,
+        "rest": 508,
+        "total": 900
+      },
+      "boundingBox": {
+        "min": [
+          -2.25,
+          0.0,
+          -1.00007
+        ],
+        "max": [
+          2.25,
+          1.35637,
+          1.00007
+        ]
+      },
+      "bodyMaps": "Use cars.json types.coupe.variants[].map and the shared metallicMap / roughnessMap."
+    },
+    "minivan": {
+      "nodes": {
+        "root": "minivan",
+        "body": "minivan_lod_body",
+        "rest": "minivan_lod_rest"
+      },
+      "triangles": {
+        "body": 439,
+        "rest": 458,
+        "total": 897
+      },
+      "boundingBox": {
+        "min": [
+          -2.55,
+          -0.0,
+          -1.03367
+        ],
+        "max": [
+          2.55,
+          1.95061,
+          1.03367
+        ]
+      },
+      "bodyMaps": "Use cars.json types.minivan.variants[].map and the shared metallicMap / roughnessMap."
+    },
+    "pickup": {
+      "nodes": {
+        "root": "pickup",
+        "body": "pickup_lod_body",
+        "rest": "pickup_lod_rest"
+      },
+      "triangles": {
+        "body": 513,
+        "rest": 384,
+        "total": 897
+      },
+      "boundingBox": {
+        "min": [
+          -2.7,
+          0.0,
+          -1.0777
+        ],
+        "max": [
+          2.7,
+          1.76967,
+          1.0777
+        ]
+      },
+      "bodyMaps": "Use cars.json types.pickup.variants[].map and the shared metallicMap / roughnessMap."
+    },
+    "suv": {
+      "nodes": {
+        "root": "suv",
+        "body": "suv_lod_body",
+        "rest": "suv_lod_rest"
+      },
+      "triangles": {
+        "body": 447,
+        "rest": 452,
+        "total": 899
+      },
+      "boundingBox": {
+        "min": [
+          -2.35,
+          0.0,
+          -1.0537
+        ],
+        "max": [
+          2.35,
+          1.76659,
+          1.0537
+        ]
+      },
+      "bodyMaps": "Use cars.json types.suv.variants[].map and the shared metallicMap / roughnessMap."
+    },
+    "offroad": {
+      "nodes": {
+        "root": "offroad",
+        "body": "offroad_lod_body",
+        "rest": "offroad_lod_rest"
+      },
+      "triangles": {
+        "body": 450,
+        "rest": 445,
+        "total": 895
+      },
+      "boundingBox": {
+        "min": [
+          -2.3,
+          0.0,
+          -1.14434
+        ],
+        "max": [
+          2.3,
+          1.8328,
+          1.14434
+        ]
+      },
+      "bodyMaps": "Use cars.json types.offroad.variants[].map and the shared metallicMap / roughnessMap."
+    }
+  }
+}

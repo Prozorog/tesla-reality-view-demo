@@ -1,0 +1,79 @@
+{
+  "output": "shots/s1",
+  "viewport": [1280, 800],
+  "setups": {
+    "cruising": [
+      { "call": ["start"] },
+      { "call": ["advance", 3.25] },
+      { "expect": { "mode": "cruise" } }
+    ],
+    "reversing": [
+      { "call": ["start"] },
+      { "call": ["advance", 2.2] },
+      { "call": ["selectBay", "B058"] },
+      { "call": ["advance", 30, { "mode": "reverse", "reverseProgress": 0.18 }] },
+      { "expect": { "mode": "reverse", "rearVisible": true } }
+    ]
+  },
+  "shots": [
+    { "name": "seat-cruise", "query": { "view": "seat", "bay": "B058", "q": "high" }, "setup": "cruising" },
+    { "name": "seat-parking-wheel-turned", "query": { "view": "seat", "bay": "B058" }, "setup": "reversing" },
+    { "name": "mid-dive", "query": { "view": "seat", "bay": "B058" }, "setup": "cruising", "steps": [{ "call": ["setDive", 0.56] }] },
+    { "name": "cruise-chevrons", "query": { "view": "screen", "bay": "B058" }, "setup": "cruising" },
+    { "name": "overhead-reversing-inset", "query": { "view": "screen", "bay": "B058" }, "setup": "reversing" },
+    { "name": "overhead-turned-40", "query": { "view": "screen", "bay": "B058" }, "setup": "reversing", "steps": [{ "call": ["orbit", 40, -7] }] },
+    {
+      "name": "parked", "query": { "view": "screen", "bay": "B058" }, "setup": "reversing",
+      "steps": [
+        { "call": ["advance", 25, { "mode": "parked" }] },
+        { "call": ["advance", 1.55] },
+        { "expect": { "mode": "parked", "gear": "P", "rearVisible": false } }
+      ]
+    }
+  ],
+  "checks": [
+    { "name": "high-load", "query": { "q": "high", "view": "seat" }, "tier": "high" },
+    {
+      "name": "low-load-and-controls", "query": { "q": "low", "view": "seat", "bay": "B058" }, "tier": "low",
+      "steps": [
+        { "click": "start" },
+        { "waitFor": { "mode": "cruise" } },
+        { "call": ["advance", 0.95] },
+        { "click": "B058" },
+        { "waitFor": { "mode": "ready" } },
+        { "click": "cancel" },
+        { "waitFor": { "mode": "cruise" } },
+        { "key": ["press", "2"] },
+        { "waitFor": { "blend": 1 } },
+        { "click": "B058" },
+        { "waitFor": { "mode": "ready" } },
+        { "click": "cancel" },
+        { "key": ["down", "ArrowDown"] },
+        { "call": ["advance", 2.4] },
+        { "expect": { "mode": "manual", "gear": "R", "rearVisible": true } },
+        { "key": ["up", "ArrowDown"] },
+        { "call": ["advance", 2.08] },
+        { "expect": { "mode": "rejoin" } },
+        { "call": ["advance", 12, { "mode": "cruise" }] },
+        { "expect": { "mode": "cruise" } }
+      ]
+    },
+    {
+      "name": "live-autopark", "query": { "bot": 1, "pause": 0, "view": "screen" },
+      "steps": [
+        { "waitFor": { "mode": "cruise" } },
+        { "waitFor": { "mode": "ready" } },
+        { "waitFor": { "mode": "reverse" }, "timeoutMs": 110000 },
+        { "key": ["press", "Escape"] },
+        { "waitFor": { "mode": "reverse", "blend": 0 } },
+        { "key": ["press", "2"] },
+        { "waitFor": { "mode": "reverse", "blend": 1 } },
+        { "waitFor": { "mode": "parked" }, "timeoutMs": 30000 },
+        { "parked": true },
+        { "click": "start" },
+        { "waitFor": { "mode": "exiting" } },
+        { "waitFor": { "mode": "cruise", "bay": null }, "timeoutMs": 20000 }
+      ]
+    }
+  ]
+}
