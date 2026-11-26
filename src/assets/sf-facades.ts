@@ -29,7 +29,7 @@ export function facadeTint(id: number | string) {
 }
 
 /** All colours and gains are linear. C4 can grade paint and lit glass independently. */
-export async function loadSfFacadeKit(): Promise<SfFacadeKit> {
+export async function loadSfFacadeKit(night = false): Promise<SfFacadeKit> {
   const source = await model('sf/facades.glb')
   source.updateMatrixWorld(true)
   const modules = new Map<string, BufferGeometry>()
@@ -66,19 +66,41 @@ export async function loadSfFacadeKit(): Promise<SfFacadeKit> {
     geometry.computeBoundingSphere()
     modules.set(name, geometry)
   }
-  const grade = { paint: { value: 0.12 }, windows: { value: 0.64 }, darkWindows: { value: 0.012 } }
+  const grade = { paint: { value: night ? 0.060 : 0.12 }, windows: { value: night ? 0.76 : 0.64 },
+    darkWindows: { value: night ? 0.010 : 0.012 } }
   const material = new MeshBasicMaterial({ vertexColors: true })
   material.name = 'NightFacadeKit'
   material.userData.nightFacade = grade
-  editShader(material, 'sf-facade-night', shader => {
+  editShader(material, night ? 'sf-facade-night-grade' : 'sf-facade-night', shader => {
     shader.uniforms.facadePaintGain = grade.paint
     shader.uniforms.facadeWindowGain = grade.windows
     shader.uniforms.facadeDarkWindowGain = grade.darkWindows
     shader.vertexShader = 'attribute float facadeWindow; attribute float instanceWindow; varying vec2 vFacadeLight;\n' + shader.vertexShader
     shader.vertexShader = shader.vertexShader.replace('#include <begin_vertex>', '#include <begin_vertex>\nvFacadeLight = vec2(facadeWindow, instanceWindow);')
     shader.fragmentShader = 'uniform float facadePaintGain; uniform float facadeWindowGain; uniform float facadeDarkWindowGain; varying vec2 vFacadeLight;\n' + shader.fragmentShader
-    shader.fragmentShader = shader.fragmentShader.replace('#include <color_fragment>', `#include <color_fragment>
-      diffuseColor.rgb *= mix(facadePaintGain, mix(facadeDarkWindowGain, facadeWindowGain, vFacadeLight.y), vFacadeLight.x);`)
+    const grading = night ? `
+      float facadeGrey = dot(diffuseColor.rgb, vec3(0.2126, 0.7152, 0.0722));
+      vec3 facadeCool = mix(diffuseColor.rgb, vec3(facadeGrey), 0.78) * vec3(0.66, 0.98, 1.76);
+      vec3 facadePaint = facadeCool * facadePaintGain;
+      vec3 facadeClosed = facadeCool * facadeDarkWindowGain;
+      vec3 facadeWarm = diffuseColor.rgb * mix(facadeDarkWindowGain, facadeWindowGain, vFacadeLight.y);
+      float facadePeak = max(facadeWarm.r, max(facadeWarm.g, facadeWarm.b));
+      facadeWarm /= 1.0 + max(facadePeak - 0.36, 0.0) * 0.55;
+      vec3 facadeGlazing = mix(facadeClosed, facadeWarm, smoothstep(0.03, 0.22, vFacadeLight.y));
+      diffuseColor.rgb = mix(facadePaint, facadeGlazing, vFacadeLight.x);`
+      : 'diffuseColor.rgb *= mix(facadePaintGain, mix(facadeDarkWindowGain, facadeWindowGain, vFacadeLight.y), vFacadeLight.x);'
+    shader.fragmentShader = shader.fragmentShader.replace('#include <color_fragment>', '#include <color_fragment>\n' + grading)
+    if (night) {
+      // The existing world-picture pass reads spare alpha as its emission mask.
+      // Smooth thresholds keep dark glazing out and soften the warm window glow.
+      shader.fragmentShader = shader.fragmentShader.replace('#include <tonemapping_fragment>', `
+        #include <tonemapping_fragment>
+        float facadeEmission = max(gl_FragColor.r, max(gl_FragColor.g, gl_FragColor.b));
+        float facadeGlow = vFacadeLight.x * smoothstep(0.10, 0.72, vFacadeLight.y)
+          * smoothstep(0.06, 0.42, facadeEmission);
+        gl_FragColor.a = 1.0 - 0.68 * facadeGlow;
+      `)
+    }
   })
   return { modules, material, grade }
 }

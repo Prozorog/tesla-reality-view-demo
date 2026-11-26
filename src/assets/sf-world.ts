@@ -13,10 +13,11 @@ import { batch, canvasTexture } from './boxes.ts'
 import type { BoxSpec } from './boxes.ts'
 import { facadeTint, SfFacades } from './sf-facades.ts'
 import type { SfFacadeKit } from './sf-facades.ts'
+import type { SfNight } from './sf-night.ts'
 
 const CHUNK_SIZE = 128
 const CURB_LANE_STREETS = new Set(['Chestnut Street', 'Divisadero Street', 'Marina Boulevard', 'Baker Street', 'Bay Street'])
-type Surface = 'buildings' | 'roads' | 'sidewalks' | 'paint' | 'parks' | 'water'
+type Surface = 'buildings' | 'roads' | 'sidewalks' | 'paint' | 'centreline' | 'parks' | 'water'
 type Chunk = { root: Group; surfaces: Map<Surface, BufferGeometry[]>; hardware: BoxSpec[]; bounds: Box3 }
 type RoadPosition = { point: Point; direction: Point; road: SfRoad; distance: number }
 type Signal = { id: number | string; first: number }
@@ -96,16 +97,19 @@ export class SfWorld {
   private readonly position = new Vector3()
   private readonly scale = new Vector3()
   private readonly rotation = new Quaternion()
+  private readonly pedestrianSwing = new Quaternion()
+  private readonly pedestrianAxis = new Vector3(0, 0, 1)
   private readonly up = new Vector3(0, 1, 0)
   private readonly color = new Color()
   private readonly facades?: SfFacades
 
-  constructor(private readonly map: SfMap, lot: Lot, private readonly facadeKit?: SfFacadeKit, landmarks?: Object3D) {
+  constructor(private readonly map: SfMap, lot: Lot, private readonly facadeKit?: SfFacadeKit,
+    landmarks?: Object3D, private readonly night?: SfNight) {
     this.root.name = 'San Francisco'
     if (landmarks) this.root.add(landmarks)
     const skipped = new Set(landmarks ? ['288371295', '288371310', '288371313', '288371306', '288371314'] : [])
     const ground = new Mesh(new PlaneGeometry(3000, 2200).rotateX(-Math.PI / 2),
-      new MeshBasicMaterial({ color: '#33383d' }))
+      new MeshBasicMaterial({ color: '#222934' }))
     ground.position.set(500, -0.04, 180)
     ground.name = 'City ground'
     this.root.add(ground)
@@ -179,9 +183,12 @@ export class SfWorld {
     this.signalLamps.computeBoundingSphere()
     this.root.add(this.signalLamps)
 
-    this.pedestrians = new InstancedMesh(new BoxGeometry(1, 1, 1),
-      new MeshBasicMaterial({ color: '#9b9ea1' }), Math.max(64, map.crosswalks.length * 2) * 4)
+    this.pedestrians = new InstancedMesh(new SphereGeometry(0.5, 8, 6),
+      new MeshBasicMaterial({ color: '#ffffff' }), Math.max(128, map.crosswalks.length * 2) * 8)
+    this.pedestrians.name = 'SF pedestrians'
     this.pedestrians.instanceMatrix.setUsage(DynamicDrawUsage)
+    this.pedestrians.setColorAt(0, this.color.set('#ffffff'))
+    this.pedestrians.instanceColor?.setUsage(DynamicDrawUsage)
     this.pedestrians.count = 0
     this.pedestrians.frustumCulled = false
     this.root.add(this.pedestrians)
@@ -278,7 +285,7 @@ export class SfWorld {
         }
       }
       if (road.lanes > 1 && !road.oneway) {
-        for (const offset of [-0.12, 0.12]) this.add('paint', middle, ribbon(a, b, offset - 0.045, offset + 0.045, 0.025))
+        for (const offset of [-0.12, 0.12]) this.add('centreline', middle, ribbon(a, b, offset - 0.045, offset + 0.045, 0.025))
       }
     }
   }
@@ -357,21 +364,23 @@ export class SfWorld {
   private finishChunks() {
     const materials: Record<Surface, MeshBasicMaterial> = {
       buildings: this.facadeKit?.material ?? new MeshBasicMaterial({ vertexColors: true }),
-      roads: new MeshBasicMaterial({ color: '#3c4249' }),
-      sidewalks: new MeshBasicMaterial({ color: '#777e84', side: DoubleSide }),
-      paint: new MeshBasicMaterial({ color: '#c9cbd0', side: DoubleSide }),
-      parks: new MeshBasicMaterial({ color: '#414e48' }),
-      water: new MeshBasicMaterial({ color: '#30434e' }),
+      roads: new MeshBasicMaterial({ color: '#2e333d' }),
+      sidewalks: new MeshBasicMaterial({ color: '#39404d', side: DoubleSide }),
+      paint: new MeshBasicMaterial({ color: '#899098', side: DoubleSide }),
+      centreline: new MeshBasicMaterial({ color: '#88774d', side: DoubleSide }),
+      parks: new MeshBasicMaterial({ color: '#1d2b2b' }),
+      water: new MeshBasicMaterial({ color: '#17293b' }),
     }
-    const hardware = new MeshBasicMaterial({ color: '#ffffff' })
-    for (const chunk of this.chunks.values()) {
+    const hardware = new MeshBasicMaterial({ color: '#a8b3c8' })
+    for (const [key, chunk] of this.chunks) {
       for (const [kind, pieces] of chunk.surfaces) {
         const geometry = mergeGeometries(pieces, false)
         for (const piece of pieces) piece.dispose()
         if (!geometry) throw new Error('Could not batch San Francisco ' + kind)
         geometry.computeBoundingSphere()
-        const mesh = new Mesh(geometry, materials[kind])
-        mesh.name = kind
+        const baked = this.night?.surface(kind, key, geometry)
+        const mesh = new Mesh(geometry, baked ?? materials[kind])
+        mesh.name = baked ? (kind === 'roads' ? `Asphalt_sf_${key}` : 'Kerbs_and_paving') : kind
         chunk.root.add(mesh)
       }
       batch(chunk.root, hardware, chunk.hardware)
@@ -398,23 +407,38 @@ export class SfWorld {
     }
     if (this.signalLamps.instanceColor) this.signalLamps.instanceColor.needsUpdate = true
     let instance = 0
-    for (const pedestrian of trip.pedestrians) {
-      const sway = pedestrian.walking ? Math.sin(trip.time * 6 + instance) * 0.11 : 0
+    for (const [person, pedestrian] of trip.pedestrians.entries()) {
+      const stride = pedestrian.walking ? Math.sin(trip.time * 6 + person * 2.4) * 0.36 : 0
+      const bob = pedestrian.walking ? Math.cos(trip.time * 12 + person * 4.8) * 0.013 : 0
+      const jacket = ['#2c3b47', '#3d4546', '#3b4537', '#35404b'][person % 4]
+      const skin = ['#968373', '#7b695c', '#a38e7a', '#766158'][person % 4]
+      const legForward = Math.sin(stride) * 0.37
+      const legY = 0.81 - Math.cos(stride) * 0.37
+      const armForward = Math.sin(stride * 0.85) * 0.28
+      const armY = 1.41 - Math.cos(stride * 0.85) * 0.28 + bob
+      const footY = Math.max(0.055, 0.81 - Math.cos(stride) * 0.74 - 0.025)
       const pieces = [
-        { size: [0.37, 0.65, 0.26], y: 1.10, forward: 0 },
-        { size: [0.24, 0.27, 0.24], y: 1.57, forward: 0 },
-        { size: [0.14, 0.70, 0.17], y: 0.39, forward: sway },
-        { size: [0.14, 0.70, 0.17], y: 0.39, forward: -sway },
+        { size: [0.27, 0.72, 0.41], y: 1.12 + bob, forward: 0, lateral: 0, swing: 0, color: jacket },
+        { size: [0.22, 0.27, 0.23], y: 1.615 + bob, forward: 0, lateral: 0, swing: 0, color: skin },
+        { size: [0.14, 0.57, 0.115], y: armY, forward: -armForward, lateral: -0.25, swing: -stride * 0.85, color: jacket },
+        { size: [0.14, 0.57, 0.115], y: armY, forward: armForward, lateral: 0.25, swing: stride * 0.85, color: jacket },
+        { size: [0.16, 0.74, 0.135], y: legY, forward: legForward, lateral: -0.09, swing: stride, color: '#202933' },
+        { size: [0.16, 0.74, 0.135], y: legY, forward: -legForward, lateral: 0.09, swing: -stride, color: '#202933' },
+        { size: [0.25, 0.1, 0.14], y: footY, forward: legForward * 2 + 0.055, lateral: -0.09, swing: 0, color: '#161e25' },
+        { size: [0.25, 0.1, 0.14], y: footY, forward: -legForward * 2 + 0.055, lateral: 0.09, swing: 0, color: '#161e25' },
       ]
-      for (const [part, piece] of pieces.entries()) {
-        const lateral = part < 2 ? 0 : part === 2 ? -0.105 : 0.105
-        const point = along([pedestrian.x, pedestrian.z], [Math.cos(pedestrian.h), -Math.sin(pedestrian.h)], piece.forward, lateral)
+      for (const piece of pieces) {
+        const point = along([pedestrian.x, pedestrian.z], [Math.cos(pedestrian.h), -Math.sin(pedestrian.h)], piece.forward, piece.lateral)
+        this.rotation.setFromAxisAngle(this.up, pedestrian.h)
+          .multiply(this.pedestrianSwing.setFromAxisAngle(this.pedestrianAxis, piece.swing))
         this.matrix.compose(this.position.set(point[0], piece.y, point[1]),
-          this.rotation.setFromAxisAngle(this.up, pedestrian.h), this.scale.fromArray(piece.size))
-        this.pedestrians.setMatrixAt(instance++, this.matrix)
+          this.rotation, this.scale.fromArray(piece.size))
+        this.pedestrians.setMatrixAt(instance, this.matrix)
+        this.pedestrians.setColorAt(instance++, this.color.set(piece.color))
       }
     }
     this.pedestrians.count = instance
     this.pedestrians.instanceMatrix.needsUpdate = true
+    if (this.pedestrians.instanceColor) this.pedestrians.instanceColor.needsUpdate = true
   }
 }

@@ -1,10 +1,11 @@
 import {
-  ClampToEdgeWrapping, DataTexture, DoubleSide, Group, Matrix4, Mesh,
-  NearestFilter, PlaneGeometry, RedFormat, ShaderMaterial, UnsignedByteType, Vector2,
+  AdditiveBlending, BufferGeometry, ClampToEdgeWrapping, DataTexture, DoubleSide, Float32BufferAttribute, Group, Matrix4, Mesh,
+  NearestFilter, PlaneGeometry, Points, PointsMaterial, RedFormat, ShaderMaterial, UnsignedByteType, Vector2,
 } from 'three'
 import type { SfMap } from '../simulation/sf-map.ts'
 import type { Point } from '../simulation/lot.ts'
-import { editShader, model, standardMeshes } from './gltf.ts'
+import { editShader, manifest, model, standardMeshes } from './gltf.ts'
+import { radialTexture } from './boxes.ts'
 import { finishNight } from '../render/night-light.ts'
 
 // Part names also define the independent surfaces available to the night pass.
@@ -12,9 +13,9 @@ const EMISSION: Record<string, number> = {
   Palace_Illuminated_Stone: 0.76,
   Palace_Cornices_And_Arch_Light: 0.92,
   Palace_Capitals_And_Reliefs: 0.68,
-  Palace_Copper_Dome: 0.44,
+  Palace_Copper_Dome: 1.9,
   Palace_Uplight_Emitters: 3.8,
-  Golden_Gate_International_Orange: 0.23,
+  Golden_Gate_International_Orange: 0.34,
   Golden_Gate_Cables_And_Suspenders: 0.20,
   Golden_Gate_Deck_And_Lanes: 0.075,
   Golden_Gate_Deck_Lights: 3.4,
@@ -75,6 +76,8 @@ export function addSfLandmarkReflection(city: Group, map: SfMap) {
         lagoonMask: { value: mask.texture }, maskMin: { value: mask.min }, maskSpan: { value: mask.span },
         waterProjection: { value: new Matrix4() }, time: { value: 0 },
         strength: { value: 0.30 }, gain: { value: EMISSION[original.name] ?? 0.5 },
+        lampTint: { value: original.material.emissive.clone() },
+        northGrade: { value: original.name === 'Palace_Copper_Dome' ? 0 : 1 },
       },
       vertexShader: `
         varying vec3 reflectedWorld;
@@ -94,6 +97,8 @@ export function addSfLandmarkReflection(city: Group, map: SfMap) {
         uniform float time;
         uniform float strength;
         uniform float gain;
+        uniform vec3 lampTint;
+        uniform float northGrade;
         varying vec3 reflectedWorld;
         varying vec3 reflectedTint;
         void main() {
@@ -107,7 +112,8 @@ export function addSfLandmarkReflection(city: Group, map: SfMap) {
           float ripple = 0.72 + 0.18 * sin(water.z * 10.5 + sin(water.x * 0.6 + time) * 1.7);
           ripple *= 0.87 + 0.13 * sin(water.z * 24.0 - time * 1.4);
           float fresnel = clamp(1.0 - abs(normalize(ray).y), 0.15, 1.0);
-          gl_FragColor = vec4(reflectedTint * gain * vec3(0.90, 0.95, 1.0), strength * ripple * fresnel);
+          float reach = mix(1.0, mix(0.22, 1.0, smoothstep(72.0, 118.0, reflectedWorld.z)), northGrade);
+          gl_FragColor = vec4(reflectedTint * gain * lampTint * reach * vec3(0.90, 0.95, 1.0), strength * ripple * fresnel);
           vec4 depthPoint = waterProjection * vec4(water, 1.0);
           gl_FragDepth = clamp(depthPoint.z / depthPoint.w * 0.5 + 0.5, 0.0, 1.0);
           #include <colorspace_fragment>
@@ -178,29 +184,61 @@ export function addSfLandmarkReflection(city: Group, map: SfMap) {
   return root
 }
 
+type BridgeLights = { midpoint: Point; axis: Point; length: number; span: number }
+
+function bridgeLights(bridge: BridgeLights) {
+  const [x, z] = bridge.midpoint, [dx, dz] = bridge.axis
+  const positions: number[] = []
+  const half = bridge.length / 2
+  const first = Math.ceil((bridge.span / 2 - half) / 30) * 30 - bridge.span / 2
+  for (let offset = first; offset <= half; offset += 30) {
+    const height = 82.1 - 3.5 * (offset / 983) ** 2
+    for (const rail of [-11.7, 11.7]) positions.push(x + dx * offset - dz * rail, height, z + dz * offset + dx * rail)
+  }
+  const geometry = new BufferGeometry().setAttribute('position', new Float32BufferAttribute(positions, 3))
+  const points = new Points(geometry, new PointsMaterial({ color: '#ffbd68', map: radialTexture(), size: 3.3,
+    sizeAttenuation: false, transparent: true, blending: AdditiveBlending, depthWrite: false, opacity: 0.76 }))
+  points.name = 'Golden Gate Deck Lantern Glow'
+  return points
+}
+
 export async function loadSfLandmarks(map: SfMap): Promise<Group> {
-  const city = await model('sf/landmarks.glb')
+  const [city, { bridge }] = await Promise.all([model('sf/landmarks.glb'), manifest<{ bridge: BridgeLights }>('sf/landmarks.json')])
   city.name = 'Mapped San Francisco Landmarks'
   for (const mesh of standardMeshes(city)) {
     const material = mesh.material
     material.color.setScalar(0.15)
     material.emissive.set('#ffffff')
+    if (mesh.name === 'Palace_Copper_Dome') material.emissive.set('#ffe6be')
     material.emissiveIntensity = EMISSION[mesh.name] ?? 0.25
     material.roughness = 0.9
     material.envMapIntensity = 0.12
-    editShader(material, 'landmark-vertex-emission', shader => {
+    const northColonnade = mesh.name.startsWith('Palace_') && mesh.name !== 'Palace_Copper_Dome'
+    editShader(material, northColonnade ? 'landmark-north-colonnade' : 'landmark-vertex-emission', shader => {
+      if (northColonnade) {
+        shader.vertexShader = `varying vec3 landmarkPosition;\n${shader.vertexShader}`
+        shader.fragmentShader = `varying vec3 landmarkPosition;\n${shader.fragmentShader}`
+        shader.vertexShader = shader.vertexShader.replace('#include <begin_vertex>', `
+          #include <begin_vertex>
+          landmarkPosition = (modelMatrix * vec4(transformed, 1.0)).xyz;
+        `)
+      }
       shader.fragmentShader = shader.fragmentShader.replace('#include <emissivemap_fragment>', `
         #include <emissivemap_fragment>
         #ifdef USE_COLOR
           totalEmissiveRadiance *= vColor.rgb;
         #endif
+        ${northColonnade ? `
+          // The closer open colonnades frame the dome without becoming the subject.
+          totalEmissiveRadiance *= mix(0.22, 1.0, smoothstep(72.0, 118.0, landmarkPosition.z));
+        ` : ''}
       `)
     })
     finishNight(material)
   }
   const root = new Group()
   root.name = 'San Francisco Landmarks And Waterfront'
-  root.add(city)
+  root.add(city, bridgeLights(bridge))
   root.userData.mapOrigin = [...map.origin]
   return root
 }

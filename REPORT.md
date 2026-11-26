@@ -70,7 +70,7 @@ Arrival uses the existing lot cruise and swept parking planner. The rotated lot 
 | 29 | 461.82 s | 499.33 s | 4.00 s | 1 |
 | 113 | 437.45 s | 474.97 s | 11.62 s | 3 |
 
-The three fixed-step runs reached 23.5 mph on the street, with 20 full stops each. All parked at B201 within the exact endpoint tolerance. Street and parking overlap, unsafe-gap, stuck and intersection-violation counts were zero. The minimum street footprint gap was 0.702 m and the longest unexplained pause was 0.17 s. The 6¾–7¾ minute arrivals exceed the requested 3–4 minutes. The simulation keeps the legal approach, actual distances and full stops.
+The three fixed-step runs reached 23.5 mph on the street, with 20 full stops each. All parked at B201 with zero endpoint error. Street and parking overlap, unsafe-gap, stuck and intersection-violation counts were zero. The minimum street footprint gap was 0.702 m and the longest unexplained pause was 0.17 s. The 6¾–7¾ minute arrivals exceed the requested 3–4 minutes. The simulation keeps the legal approach, actual distances and full stops.
 
 Three accelerated browser trips covered the whole route at the simulation timestep, clicked a free chevron, showed the overhead reverse and returned to the seat without console errors. Seed 29 used keyboard takeover and a second Start Self-Driving click on Chestnut. A focused run also exercised takeover before a stop sign, End Trip and restart. The browser review caught pavement seams and an incorrect morning clock. The loop now uses a continuous surface, service aisles omit sidewalks, and the San Francisco clock starts at 10:03 pm with an arrival-time estimate.
 
@@ -82,6 +82,25 @@ Three accelerated browser trips covered the whole route at the simulation timest
 - `build_sf_facades.py` and `build_sf_landmarks.py` regenerate the models in Blender 5.2. The landmark packer keeps 190,960 triangles in 15 material batches and compresses the GLB to 8.87 MB. The loader verified the original node names, the second UV set and a ray from the parked eye to the dome.
 
 The uncached local Stage 2 browser run reached ready in **4.94 s** and transferred **28.0 MB** at 2560 × 1440, High, DPR 1. It reached B201 and returned to the seat without console errors or asset fallbacks. Typecheck and the production build passed. Proof frames are in the ignored `shots/p2/s2-release/` folder.
+
+## Stage 3 — Night lighting and Reality View
+
+Cycles baked pavement lighting from **599 street fixtures and 54 storefronts** through the mapped building massing. Blender 5.2 took 106 s at 20 samples on four CPU threads. The runtime keeps surface detail in UV0 and packs 57 padded road and sidewalk UV1 charts into a 1760 × 1760 atlas (1.48 MB). The same fixture positions light the cars through local directional probes. Cooler façades, dimmed closed glazing and selective window bloom contrast with the warm spill. The Palace uses graded vertex emission and a lagoon-clipped reflection with water streaks. The bridge deck lights and a slight seaward camera angle keep both towers visible on Marina Boulevard.
+
+To regenerate the pavement, run `heavy node --experimental-transform-types tools/compile-sf-lamps.mjs`, then run `scripts/bake_sf_night.py` in Blender 5.2 background mode with four threads.
+
+| Measurement | `rv-01` target | Chestnut 1 / 2 / 3 |
+| --- | --- | --- |
+| Road ahead, sRGB median luma / mean B−R | 45–62 / +10 | 59 / +8 · 60 / +5 · 60 / +6 |
+| Sidewalk and unlit façades | 25–53 / +19 to +22 | 43 / +19 · 42 / +18 · 41 / +19 |
+| Sky | 27 / +22 | 27 / +22 in all three |
+| Blue path | 100 / +135 | 100 / +135 · 101 / +135 · 100 / +134 |
+| Model X width and centre depth | 6–8% wide, 55–62% down | 7.46% wide, 56.86% down in all three |
+| Vanishing point | 30–38% down | 31.90% in all three |
+
+The patch readings exclude signs, overlay text and the blue path from the unlit surfaces. The cool headlight cloud remains visible to either side of the path. The lit and adjacent pavement patches measure **1.45–1.65×** in the three sampled views, below the matched phase 1.6.1 estimate of 1.70×. They are bluer, at **+48 to +55 B−R**. The city tail pool uses a lower red gain than Northgate.
+
+The stage's first uncontended Chestnut profile recorded **139.4 fps on the RTX 4070 Laptop** and **21.9 fps on Iris Xe** at 2560 × 1440, High, DPR 1, mesh. These were hardware-verified D3D11 readings before the final road, cloud and sky palette adjustment. Iris Xe had a single reading and no target.
 
 # Phase 1.6 — AI driver, headlight cloud, traffic that gives way
 

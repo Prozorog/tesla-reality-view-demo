@@ -35,12 +35,13 @@ export class PavementLights {
   private realityReach = 7
   private seatBeams = 1
   private parking = 0
+  private street = false
 
-  constructor(world: Object3D, private readonly footprint: Exterior['footprint']) {
+  constructor(world: Object3D, private readonly footprint: Exterior['footprint'], city = false) {
     const pavement = standardMeshes(world).filter(mesh => /^(Asphalt_|Kerbs_and_paving$|Outer_verge$|Street_beyond$)/.test(mesh.name))
     for (const material of new Set(pavement.map(mesh => mesh.material))) {
       const asphalt = pavement.some(mesh => mesh.material === material && /^(Asphalt_|Street_beyond$)/.test(mesh.name))
-      editShader(material, asphalt ? 'player-pavement-light-p161-asphalt' : 'player-pavement-light-p161', shader => {
+      editShader(material, asphalt && !city ? 'player-pavement-light-p161-asphalt' : 'player-pavement-light-p161', shader => {
         shader.uniforms.rvHead = this.front
         shader.uniforms.rvTail = this.rear
         shader.uniforms.rvBeam = this.beam
@@ -77,7 +78,7 @@ export class PavementLights {
           #ifdef USE_MAP
             rvAlbedo = texture2D(map, vMapUv, 2.2).rgb * diffuse;
           #endif
-          ${asphalt ? `
+          ${asphalt && !city ? `
           // Clip B keeps the far rows lit between the baked lamp pools. Fill the
           // missing diffuse light before the player's headlights are applied.
           // The parking view keeps its baked contrast with only an 8% lift.
@@ -120,7 +121,7 @@ export class PavementLights {
             float width = 1.05 + r.x * 0.13;
             float edge = 1.0 - smoothstep(0.39, 1.33, abs(r.y) / width);
             float reach = 1.0 - smoothstep(0.64, 3.60, r.x);
-            rvLight += vec3(1.0, 0.025, 0.055) * (rvBeam.z * edge * reach * start);
+            rvLight += vec3(1.0, 0.025, 0.055) * (${city ? '0.30' : '1.0'} * rvBeam.z * edge * reach * start);
             rvLight += vec3(0.61, 0.78, 1.0) * (rvBeam.w * edge * start * (1.0 - smoothstep(0.20, 1.34, r.x)));
           }
           reflectedLight.indirectDiffuse += rvAlbedo * rvLight;
@@ -136,6 +137,7 @@ export class PavementLights {
     // Selection starts the parking chase before the camera has risen. Use the
     // established parking light there as well as in the straight-down view.
     this.parking = drive.selectedBay || drive.mode === 'parked' ? 1 : overhead
+    this.street = drive.onStreet
     // The beams turn with the front wheels.
     const steer = h + drive.steer * 0.42
     this.lamp.set(x + dx * HEAD_ALONG, z + dz * HEAD_ALONG, Math.cos(steer), -Math.sin(steer))
@@ -161,6 +163,10 @@ export class PavementLights {
         CRUISE_SHAPE.gain + (REALITY_SHAPE.gain - CRUISE_SHAPE.gain) * mix,
         CRUISE_SHAPE.floor + (REALITY_SHAPE.floor - CRUISE_SHAPE.floor) * mix,
       )
+      if (this.street) {
+        this.shape.value.z *= 1.7
+        this.shape.value.w *= 1.7
+      }
     }
     this.beam.value.x = seat ? SEAT_REACH : this.realityReach
     this.beam.value.y = seat ? this.seatBeams : 1

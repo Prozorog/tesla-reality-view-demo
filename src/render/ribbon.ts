@@ -24,7 +24,7 @@ export class Ribbon {
   private readonly lateral = new Float32Array((SEGMENTS + 1) * 4)
   private readonly material = new ShaderMaterial({
     transparent: true, depthWrite: false, side: DoubleSide, forceSinglePass: true,
-    uniforms: { blue: { value: new Color('#1f7bff') }, length: { value: 1 } },
+    uniforms: { blue: { value: new Color('#1f7bff') }, length: { value: 1 }, city: { value: 0 } },
     vertexShader: `
       attribute vec2 band;
       varying float along;
@@ -40,6 +40,7 @@ export class Ribbon {
       varying vec2 across;
       uniform vec3 blue;
       uniform float length;
+      uniform float city;
       void main() {
         // across.x: signed metres from the centre line, across.y: half-width here.
         float metres = along * length;
@@ -52,7 +53,8 @@ export class Ribbon {
         float streak = sin(side * 5.6 + 0.9 + 0.35 * sin(metres * 1.3));
         float shade = 0.84 + 0.20 * streak + 0.10 * (1.0 - abs(side));
         vec3 colour = blue * shade + vec3(0.05, 0.09, 0.16) * max(streak, 0.0) * (1.0 - along);
-        gl_FragColor = vec4(colour, 0.93 * edge * start * tail);
+        colour = mix(colour, blue * (1.0 + 0.05 * cos(side * 4.0)), city);
+        gl_FragColor = vec4(colour, mix(0.93, 0.97, city) * edge * start * tail);
         #include <colorspace_fragment>
       }
     `,
@@ -149,7 +151,8 @@ export class Ribbon {
       }
     }
     this.material.uniforms.length.value = length
-    this.material.uniforms.blue.value.set(street ? '#2b76b8' : '#1f7bff')
+    this.material.uniforms.blue.value.set(street ? '#2872ba' : '#1f7bff')
+    this.material.uniforms.city.value = street ? 1 : 0
     this.geometry.getAttribute('position').needsUpdate = true
     this.geometry.getAttribute('band').needsUpdate = true
   }

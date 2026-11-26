@@ -173,11 +173,11 @@ export class Panels {
     const speedX = parked ? 64 : 21
     this.text(String(Math.round(Math.abs(drive.speed) / 0.44704)), speedX, 87, 84, 300)
     this.text('MPH', speedX + 4, 133, 15, 600)
-    this.text(auto ? 'Self-Driving' : 'Manual', 24, 164, 17, 600, auto ? BLUE : WHITE)
+    this.text(auto ? 'Self-Driving' : drive.street && drive.gear === 'P' ? 'Park' : 'Manual', 24, 164, 17, 600, auto ? BLUE : WHITE)
     this.text(nav ? 'San Francisco' : 'Parking Lot', 24, 186, 14, 500, SECONDARY)
     if (!drive.street) this.text('4.3 mi Streak', 24, 205, 14, 500, SECONDARY)
     this.text(clock, width - 114, 25, 15, 600, WHITE, 'right')
-    this.text('47°F', width - 24, 25, 15, 600, WHITE, 'right')
+    this.text(drive.street ? '58°F' : '47°F', width - 24, 25, 15, 600, WHITE, 'right')
     if (drive.street) this.text('© OpenStreetMap contributors', width - 24, 52, 11, 500, SECONDARY, 'right')
     c.restore()
     const mid = width / 2

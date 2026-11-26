@@ -43,18 +43,23 @@ export async function createAssets(lot: Lot, sfMap?: SfMap) {
     })
   }
   const cityAssets = sfMap ? (async () => {
-    const [{ SfWorld }, { loadSfFacadeKit }, { loadSfLandmarks }, { createSfFurniture }] = await Promise.all([
+    const [{ SfWorld }, { loadSfFacadeKit }, { loadSfLandmarks, addSfLandmarkReflection },
+      { createSfFurniture, sfStreetLamps }, { loadSfNight }] = await Promise.all([
       import('./sf-world.ts'), import('./sf-facades.ts'), import('./sf-landmarks.ts'), import('./sf-furniture.ts'),
+      import('./sf-night.ts'),
     ])
-    const [facades, landmarks] = await Promise.all([
-      load('sf/facades.glb', loadSfFacadeKit(), () => undefined),
+    const [facades, landmarks, night] = await Promise.all([
+      load('sf/facades.glb', loadSfFacadeKit(true), () => undefined),
       load('sf landmarks', loadSfLandmarks(sfMap), () => undefined),
+      load('sf pavement lightmap', loadSfNight(), () => undefined),
     ])
-    const city = new SfWorld(sfMap, lot, facades, landmarks)
-    city.root.add(createSfFurniture(sfMap, lot))
-    return city
+    if (landmarks) addSfLandmarkReflection(landmarks, sfMap)
+    const lamps = sfStreetLamps(sfMap, lot)
+    const city = new SfWorld(sfMap, lot, facades, landmarks, night)
+    city.root.add(createSfFurniture(sfMap, lot, lamps))
+    return { city, lamps }
   })() : Promise.resolve(undefined)
-  const [city, northgate, exterior, cabin, passengers] = await Promise.all([
+  const [sf, northgate, exterior, cabin, passengers] = await Promise.all([
     cityAssets,
     sfMap ? undefined : load<{ world: Object3D; parkedCars: Record<string, ParkedBake>; occlusion: LotOcclusion }>(
       'lot.glb', loadLot(), () => ({ world: lotBoxes(lot), parkedCars: {}, occlusion: new LotOcclusion() })),
@@ -67,8 +72,9 @@ export async function createAssets(lot: Lot, sfMap?: SfMap) {
   putOnLayer(cabin.root, CABIN_LAYER)
   const car = new Group()
   car.add(exterior.root, cabin.root)
+  const city = sf?.city
   const { world, parkedCars, occlusion } = city ? { world: city.root, parkedCars: {}, occlusion: new LotOcclusion() } : northgate!
-  return { world, city, parkedCars, occlusion, car, exterior, cabin, passengers, fallbacks }
+  return { world, city, streetLamps: sf?.lamps, parkedCars, occlusion, car, exterior, cabin, passengers, fallbacks }
 }
 
 export type Assets = Awaited<ReturnType<typeof createAssets>>

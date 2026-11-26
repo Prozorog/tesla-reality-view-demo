@@ -7,6 +7,7 @@ import { mergeGeometries } from 'three/addons/utils/BufferGeometryUtils.js'
 import type { Lot, Point } from '../simulation/lot.ts'
 import type { SfMap, SfRoad } from '../simulation/sf-map.ts'
 import { canvasTexture } from './boxes.ts'
+import { editShader } from './gltf.ts'
 
 const CHUNK = 128
 const CURB_STREETS = new Set(['Chestnut Street', 'Divisadero Street', 'Marina Boulevard', 'Baker Street', 'Bay Street'])
@@ -129,13 +130,12 @@ function streetLabel(name: string) {
   return name.replace('Boulevard', 'BLVD').replace('Street', 'ST').replace('Drive', 'DR').replace('Avenue', 'AVE').toUpperCase()
 }
 
-export function createSfFurniture(map: SfMap, lot: Lot): Group {
+export function createSfFurniture(map: SfMap, lot: Lot, lamps = sfStreetLamps(map, lot)): Group {
   const root = new Group()
   root.name = 'San Francisco street furniture'
   const chunks = new Map<string, FurnitureChunk>()
   const edges = roadEdges(map)
   const up = new Vector3(0, 1, 0)
-  const lamps = sfStreetLamps(map, lot)
   const chunkAt = ([x, z]: Point) => {
     const cx = Math.floor(x / CHUNK), cz = Math.floor(z / CHUNK), key = `${cx},${cz}`
     let chunk = chunks.get(key)
@@ -339,9 +339,15 @@ export function createSfFurniture(map: SfMap, lot: Lot): Group {
     }
   })
   const signMaterial = new MeshBasicMaterial({ map: texture })
-  const hardware = new MeshBasicMaterial({ color: '#ffffff' })
-  const foliage = new MeshBasicMaterial({ color: '#ffffff' })
+  const hardware = new MeshBasicMaterial({ color: '#a2adc4' })
+  const foliage = new MeshBasicMaterial({ color: '#93a5be' })
   const glow = new MeshBasicMaterial({ color: '#ffffff', toneMapped: false })
+  editShader(glow, 'sf-lantern-bloom', shader => {
+    shader.fragmentShader = shader.fragmentShader.replace('#include <opaque_fragment>', `
+      #include <opaque_fragment>
+      gl_FragColor.a = 0.15;
+    `)
+  })
   const geometries: Record<Primitive, BufferGeometry> = {
     box: new BoxGeometry(1, 1, 1), cylinder: new CylinderGeometry(1, 1, 1, 7),
     sphere: new SphereGeometry(1, 10, 7), cone: new ConeGeometry(1, 1, 8),

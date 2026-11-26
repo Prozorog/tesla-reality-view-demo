@@ -21,7 +21,7 @@ const CRUISE_LIFT = 5.8
 const CRUISE_DISTANCE = Math.hypot(CRUISE_BACK, CRUISE_LIFT)
 const CRUISE_ELEVATION = Math.atan2(CRUISE_LIFT, CRUISE_BACK)
 const STREET_RANGE = 20.8
-const STREET_ELEVATION = Math.atan2(6.2, 19.85)
+const STREET_ELEVATION = Math.atan2(5.1, 20.15)
 const CAR_CENTER_Y = 0.64
 const CRUISE_SCREEN_Y = 0.58
 const FAR_VIEW = 220
@@ -113,6 +113,7 @@ export class Cameras {
     this.rear.layers.enable(EXTERIOR_LAYER)
     if (city) {
       this.reality.far = this.seat.far = 6500
+      this.reality.near = 0.2
       this.reality.updateProjectionMatrix()
       this.seat.updateProjectionMatrix()
     }
@@ -161,7 +162,8 @@ export class Cameras {
     // Chase looks along the direction of travel; overhead keeps the nose pointing up.
     this.travelHeading += wrapAngle(drive.pose.h - this.travelHeading) * (this.initialized ? 1 - Math.exp(-dt * 2.4) : 1)
     this.parkHeading = this.travelHeading
-    const launchHeading = street ? this.travelHeading : blend < 1 && this.orbitYaw === undefined
+    const marinaLook = street && drive.street?.navigation.turn === 'Baker Street' ? radians(-11.5) : 0
+    const launchHeading = street ? this.travelHeading + marinaLook : blend < 1 && this.orbitYaw === undefined
       ? cruiseHeading(drive.pose, drive.freeBays, aspect, this.initialized ? this.yaw : drive.pose.h) : drive.pose.h
     const defaultYaw = launchHeading + wrapAngle(this.parkHeading - launchHeading) * blend
     // Cruise: ease slowly toward the chosen heading and never swing more than 25° off the car.
