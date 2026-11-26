@@ -1,0 +1,1919 @@
+{
+  "inputSHA256": "5521bf2f5a2881d58a4a4db3ec8d64f7be24c452f622450029203b7c74521736",
+  "waterInputSHA256": "faf2fa7b06034268ed0648c297c4db69172d155afe28e1ebd36602a017083b6f",
+  "source": {
+    "timestamp_osm_base": "2026-11-24T21:21:23Z",
+    "copyright": "The data included in this document is from www.openstreetmap.org. The data is made available under ODbL."
+  },
+  "waterSource": {
+    "timestamp_osm_base": "2026-11-24T21:21:23Z",
+    "copyright": "The data included in this document is from www.openstreetmap.org. The data is made available under ODbL."
+  },
+  "projection": "Local equirectangular metres, x east, z south, origin latitude/longitude",
+  "corridor": "150 m from the route, sampled road clipping at intervals no longer than 8 m; whole intersecting building footprints retained",
+  "timeForRoute": "Night after 19:00, motorcar access, destination is public parking",
+  "start": "Chestnut Street 30 m east of Fillmore, centreline ready for runtime lane and kerb offsets, followed by mapped signal node65317181",
+  "arrival": "Marina westbound, left Baker, right Bay, right Palace Drive around lagoon west side, right public parking access",
+  "directLyonRejected": {
+    "way": 8915480,
+    "reason": "One-way northbound exit from Lyon into eastbound Marina, so a southward arrival would use the wrong direction"
+  },
+  "lot": {
+    "polygon": 68914570,
+    "accessWay": 562765651,
+    "aisle": 68914563
+  },
+  "routeLength": 2499.01,
+  "traversal": [
+    {
+      "way": 1381227464,
+      "street": "Chestnut Street",
+      "reversed": false,
+      "oneway": "no",
+      "access": {
+        "tag": "default",
+        "value": "yes",
+        "allowed": true
+      },
+      "maxspeed": null
+    },
+    {
+      "way": 254984059,
+      "street": "Chestnut Street",
+      "reversed": false,
+      "oneway": "no",
+      "access": {
+        "tag": "default",
+        "value": "yes",
+        "allowed": true
+      },
+      "maxspeed": "20 mph"
+    },
+    {
+      "way": 498532512,
+      "street": "Chestnut Street",
+      "reversed": false,
+      "oneway": "no",
+      "access": {
+        "tag": "default",
+        "value": "yes",
+        "allowed": true
+      },
+      "maxspeed": "20 mph"
+    },
+    {
+      "way": 254984058,
+      "street": "Chestnut Street",
+      "reversed": false,
+      "oneway": "no",
+      "access": {
+        "tag": "default",
+        "value": "yes",
+        "allowed": true
+      },
+      "maxspeed": "20 mph"
+    },
+    {
+      "way": 619535677,
+      "street": "Divisadero Street",
+      "reversed": true,
+      "oneway": "no",
+      "access": {
+        "tag": "default",
+        "value": "yes",
+        "allowed": true
+      },
+      "maxspeed": null
+    },
+    {
+      "way": 721044169,
+      "street": "Divisadero Street",
+      "reversed": true,
+      "oneway": "no",
+      "access": {
+        "tag": "default",
+        "value": "yes",
+        "allowed": true
+      },
+      "maxspeed": null
+    },
+    {
+      "way": 721044168,
+      "street": "Divisadero Street",
+      "reversed": true,
+      "oneway": "no",
+      "access": {
+        "tag": "default",
+        "value": "yes",
+        "allowed": true
+      },
+      "maxspeed": null
+    },
+    {
+      "way": 254971062,
+      "street": "Divisadero Street",
+      "reversed": true,
+      "oneway": "no",
+      "access": {
+        "tag": "default",
+        "value": "yes",
+        "allowed": true
+      },
+      "maxspeed": null
+    },
+    {
+      "way": 254297755,
+      "street": "Divisadero Street",
+      "reversed": true,
+      "oneway": "no",
+      "access": {
+        "tag": "default",
+        "value": "yes",
+        "allowed": true
+      },
+      "maxspeed": null
+    },
+    {
+      "way": 91187852,
+      "street": "Divisadero Street",
+      "reversed": true,
+      "oneway": "no",
+      "access": {
+        "tag": "default",
+        "value": "yes",
+        "allowed": true
+      },
+      "maxspeed": null
+    },
+    {
+      "way": 945294683,
+      "street": "Marina Boulevard",
+      "reversed": false,
+      "oneway": "no",
+      "access": {
+        "tag": "default",
+        "value": "yes",
+        "allowed": true
+      },
+      "maxspeed": "25 mph"
+    },
+    {
+      "way": 945294682,
+      "street": "Marina Boulevard",
+      "reversed": false,
+      "oneway": "no",
+      "access": {
+        "tag": "default",
+        "value": "yes",
+        "allowed": true
+      },
+      "maxspeed": "25 mph"
+    },
+    {
+      "way": 91187856,
+      "street": "Baker Street",
+      "reversed": false,
+      "oneway": "no",
+      "access": {
+        "tag": "default",
+        "value": "yes",
+        "allowed": true
+      },
+      "maxspeed": null
+    },
+    {
+      "way": 1241894252,
+      "street": "Baker Street",
+      "reversed": false,
+      "oneway": "no",
+      "access": {
+        "tag": "default",
+        "value": "yes",
+        "allowed": true
+      },
+      "maxspeed": null
+    },
+    {
+      "way": 8916441,
+      "street": "Bay Street",
+      "reversed": false,
+      "oneway": "no",
+      "access": {
+        "tag": "default",
+        "value": "yes",
+        "allowed": true
+      },
+      "maxspeed": null
+    },
+    {
+      "way": 1418637351,
+      "street": "Palace Drive",
+      "reversed": false,
+      "oneway": "no",
+      "access": {
+        "tag": "default",
+        "value": "yes",
+        "allowed": true
+      },
+      "maxspeed": null
+    },
+    {
+      "way": 8919167,
+      "street": "Palace Drive",
+      "reversed": false,
+      "oneway": "no",
+      "access": {
+        "tag": "default",
+        "value": "yes",
+        "allowed": true
+      },
+      "maxspeed": null
+    },
+    {
+      "way": 1418637352,
+      "street": "Palace Drive",
+      "reversed": false,
+      "oneway": "no",
+      "access": {
+        "tag": "default",
+        "value": "yes",
+        "allowed": true
+      },
+      "maxspeed": null
+    },
+    {
+      "way": 161631001,
+      "street": "Palace Drive",
+      "reversed": false,
+      "oneway": "no",
+      "access": {
+        "tag": "default",
+        "value": "yes",
+        "allowed": true
+      },
+      "maxspeed": null
+    },
+    {
+      "way": 1418637349,
+      "street": "Palace Drive",
+      "reversed": false,
+      "oneway": "no",
+      "access": {
+        "tag": "default",
+        "value": "yes",
+        "allowed": true
+      },
+      "maxspeed": null
+    },
+    {
+      "way": 161631002,
+      "street": "Palace Drive",
+      "reversed": false,
+      "oneway": "no",
+      "access": {
+        "tag": "default",
+        "value": "yes",
+        "allowed": true
+      },
+      "maxspeed": null
+    },
+    {
+      "way": 562765651,
+      "street": "Access road",
+      "reversed": false,
+      "oneway": "no",
+      "access": {
+        "tag": "default",
+        "value": "yes",
+        "allowed": true
+      },
+      "maxspeed": null
+    }
+  ],
+  "turns": [
+    {
+      "from": 254984058,
+      "to": 619535677,
+      "via": 65317193,
+      "pos": [
+        494.82,
+        467.44
+      ],
+      "fromStreet": "Chestnut Street",
+      "toStreet": "Divisadero Street",
+      "turn": "right",
+      "degrees": -89.87,
+      "restrictionAudit": [],
+      "legalDirectionAndAccess": true
+    },
+    {
+      "from": 91187852,
+      "to": 945294683,
+      "via": 4008988541,
+      "pos": [
+        394.77,
+        -156.6
+      ],
+      "fromStreet": "Divisadero Street",
+      "toStreet": "Marina Boulevard",
+      "turn": "left",
+      "degrees": 90.06,
+      "restrictionAudit": [],
+      "legalDirectionAndAccess": true
+    },
+    {
+      "from": 945294682,
+      "to": 91187856,
+      "via": 725284181,
+      "pos": [
+        103.82,
+        -109.67
+      ],
+      "fromStreet": "Marina Boulevard",
+      "toStreet": "Baker Street",
+      "turn": "left",
+      "degrees": 90.11,
+      "restrictionAudit": [],
+      "legalDirectionAndAccess": true
+    },
+    {
+      "from": 1241894252,
+      "to": 8916441,
+      "via": 4008988510,
+      "pos": [
+        163.7,
+        264.87
+      ],
+      "fromStreet": "Baker Street",
+      "toStreet": "Bay Street",
+      "turn": "right",
+      "degrees": -89.83,
+      "restrictionAudit": [],
+      "legalDirectionAndAccess": true
+    },
+    {
+      "from": 8916441,
+      "to": 1418637351,
+      "via": 65296881,
+      "pos": [
+        58.45,
+        291.4
+      ],
+      "fromStreet": "Bay Street",
+      "toStreet": "Palace Drive",
+      "turn": "right",
+      "degrees": -86.08,
+      "restrictionAudit": [],
+      "legalDirectionAndAccess": true
+    },
+    {
+      "from": 161631002,
+      "to": 562765651,
+      "via": 312104185,
+      "pos": [
+        2.61,
+        -22.49
+      ],
+      "fromStreet": "Palace Drive",
+      "toStreet": "Access road",
+      "turn": "right",
+      "degrees": -95.06,
+      "restrictionAudit": [],
+      "legalDirectionAndAccess": true
+    }
+  ],
+  "viaWayRestrictions": [
+    {
+      "relation": 1274900,
+      "rule": "no_u_turn",
+      "sequence": [
+        474751287,
+        85562567,
+        417104573
+      ],
+      "entered": false,
+      "matched": false,
+      "result": "Outside chosen traversal"
+    },
+    {
+      "relation": 1274907,
+      "rule": "no_left_turn @ (Mo-Fr 07:00-10:00,15:00-19:00)",
+      "sequence": [
+        85562580,
+        85562557,
+        85562531
+      ],
+      "entered": false,
+      "matched": false,
+      "result": "Outside chosen traversal"
+    },
+    {
+      "relation": 7314010,
+      "rule": "no_u_turn",
+      "sequence": [
+        398467248,
+        85562598,
+        85562522
+      ],
+      "entered": false,
+      "matched": false,
+      "result": "Outside chosen traversal"
+    },
+    {
+      "relation": 14714651,
+      "rule": "no_left_turn @ (Mo-Fr 07:00-10:00,15:00-19:00)",
+      "sequence": [
+        85562503,
+        85562557,
+        8918232
+      ],
+      "entered": false,
+      "matched": false,
+      "result": "Outside chosen traversal"
+    },
+    {
+      "relation": 20345939,
+      "rule": "no_left_turn",
+      "sequence": [
+        8916973,
+        85562579,
+        533053745
+      ],
+      "entered": false,
+      "matched": false,
+      "result": "Outside chosen traversal"
+    }
+  ],
+  "controls": [
+    {
+      "id": 65317181,
+      "source": "OSM",
+      "highway": "traffic_signals",
+      "stop": null,
+      "direction": "both",
+      "station": 30
+    },
+    {
+      "id": "fallback/4008988364",
+      "source": "Unmapped junction, all-way stop by project brief",
+      "junction": 4008988364,
+      "station": 124.08
+    },
+    {
+      "id": 10963855406,
+      "source": "OSM",
+      "highway": "stop",
+      "stop": null,
+      "direction": "forward",
+      "station": 166.93
+    },
+    {
+      "id": 10963665608,
+      "source": "OSM",
+      "highway": "stop",
+      "stop": null,
+      "direction": "forward",
+      "station": 306.31
+    },
+    {
+      "id": "fallback/65317190",
+      "source": "Unmapped junction, all-way stop by project brief",
+      "junction": 65317190,
+      "station": 392.28
+    },
+    {
+      "id": 10963641422,
+      "source": "OSM",
+      "highway": "stop",
+      "stop": null,
+      "direction": "forward",
+      "station": 457.3
+    },
+    {
+      "id": 10963641692,
+      "source": "OSM",
+      "highway": "stop",
+      "stop": null,
+      "direction": "forward",
+      "station": 603.99
+    },
+    {
+      "id": 5854481362,
+      "source": "OSM",
+      "highway": "stop",
+      "stop": null,
+      "direction": "both",
+      "station": 629.94
+    },
+    {
+      "id": 10962094264,
+      "source": "OSM",
+      "highway": "stop",
+      "stop": null,
+      "direction": "backward",
+      "station": 713.6
+    },
+    {
+      "id": 10963768316,
+      "source": "OSM",
+      "highway": "stop",
+      "stop": null,
+      "direction": "backward",
+      "station": 818.78
+    },
+    {
+      "id": 65296864,
+      "source": "OSM",
+      "highway": "stop",
+      "stop": "all",
+      "direction": "both",
+      "station": 828.59
+    },
+    {
+      "id": 10962236284,
+      "source": "OSM",
+      "highway": "stop",
+      "stop": null,
+      "direction": "backward",
+      "station": 923.72
+    },
+    {
+      "id": 10962227157,
+      "source": "OSM",
+      "highway": "stop",
+      "stop": null,
+      "direction": "backward",
+      "station": 1028.86
+    },
+    {
+      "id": 10962296585,
+      "source": "OSM",
+      "highway": "stop",
+      "stop": null,
+      "direction": "backward",
+      "station": 1133.81
+    },
+    {
+      "id": 4008988541,
+      "source": "OSM",
+      "highway": "stop",
+      "stop": "all",
+      "direction": "both",
+      "station": 1250.26
+    },
+    {
+      "id": 10963713676,
+      "source": "OSM",
+      "highway": "stop",
+      "stop": null,
+      "direction": "forward",
+      "station": 1385.58
+    },
+    {
+      "id": 725284295,
+      "source": "OSM",
+      "highway": "stop",
+      "stop": "all",
+      "direction": "both",
+      "station": 1398.43
+    },
+    {
+      "id": 10963554316,
+      "source": "OSM",
+      "highway": "stop",
+      "stop": null,
+      "direction": "forward",
+      "station": 1533.75
+    },
+    {
+      "id": 725284181,
+      "source": "OSM",
+      "highway": "stop",
+      "stop": "all",
+      "direction": "both",
+      "station": 1544.97
+    },
+    {
+      "id": "fallback/65336851",
+      "source": "Unmapped junction, all-way stop by project brief",
+      "junction": 65336851,
+      "station": 1651.16
+    },
+    {
+      "id": 10963588079,
+      "source": "OSM",
+      "highway": "stop",
+      "stop": null,
+      "direction": "forward",
+      "station": 1744.63
+    },
+    {
+      "id": 65297287,
+      "source": "OSM",
+      "highway": "stop",
+      "stop": "all",
+      "direction": "both",
+      "station": 1756.35
+    },
+    {
+      "id": 4008988385,
+      "source": "OSM",
+      "highway": "stop",
+      "stop": "all",
+      "direction": "both",
+      "station": 1861.71
+    },
+    {
+      "id": "fallback/4008988510",
+      "source": "Unmapped junction, all-way stop by project brief",
+      "junction": 4008988510,
+      "station": 1924.27
+    },
+    {
+      "id": 10963727338,
+      "source": "OSM",
+      "highway": "stop",
+      "stop": "all",
+      "direction": "forward",
+      "station": 2018.9
+    },
+    {
+      "id": "fallback/312104185",
+      "source": "Unmapped junction, all-way stop by project brief",
+      "junction": 312104185,
+      "station": 2489.24
+    }
+  ],
+  "crossings": [
+    {
+      "node": 65365241,
+      "road": 1584135883,
+      "markings": "zebra",
+      "crossing": "traffic_signals"
+    },
+    {
+      "node": 65366428,
+      "road": 1247993157,
+      "markings": "lines",
+      "crossing": null
+    },
+    {
+      "node": 287826914,
+      "road": 8919166,
+      "markings": "zebra",
+      "crossing": "traffic_signals"
+    },
+    {
+      "node": 287827375,
+      "road": 1578981965,
+      "markings": "zebra",
+      "crossing": "marked"
+    },
+    {
+      "node": 293578738,
+      "road": 364474949,
+      "markings": "zebra",
+      "crossing": "traffic_signals"
+    },
+    {
+      "node": 303662868,
+      "road": 8916441,
+      "markings": "ladder",
+      "crossing": "marked"
+    },
+    {
+      "node": 312104546,
+      "road": 8916290,
+      "markings": "zebra",
+      "crossing": "uncontrolled"
+    },
+    {
+      "node": 355785824,
+      "road": 1418625816,
+      "markings": "zebra",
+      "crossing": "uncontrolled"
+    },
+    {
+      "node": 612773973,
+      "road": 398470319,
+      "markings": "zebra",
+      "crossing": "uncontrolled"
+    },
+    {
+      "node": 612773974,
+      "road": 85562607,
+      "markings": "lines",
+      "crossing": "uncontrolled"
+    },
+    {
+      "node": 733676791,
+      "road": 1418637351,
+      "markings": "ladder",
+      "crossing": "marked"
+    },
+    {
+      "node": 733679763,
+      "road": 1418637349,
+      "markings": "lines",
+      "crossing": "uncontrolled"
+    },
+    {
+      "node": 829697432,
+      "road": 28412609,
+      "markings": "ladder",
+      "crossing": "traffic_signals"
+    },
+    {
+      "node": 1221046215,
+      "road": 513881326,
+      "markings": "zebra",
+      "crossing": "traffic_signals"
+    },
+    {
+      "node": 1221046228,
+      "road": 85562521,
+      "markings": null,
+      "crossing": "traffic_signals"
+    },
+    {
+      "node": 1221046232,
+      "road": 1210896111,
+      "markings": null,
+      "crossing": "traffic_signals"
+    },
+    {
+      "node": 1221046237,
+      "road": 563059749,
+      "markings": null,
+      "crossing": "traffic_signals"
+    },
+    {
+      "node": 1221046253,
+      "road": 85562575,
+      "markings": null,
+      "crossing": "traffic_signals"
+    },
+    {
+      "node": 1221046282,
+      "road": 85562560,
+      "markings": "zebra",
+      "crossing": "traffic_signals"
+    },
+    {
+      "node": 1221046294,
+      "road": 24203860,
+      "markings": null,
+      "crossing": "traffic_signals"
+    },
+    {
+      "node": 1221046305,
+      "road": 84733302,
+      "markings": null,
+      "crossing": "traffic_signals"
+    },
+    {
+      "node": 1221046323,
+      "road": 8919851,
+      "markings": null,
+      "crossing": "traffic_signals"
+    },
+    {
+      "node": 1221046333,
+      "road": 513881326,
+      "markings": "zebra",
+      "crossing": "traffic_signals"
+    },
+    {
+      "node": 1221046336,
+      "road": 513881331,
+      "markings": "zebra",
+      "crossing": "traffic_signals"
+    },
+    {
+      "node": 1221046356,
+      "road": 85562590,
+      "markings": null,
+      "crossing": "traffic_signals"
+    },
+    {
+      "node": 1221046361,
+      "road": 85562590,
+      "markings": null,
+      "crossing": "traffic_signals"
+    },
+    {
+      "node": 1221046362,
+      "road": 84733302,
+      "markings": null,
+      "crossing": "traffic_signals"
+    },
+    {
+      "node": 1221046380,
+      "road": 24203860,
+      "markings": null,
+      "crossing": "traffic_signals"
+    },
+    {
+      "node": 1221046386,
+      "road": 85562602,
+      "markings": null,
+      "crossing": "traffic_signals"
+    },
+    {
+      "node": 1221046410,
+      "road": 1247993156,
+      "markings": "zebra",
+      "crossing": "traffic_signals"
+    },
+    {
+      "node": 1221046411,
+      "road": 417103313,
+      "markings": null,
+      "crossing": "traffic_signals"
+    },
+    {
+      "node": 1221046431,
+      "road": 85562526,
+      "markings": null,
+      "crossing": "traffic_signals"
+    },
+    {
+      "node": 1221046440,
+      "road": 1247993156,
+      "markings": null,
+      "crossing": "traffic_signals"
+    },
+    {
+      "node": 1221046455,
+      "road": 417103313,
+      "markings": null,
+      "crossing": "traffic_signals"
+    },
+    {
+      "node": 1221046464,
+      "road": 85562602,
+      "markings": null,
+      "crossing": "traffic_signals"
+    },
+    {
+      "node": 1221046466,
+      "road": 85562575,
+      "markings": null,
+      "crossing": "traffic_signals"
+    },
+    {
+      "node": 1221046471,
+      "road": 85562521,
+      "markings": null,
+      "crossing": "traffic_signals"
+    },
+    {
+      "node": 1221046489,
+      "road": 85562526,
+      "markings": null,
+      "crossing": "traffic_signals"
+    },
+    {
+      "node": 1221046510,
+      "road": 8919851,
+      "markings": null,
+      "crossing": "traffic_signals"
+    },
+    {
+      "node": 1221046518,
+      "road": 513881331,
+      "markings": "zebra",
+      "crossing": "traffic_signals"
+    },
+    {
+      "node": 1221046523,
+      "road": 1247993156,
+      "markings": null,
+      "crossing": "traffic_signals"
+    },
+    {
+      "node": 1221046527,
+      "road": 513881331,
+      "markings": "zebra",
+      "crossing": "traffic_signals"
+    },
+    {
+      "node": 2480860671,
+      "road": 419755790,
+      "markings": "zebra",
+      "crossing": "uncontrolled"
+    },
+    {
+      "node": 3065502895,
+      "road": 945294683,
+      "markings": "zebra",
+      "crossing": "uncontrolled"
+    },
+    {
+      "node": 3065502902,
+      "road": 620169743,
+      "markings": "zebra",
+      "crossing": "uncontrolled"
+    },
+    {
+      "node": 3685177530,
+      "road": 364474949,
+      "markings": "zebra",
+      "crossing": "traffic_signals"
+    },
+    {
+      "node": 3983269084,
+      "road": 85562567,
+      "markings": "ladder",
+      "crossing": "traffic_signals"
+    },
+    {
+      "node": 4008434663,
+      "road": 8921316,
+      "markings": null,
+      "crossing": "uncontrolled"
+    },
+    {
+      "node": 4008434664,
+      "road": 1247993157,
+      "markings": null,
+      "crossing": "uncontrolled"
+    },
+    {
+      "node": 4008434674,
+      "road": 1247993157,
+      "markings": "zebra",
+      "crossing": "uncontrolled"
+    },
+    {
+      "node": 4008988294,
+      "road": 364474994,
+      "markings": "zebra",
+      "crossing": "marked"
+    },
+    {
+      "node": 4008988497,
+      "road": 498532512,
+      "markings": "zebra",
+      "crossing": "uncontrolled"
+    },
+    {
+      "node": 4008988498,
+      "road": 398470319,
+      "markings": "zebra",
+      "crossing": "traffic_signals"
+    },
+    {
+      "node": 4008988536,
+      "road": 397028726,
+      "markings": "ladder",
+      "crossing": "traffic_signals"
+    },
+    {
+      "node": 4008988539,
+      "road": 8916316,
+      "markings": "zebra",
+      "crossing": "uncontrolled"
+    },
+    {
+      "node": 4009068070,
+      "road": 398133144,
+      "markings": "zebra",
+      "crossing": "uncontrolled"
+    },
+    {
+      "node": 4012223321,
+      "road": 85562530,
+      "markings": "zebra",
+      "crossing": "traffic_signals"
+    },
+    {
+      "node": 4012232059,
+      "road": 8919167,
+      "markings": "lines",
+      "crossing": "uncontrolled"
+    },
+    {
+      "node": 4012232082,
+      "road": 364476223,
+      "markings": "zebra",
+      "crossing": "traffic_signals"
+    },
+    {
+      "node": 4012246989,
+      "road": 398470319,
+      "markings": "ladder",
+      "crossing": "traffic_signals"
+    },
+    {
+      "node": 4351880446,
+      "road": 85562607,
+      "markings": "zebra",
+      "crossing": "traffic_signals"
+    },
+    {
+      "node": 4351880448,
+      "road": 1381257294,
+      "markings": "zebra",
+      "crossing": "traffic_signals"
+    },
+    {
+      "node": 4351880450,
+      "road": 437384201,
+      "markings": "zebra",
+      "crossing": "traffic_signals"
+    },
+    {
+      "node": 4351880451,
+      "road": 85562571,
+      "markings": "zebra",
+      "crossing": "traffic_signals"
+    },
+    {
+      "node": 4351880452,
+      "road": 1381257294,
+      "markings": "zebra",
+      "crossing": "uncontrolled"
+    },
+    {
+      "node": 4351880453,
+      "road": 1341951759,
+      "markings": "zebra",
+      "crossing": "uncontrolled"
+    },
+    {
+      "node": 4351880454,
+      "road": 1241894251,
+      "markings": "zebra",
+      "crossing": "uncontrolled"
+    },
+    {
+      "node": 4409247003,
+      "road": 91187856,
+      "markings": "zebra",
+      "crossing": "uncontrolled"
+    },
+    {
+      "node": 4409247007,
+      "road": 945294682,
+      "markings": "zebra",
+      "crossing": "uncontrolled"
+    },
+    {
+      "node": 4409247013,
+      "road": 1086261935,
+      "markings": "zebra",
+      "crossing": "uncontrolled"
+    },
+    {
+      "node": 4409247021,
+      "road": 91187852,
+      "markings": "zebra",
+      "crossing": "marked"
+    },
+    {
+      "node": 4417070039,
+      "road": 85562550,
+      "markings": "zebra",
+      "crossing": "marked"
+    },
+    {
+      "node": 4417070040,
+      "road": 254297752,
+      "markings": "zebra",
+      "crossing": "marked"
+    },
+    {
+      "node": 4417070041,
+      "road": 1241894249,
+      "markings": "zebra",
+      "crossing": "marked"
+    },
+    {
+      "node": 4719866632,
+      "road": 156982651,
+      "markings": "zebra",
+      "crossing": "traffic_signals"
+    },
+    {
+      "node": 4719866633,
+      "road": 8922495,
+      "markings": "zebra",
+      "crossing": "traffic_signals"
+    },
+    {
+      "node": 6925006582,
+      "road": 8921221,
+      "markings": "zebra",
+      "crossing": "traffic_signals"
+    },
+    {
+      "node": 6925006583,
+      "road": 396983322,
+      "markings": "zebra",
+      "crossing": "traffic_signals"
+    },
+    {
+      "node": 6925006584,
+      "road": 738303248,
+      "markings": "zebra",
+      "crossing": "uncontrolled"
+    },
+    {
+      "node": 6925011585,
+      "road": 1381227464,
+      "markings": "zebra",
+      "crossing": "traffic_signals"
+    },
+    {
+      "node": 6925011586,
+      "road": 254984059,
+      "markings": "zebra",
+      "crossing": "traffic_signals"
+    },
+    {
+      "node": 7148147119,
+      "road": 765333677,
+      "markings": "zebra",
+      "crossing": "uncontrolled"
+    },
+    {
+      "node": 7148147121,
+      "road": 405296220,
+      "markings": "zebra",
+      "crossing": "uncontrolled"
+    },
+    {
+      "node": 10741401204,
+      "road": 498532512,
+      "markings": "zebra",
+      "crossing": "uncontrolled"
+    },
+    {
+      "node": 10741467455,
+      "road": 254984058,
+      "markings": "zebra",
+      "crossing": "uncontrolled"
+    },
+    {
+      "node": 10747545071,
+      "road": 619535677,
+      "markings": "zebra",
+      "crossing": "marked"
+    },
+    {
+      "node": 10857451761,
+      "road": 853537382,
+      "markings": null,
+      "crossing": null
+    },
+    {
+      "node": 11675137581,
+      "road": 254297752,
+      "markings": "zebra",
+      "crossing": "marked"
+    },
+    {
+      "node": 11675137582,
+      "road": 254297754,
+      "markings": "zebra",
+      "crossing": "marked"
+    },
+    {
+      "node": 11675137583,
+      "road": 254984058,
+      "markings": "zebra",
+      "crossing": "marked"
+    },
+    {
+      "node": 11675137584,
+      "road": 85562602,
+      "markings": "zebra",
+      "crossing": "uncontrolled"
+    },
+    {
+      "node": 11675137585,
+      "road": 254984058,
+      "markings": "zebra",
+      "crossing": "uncontrolled"
+    },
+    {
+      "node": 11675137586,
+      "road": 254984058,
+      "markings": "zebra",
+      "crossing": "uncontrolled"
+    },
+    {
+      "node": 11675137587,
+      "road": 85562602,
+      "markings": "zebra",
+      "crossing": "uncontrolled"
+    },
+    {
+      "node": 11675137588,
+      "road": 8920223,
+      "markings": "zebra",
+      "crossing": "uncontrolled"
+    },
+    {
+      "node": 11675137589,
+      "road": 254984058,
+      "markings": "zebra",
+      "crossing": "uncontrolled"
+    },
+    {
+      "node": 11675137590,
+      "road": 1247993156,
+      "markings": "zebra",
+      "crossing": "uncontrolled"
+    },
+    {
+      "node": 11675137591,
+      "road": 1247993156,
+      "markings": "zebra",
+      "crossing": "uncontrolled"
+    },
+    {
+      "node": 11675137592,
+      "road": 254984058,
+      "markings": "zebra",
+      "crossing": "uncontrolled"
+    },
+    {
+      "node": 11675137593,
+      "road": 254984058,
+      "markings": "zebra",
+      "crossing": "uncontrolled"
+    },
+    {
+      "node": 11675137594,
+      "road": 8919851,
+      "markings": "zebra",
+      "crossing": "uncontrolled"
+    },
+    {
+      "node": 11675137595,
+      "road": 398123032,
+      "markings": "zebra",
+      "crossing": "uncontrolled"
+    },
+    {
+      "node": 11675137596,
+      "road": 1381227464,
+      "markings": "zebra",
+      "crossing": "uncontrolled"
+    },
+    {
+      "node": 11675137597,
+      "road": 1381227464,
+      "markings": "zebra",
+      "crossing": "uncontrolled"
+    },
+    {
+      "node": 11675137598,
+      "road": 8918232,
+      "markings": "zebra",
+      "crossing": "uncontrolled"
+    },
+    {
+      "node": 12144569109,
+      "road": 1086261934,
+      "markings": "no",
+      "crossing": "unmarked"
+    },
+    {
+      "node": 12144569110,
+      "road": 91187852,
+      "markings": "no",
+      "crossing": "unmarked"
+    },
+    {
+      "node": 12144569111,
+      "road": 8921236,
+      "markings": "no",
+      "crossing": "unmarked"
+    },
+    {
+      "node": 12144569112,
+      "road": 254297755,
+      "markings": "no",
+      "crossing": "unmarked"
+    },
+    {
+      "node": 12288476753,
+      "road": 8920223,
+      "markings": "zebra",
+      "crossing": "uncontrolled"
+    },
+    {
+      "node": 12288476754,
+      "road": 8920223,
+      "markings": "zebra",
+      "crossing": "uncontrolled"
+    },
+    {
+      "node": 12288476755,
+      "road": 1247993157,
+      "markings": "zebra",
+      "crossing": "uncontrolled"
+    },
+    {
+      "node": 12288476758,
+      "road": 85562602,
+      "markings": "lines",
+      "crossing": null
+    },
+    {
+      "node": 12288476759,
+      "road": 254971062,
+      "markings": "zebra",
+      "crossing": null
+    },
+    {
+      "node": 12288476760,
+      "road": 91190525,
+      "markings": "zebra",
+      "crossing": null
+    },
+    {
+      "node": 12288476761,
+      "road": 254971062,
+      "markings": "zebra",
+      "crossing": null
+    },
+    {
+      "node": 12288476762,
+      "road": 85562602,
+      "markings": "zebra",
+      "crossing": null
+    },
+    {
+      "node": 12288476763,
+      "road": 254971066,
+      "markings": "zebra",
+      "crossing": null
+    },
+    {
+      "node": 12288476764,
+      "road": 85562602,
+      "markings": "zebra",
+      "crossing": null
+    },
+    {
+      "node": 12288476765,
+      "road": 254971062,
+      "markings": "zebra",
+      "crossing": "uncontrolled"
+    },
+    {
+      "node": 12288476766,
+      "road": 254971066,
+      "markings": "zebra",
+      "crossing": "marked"
+    },
+    {
+      "node": 12288476767,
+      "road": 254297755,
+      "markings": "zebra",
+      "crossing": "uncontrolled"
+    },
+    {
+      "node": 12288476768,
+      "road": 254971066,
+      "markings": "zebra",
+      "crossing": "uncontrolled"
+    },
+    {
+      "node": 12288476769,
+      "road": 619535676,
+      "markings": "zebra",
+      "crossing": "uncontrolled"
+    },
+    {
+      "node": 12288476770,
+      "road": 254297755,
+      "markings": "zebra",
+      "crossing": "uncontrolled"
+    },
+    {
+      "node": 12288476771,
+      "road": 619535676,
+      "markings": "zebra",
+      "crossing": "marked"
+    },
+    {
+      "node": 12288476772,
+      "road": 254297755,
+      "markings": "zebra",
+      "crossing": "uncontrolled"
+    },
+    {
+      "node": 12288476773,
+      "road": 619535676,
+      "markings": "yes",
+      "crossing": "uncontrolled"
+    },
+    {
+      "node": 12288476774,
+      "road": 85562602,
+      "markings": "yes",
+      "crossing": "uncontrolled"
+    },
+    {
+      "node": 12547865561,
+      "road": 26765928,
+      "markings": "zebra",
+      "crossing": "uncontrolled"
+    },
+    {
+      "node": 12750138268,
+      "road": 28412507,
+      "markings": "ladder",
+      "crossing": "uncontrolled"
+    },
+    {
+      "node": 12750138271,
+      "road": 8915480,
+      "markings": "zebra",
+      "crossing": "uncontrolled"
+    },
+    {
+      "node": 12952355736,
+      "road": 721044166,
+      "markings": "no",
+      "crossing": "unmarked"
+    },
+    {
+      "node": 12952355737,
+      "road": 721044168,
+      "markings": "no",
+      "crossing": "unmarked"
+    },
+    {
+      "node": 12952355738,
+      "road": 721044168,
+      "markings": "no",
+      "crossing": "unmarked"
+    },
+    {
+      "node": 12952355739,
+      "road": 1341951760,
+      "markings": "no",
+      "crossing": "unmarked"
+    },
+    {
+      "node": 12952355752,
+      "road": 1341951760,
+      "markings": "no",
+      "crossing": "unmarked"
+    },
+    {
+      "node": 12952355753,
+      "road": 1241894249,
+      "markings": "no",
+      "crossing": "unmarked"
+    },
+    {
+      "node": 12952355754,
+      "road": 1459358506,
+      "markings": "no",
+      "crossing": "unmarked"
+    },
+    {
+      "node": 12952379220,
+      "road": 563270713,
+      "markings": "no",
+      "crossing": "unmarked"
+    },
+    {
+      "node": 12952379222,
+      "road": 563270710,
+      "markings": "no",
+      "crossing": "unmarked"
+    },
+    {
+      "node": 12952379223,
+      "road": 563270702,
+      "markings": "no",
+      "crossing": "unmarked"
+    },
+    {
+      "node": 12952716179,
+      "road": 91187856,
+      "markings": "zebra",
+      "crossing": "uncontrolled"
+    },
+    {
+      "node": 12952810680,
+      "road": 1241894250,
+      "markings": "no",
+      "crossing": "unmarked"
+    },
+    {
+      "node": 12952810684,
+      "road": 8916441,
+      "markings": "zebra",
+      "crossing": "uncontrolled"
+    },
+    {
+      "node": 12952810685,
+      "road": 1241894252,
+      "markings": "zebra",
+      "crossing": "uncontrolled"
+    },
+    {
+      "node": 12954366986,
+      "road": 1086261935,
+      "markings": "no",
+      "crossing": "unmarked"
+    },
+    {
+      "node": 12954366988,
+      "road": 1086261933,
+      "markings": "no",
+      "crossing": "unmarked"
+    },
+    {
+      "node": 12954366992,
+      "road": 1086261934,
+      "markings": "no",
+      "crossing": "unmarked"
+    },
+    {
+      "node": 12954366995,
+      "road": 254297750,
+      "markings": "no",
+      "crossing": "unmarked"
+    },
+    {
+      "node": 12954367000,
+      "road": 1086261933,
+      "markings": "no",
+      "crossing": "unmarked"
+    },
+    {
+      "node": 12954394804,
+      "road": 619535676,
+      "markings": "no",
+      "crossing": "unmarked"
+    },
+    {
+      "node": 12954394806,
+      "road": 1241894252,
+      "markings": "no",
+      "crossing": "unmarked"
+    },
+    {
+      "node": 12954394808,
+      "road": 91187856,
+      "markings": "no",
+      "crossing": "unmarked"
+    },
+    {
+      "node": 12954394809,
+      "road": 91187856,
+      "markings": "no",
+      "crossing": "unmarked"
+    },
+    {
+      "node": 13037033648,
+      "road": 91163281,
+      "markings": "no",
+      "crossing": "unmarked"
+    },
+    {
+      "node": 13037033649,
+      "road": 91163277,
+      "markings": "no",
+      "crossing": "unmarked"
+    },
+    {
+      "node": 13176853588,
+      "road": 1241894252,
+      "markings": "zebra",
+      "crossing": "uncontrolled"
+    },
+    {
+      "node": 13176853591,
+      "road": 254971066,
+      "markings": "zebra",
+      "crossing": "uncontrolled"
+    },
+    {
+      "node": 13176853593,
+      "road": 1241894252,
+      "markings": "zebra",
+      "crossing": "uncontrolled"
+    },
+    {
+      "node": 13176853596,
+      "road": 254297750,
+      "markings": "lines",
+      "crossing": "uncontrolled"
+    },
+    {
+      "node": 13176853599,
+      "road": 254971066,
+      "markings": "lines",
+      "crossing": "uncontrolled"
+    },
+    {
+      "node": 13176930302,
+      "road": 254297750,
+      "markings": "lines",
+      "crossing": "uncontrolled"
+    },
+    {
+      "node": 13176930305,
+      "road": 254971066,
+      "markings": "lines",
+      "crossing": "uncontrolled"
+    },
+    {
+      "node": 13176930308,
+      "road": 254297750,
+      "markings": "no",
+      "crossing": "unmarked"
+    },
+    {
+      "node": 13176930311,
+      "road": 1241894250,
+      "markings": "no",
+      "crossing": "unmarked"
+    },
+    {
+      "node": 13176930314,
+      "road": 1459358506,
+      "markings": "no",
+      "crossing": "unmarked"
+    },
+    {
+      "node": 13176930317,
+      "road": 91190525,
+      "markings": "no",
+      "crossing": "unmarked"
+    },
+    {
+      "node": 13176930327,
+      "road": 8921236,
+      "markings": "no",
+      "crossing": "unmarked"
+    },
+    {
+      "node": 13176930333,
+      "road": 91190525,
+      "markings": "zebra",
+      "crossing": "marked"
+    },
+    {
+      "node": 13204376985,
+      "road": 1241894253,
+      "markings": "no",
+      "crossing": "unmarked"
+    },
+    {
+      "node": 13204376989,
+      "road": 1241894253,
+      "markings": "no",
+      "crossing": "unmarked"
+    },
+    {
+      "node": 13825064956,
+      "road": 1241894253,
+      "markings": "no",
+      "crossing": "unmarked"
+    },
+    {
+      "node": 13827510083,
+      "road": 85562602,
+      "markings": "lines",
+      "crossing": null
+    },
+    {
+      "node": 13827510085,
+      "road": 721044166,
+      "markings": "lines",
+      "crossing": null
+    },
+    {
+      "node": 13827510088,
+      "road": 91190525,
+      "markings": "zebra",
+      "crossing": null
+    },
+    {
+      "node": 13875849025,
+      "road": 398070547,
+      "markings": null,
+      "crossing": "uncontrolled"
+    },
+    {
+      "node": 13875849026,
+      "road": 1247993156,
+      "markings": null,
+      "crossing": "uncontrolled"
+    },
+    {
+      "node": 13881658698,
+      "road": 48985925,
+      "markings": null,
+      "crossing": null
+    },
+    {
+      "node": 13881658699,
+      "road": 330895635,
+      "markings": null,
+      "crossing": null
+    },
+    {
+      "node": 13881658700,
+      "road": 8921781,
+      "markings": null,
+      "crossing": null
+    },
+    {
+      "node": 14041356202,
+      "road": 1543213324,
+      "markings": null,
+      "crossing": null
+    },
+    {
+      "node": 14367402936,
+      "road": 85562602,
+      "markings": "no",
+      "crossing": "unmarked"
+    },
+    {
+      "node": 14367402937,
+      "road": 85562602,
+      "markings": "no",
+      "crossing": "unmarked"
+    },
+    {
+      "node": 14367402942,
+      "road": 85562602,
+      "markings": "no",
+      "crossing": "unmarked"
+    },
+    {
+      "node": 14367402943,
+      "road": 85562602,
+      "markings": "no",
+      "crossing": "unmarked"
+    },
+    {
+      "node": 14369624358,
+      "road": 563059743,
+      "markings": null,
+      "crossing": null
+    },
+    {
+      "node": 14369887330,
+      "road": 330895631,
+      "markings": null,
+      "crossing": null
+    },
+    {
+      "node": 14369887331,
+      "road": 563059752,
+      "markings": null,
+      "crossing": null
+    },
+    {
+      "node": 14370109784,
+      "road": 398123032,
+      "markings": "no",
+      "crossing": "unmarked"
+    },
+    {
+      "node": 14370109785,
+      "road": 398123032,
+      "markings": "no",
+      "crossing": "unmarked"
+    },
+    {
+      "node": 14370128640,
+      "road": 8921781,
+      "markings": "no",
+      "crossing": "unmarked"
+    },
+    {
+      "node": 14370128641,
+      "road": 1247993156,
+      "markings": "no",
+      "crossing": "unmarked"
+    },
+    {
+      "node": 14370128642,
+      "road": 1247993156,
+      "markings": "no",
+      "crossing": "unmarked"
+    },
+    {
+      "node": 14370424637,
+      "road": 656703950,
+      "markings": "no",
+      "crossing": "unmarked"
+    },
+    {
+      "node": 14370424642,
+      "road": 8918232,
+      "markings": "no",
+      "crossing": "unmarked"
+    },
+    {
+      "node": 14370424643,
+      "road": 8918232,
+      "markings": "no",
+      "crossing": "unmarked"
+    },
+    {
+      "node": 14372182511,
+      "road": 563059744,
+      "markings": null,
+      "crossing": null
+    },
+    {
+      "node": 14372182512,
+      "road": 563059745,
+      "markings": null,
+      "crossing": null
+    },
+    {
+      "node": 14372912600,
+      "road": 563059748,
+      "markings": null,
+      "crossing": null
+    },
+    {
+      "node": 14372974701,
+      "road": 563059747,
+      "markings": null,
+      "crossing": null
+    },
+    {
+      "node": 14372974702,
+      "road": 563059749,
+      "markings": null,
+      "crossing": null
+    },
+    {
+      "node": 14372980660,
+      "road": 856729007,
+      "markings": null,
+      "crossing": null
+    },
+    {
+      "node": 14390305771,
+      "road": 619535676,
+      "markings": "no",
+      "crossing": "unmarked"
+    },
+    {
+      "node": 14390305774,
+      "road": 254297750,
+      "markings": "no",
+      "crossing": "unmarked"
+    },
+    {
+      "node": 14390305777,
+      "road": 619535676,
+      "markings": "no",
+      "crossing": "unmarked"
+    },
+    {
+      "node": 14390305780,
+      "road": 254297750,
+      "markings": "no",
+      "crossing": "unmarked"
+    }
+  ],
+  "defaults": {
+    "widths": 155,
+    "heights": 196,
+    "levels": 1006,
+    "inferredControls": 5,
+    "inferredStoreyHeightMetres": 3.2,
+    "carriagewayLaneWidthMetres": 3.2,
+    "parkingLaneWidthMetres": 2.2
+  },
+  "notes": [
+    "Chestnut has an OSM 20 mph segment. The requested demo limit is 25 mph, so the runtime choice needs to be recorded.",
+    "Unmapped junctions get all-way stops under the project brief. Existing mapped controls and directional tags take precedence.",
+    "Building commercial flags are inferred along Chestnut without copying shop names, contacts, logos or operators.",
+    "Inner courtyard holes are omitted from relation building display outlines.",
+    "Water and parks preserve whole intersecting polygons. The bay backdrop outside the extract remains a scene-authoring task.",
+    "The byte-exact source responses stay private. Published extracts remove mapper metadata and contact fields, preserving geometry and restrictions.",
+    "The lagoon comes from multipolygon relation7471537. Yacht Harbor and East Harbor use their OSM marina polygons. The unrelated inland pond is omitted."
+  ],
+  "counts": {
+    "segments": 22,
+    "roads": 155,
+    "controls": 26,
+    "crosswalks": 207,
+    "buildings": 1016,
+    "parks": 4,
+    "water": 3,
+    "trees": 150
+  }
+}

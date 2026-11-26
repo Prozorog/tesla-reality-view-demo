@@ -1,0 +1,21 @@
+{
+  "endpoint": "https://ovp.dresel.systems/api-na/interpreter",
+  "url": "https://ovp.dresel.systems/api-na/interpreter?data=%5Bout%3Ajson%5D%5Btimeout%3A45%5D%3B(%0A%20%20nwr%5Bnatural%3Dwater%5D(37.801%2C-122.451%2C37.809%2C-122.433)%3B%0A%20%20nwr%5Bwater%5D(37.801%2C-122.451%2C37.809%2C-122.433)%3B%0A%20%20nwr%5Bleisure%3Dmarina%5D(37.801%2C-122.451%2C37.809%2C-122.433)%3B%0A%20%20way%5Bnatural%3Dcoastline%5D(37.804%2C-122.451%2C37.809%2C-122.433)%3B%0A)%3Bout%20body%3B%3E%3Bout%20skel%20qt%3B",
+  "query": "[out:json][timeout:45];(\n  nwr[natural=water](37.801,-122.451,37.809,-122.433);\n  nwr[water](37.801,-122.451,37.809,-122.433);\n  nwr[leisure=marina](37.801,-122.451,37.809,-122.433);\n  way[natural=coastline](37.804,-122.451,37.809,-122.433);\n);out body;>;out skel qt;",
+  "started": "2026-11-26T03:56:18.290Z",
+  "fetched": "2026-11-26T03:56:20.051Z",
+  "osmBase": {
+    "timestamp_osm_base": "2026-11-24T21:21:23Z",
+    "copyright": "The data included in this document is from www.openstreetmap.org. The data is made available under ODbL."
+  },
+  "rawBytes": 37722,
+  "publishedBytes": 48078,
+  "rawSHA256": "e2e09799a6505f0c478721090fada6c0cf2695beceb4e69132ce10413dae8f33",
+  "publishedSHA256": "faf2fa7b06034268ed0648c297c4db69172d155afe28e1ebd36602a017083b6f",
+  "elements": 358,
+  "sanitization": {
+    "removedTagCounts": {}
+  },
+  "license": "OpenStreetMap data, © OpenStreetMap contributors, ODbL 1.0",
+  "licenseURL": "https://www.openstreetmap.org/copyright"
+}

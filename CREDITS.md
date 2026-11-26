@@ -13,3 +13,5 @@
 The Model X, cabin, parking lot, foliage masks, signage, lightmaps and screenshots were produced for this project. The procedural lot uses the asphalt credited above. The Model X and Tesla interface depict Tesla's trademarks. No affiliation or endorsement is implied.
 
 Runtime libraries are [three.js](https://github.com/mrdoob/three.js) (MIT) and [Spark](https://github.com/sparkjsdev/spark) (MIT). Development packages and their versions are listed in `package-lock.json`.
+
+The San Francisco map database in `data/osm/` and its geometric runtime derivative in `public/data/sf/world.json` use **© OpenStreetMap contributors (ODbL)**. Contact fields and mapper identity metadata were removed from the published extracts. The procedural scene uses OSM roads, controls, building footprints, parks and water geometry. Exact source requests and route checks are included with the data. [OpenStreetMap copyright and licence](https://www.openstreetmap.org/copyright) · [Map source notes](data/osm/README.md)

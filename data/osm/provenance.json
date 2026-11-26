@@ -1,0 +1,39 @@
+{
+  "endpoint": "https://ovp.dresel.systems/api-na/interpreter",
+  "url": "https://ovp.dresel.systems/api-na/interpreter?data=%5Bout%3Ajson%5D%5Btimeout%3A45%5D%3B%0A(%0A%20%20way%5Bhighway%5D(37.798%2C-122.450%2C37.808%2C-122.433)%3B%0A%20%20way%5Bbuilding%5D(37.798%2C-122.450%2C37.808%2C-122.433)%3B%0A%20%20relation%5Bbuilding%5D(37.798%2C-122.450%2C37.808%2C-122.433)%3B%0A%20%20node%5Bhighway%5D(37.798%2C-122.450%2C37.808%2C-122.433)%3B%0A%20%20node%5Bnatural%3Dtree%5D(37.798%2C-122.450%2C37.808%2C-122.433)%3B%0A%20%20way%5Bnatural%5D(37.798%2C-122.450%2C37.808%2C-122.433)%3B%0A%20%20way%5Bleisure%5D(37.798%2C-122.450%2C37.808%2C-122.433)%3B%0A%20%20way%5Bamenity%3Dparking%5D(37.798%2C-122.450%2C37.808%2C-122.433)%3B%0A%20%20relation%5Btype%3Drestriction%5D(37.798%2C-122.450%2C37.808%2C-122.433)%3B%0A)%3B%0Aout%20body%3B%0A%3E%3B%0Aout%20skel%20qt%3B",
+  "query": "[out:json][timeout:45];\n(\n  way[highway](37.798,-122.450,37.808,-122.433);\n  way[building](37.798,-122.450,37.808,-122.433);\n  relation[building](37.798,-122.450,37.808,-122.433);\n  node[highway](37.798,-122.450,37.808,-122.433);\n  node[natural=tree](37.798,-122.450,37.808,-122.433);\n  way[natural](37.798,-122.450,37.808,-122.433);\n  way[leisure](37.798,-122.450,37.808,-122.433);\n  way[amenity=parking](37.798,-122.450,37.808,-122.433);\n  relation[type=restriction](37.798,-122.450,37.808,-122.433);\n);\nout body;\n>;\nout skel qt;",
+  "started": "2026-11-26T03:35:10.466Z",
+  "fetched": "2026-11-26T03:35:18.897Z",
+  "osmBase": {
+    "timestamp_osm_base": "2026-11-24T21:21:23Z",
+    "copyright": "The data included in this document is from www.openstreetmap.org. The data is made available under ODbL."
+  },
+  "bbox": [
+    37.798,
+    -122.45,
+    37.808,
+    -122.433
+  ],
+  "rawBytes": 4816563,
+  "rawSHA256": "f210e745d0cfb405427c467b6133610ea3c03f80126e28637472a6343a5daeb8",
+  "publishedBytes": 6097541,
+  "publishedSHA256": "5521bf2f5a2881d58a4a4db3ec8d64f7be24c452f622450029203b7c74521736",
+  "elements": 40912,
+  "sanitization": {
+    "removedTagCounts": {
+      "phone": 10,
+      "website": 18,
+      "contact:email": 1,
+      "contact:fax": 1,
+      "contact:phone": 1,
+      "contact:instagram": 1,
+      "email": 2,
+      "contact:facebook": 1
+    },
+    "removedTags": 35,
+    "geometryAndRestrictionsPreserved": true,
+    "originalResponse": "Kept in the ignored local working folder"
+  },
+  "license": "OpenStreetMap data, © OpenStreetMap contributors, ODbL 1.0",
+  "licenseURL": "https://www.openstreetmap.org/copyright"
+}
