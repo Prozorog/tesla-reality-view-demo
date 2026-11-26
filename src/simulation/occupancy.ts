@@ -22,7 +22,7 @@ export function addRuntimeCars(lot: Lot, route: CruiseRoute, seed: number, reser
   const cars = new Map<string, ParkedCar>()
   for (const bay of candidates) {
     if (cars.size === count) break
-    if (coverage.some(group => group.includes(bay) && group.filter(other => !cars.has(other.id)).length <= 2)) continue
+    if (coverage.some(group => group.includes(bay) && group.filter(other => !cars.has(other.id)).length <= 5)) continue
     cars.set(bay.id, {
       ...pickPassenger(random), noseIn: random() < (bay.kind === 'angled' ? 0.2 : 0.65),
     })

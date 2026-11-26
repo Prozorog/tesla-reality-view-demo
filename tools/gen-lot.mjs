@@ -9,10 +9,9 @@ const [north, middle, south, apron] = aisleZ
 const west = -41.4
 const east = 43.0
 const innerEast = 37.4
-// Phase 1.6 route: the car keeps to the right half of the two bay aisles
-// (A1 westbound keeps north, A2 eastbound keeps south), the connectors stay
-// clear of the islands and hedges, and every turn eases its curvature in and
-// out (clothoid ramps) so the steering winds on before a turn and unwinds after it.
+// Two joined aisle loops keep the cruise between bay rows. The middle aisle
+// is visited once by each loop, with the short end connectors beside the bays.
+// Every corner retains the eased curvature ramps of phase 1.6.
 const env = (key, value) => process.env[key] ? Number(process.env[key]) : value
 const lane = { north: north - env('OFF1', 0), middle: middle + env('OFF2', 0), south: south - env('OFF3', 0), apron }
 const eastX = env('EASTX', 42.3), innerEastX = env('INNERX', 37.0), westX = west
@@ -44,19 +43,20 @@ const unit = ([x, z]) => [x / Math.hypot(x, z), z / Math.hypot(x, z)]
 const leftOf = ([x, z]) => [z, -x]
 // Corners in driving order: [x, z, radius]; a pair marked `u` forms one 180° turn.
 const corners = [
-  { at: [eastX, lane.apron], radius: 6.4 }, { at: [eastX, lane.north], radius: 6.4 },
+  { at: [eastX, lane.middle], radius: 6.4 }, { at: [eastX, lane.north], radius: 6.4 },
   { at: [westX, lane.north], radius: 6.4 }, { at: [westX, lane.middle], radius: 6.4 },
   // Swing a little wide (north) before the tight right turn between bay B089 and island K5.
   ...(jog ? [{ at: [env('JOGA', 21), lane.middle], radius: 14 }, { at: [env('JOGB', 28), lane.middle - jog], radius: 14 }] : []),
   { at: [innerEastX, lane.middle - jog], radius: env('RIN', 5.8), ramp: env('RAMPIN', 1.2) }, { at: [innerEastX, lane.south], radius: env('RIN', 5.8), ramp: env('RAMPIN', 1.2) },
-  { at: [env('UX', -42), lane.south], uTurnTo: [env('UX', -42), lane.apron] },
+  { at: [westX, lane.south], radius: 6.4 }, { at: [westX, lane.middle], radius: 6.4 },
 ]
-const route = [entrance.pos]
+const routeStart = [entrance.pos[0], lane.middle]
+const route = [routeStart]
 const straights = []
-let previous = entrance.pos
+let previous = routeStart
 for (let i = 0; i < corners.length; i++) {
   const corner = corners[i]
-  const next = corners[i + 1]?.at ?? entrance.pos
+  const next = corners[i + 1]?.at ?? routeStart
   const dIn = unit(sub(corner.at, previous))
   let start, curve, sign, theta, radius
   if (corner.uTurnTo) {
@@ -98,24 +98,28 @@ for (let i = 0; i < corners.length; i++) {
   previous = route.at(-1)
   corner.radiusUsed = radius
 }
-straights.push([previous, entrance.pos])
-route.push(entrance.pos)
+straights.push([previous, routeStart])
+route.push(routeStart)
 // Aisles are the straight lane segments the parking planner launches from.
-const straightOn = z => straights.find(([a, b]) => Math.abs(a[1] - z) < 1e-6 && Math.abs(b[1] - z) < 1e-6 && Math.abs(a[0] - b[0]) > 20)
+const straightOn = z => {
+  const spans = straights.filter(([a, b]) => Math.abs(a[1] - z) < 1e-6 && Math.abs(b[1] - z) < 1e-6)
+  const xs = spans.flatMap(([a, b]) => [a[0], b[0]])
+  const ends = [Math.min(...xs), Math.max(...xs)]
+  if (spans[0][1][0] < spans[0][0][0]) ends.reverse()
+  return ends.map(x => [x, z])
+}
 const aisleFrom = (id, z) => ({ id, points: straightOn(z), oneWay: true })
-// A4 is split by the entrance point: it runs from the end of the U-turn to the first corner.
-const aisles = [aisleFrom('A1', lane.north), aisleFrom('A2', lane.middle), aisleFrom('A3', lane.south),
-  { id: 'A4', points: [straights.at(-1)[0], straights[0][1]], oneWay: true }]
+const aisles = [aisleFrom('A1', lane.north), aisleFrom('A2', lane.middle), aisleFrom('A3', lane.south)]
 
 const pick = array => array[Math.floor(random() * array.length)]
 const bays = []
 const corrals = []
 const rows = [
   { z: -24.65, h: -Math.PI / 2, count: 26, free: [3, 5, 7, 10, 12, 15, 18, 20, 23] },
-  { z: -11.85, h: Math.PI - angle, count: 21, free: [3, 5, 8, 10, 13, 15, 17, 19], corral: 6 },
-  { z: -5.85, h: -angle, count: 21, free: [1, 3, 5, 8, 10, 13, 16] },
-  { z: 5.6, h: angle, count: 21, free: [0, 2, 5, 7, 10, 12, 14, 16], corral: 9 },
-  { z: 11.6, h: Math.PI + angle, count: 21, free: [2, 4, 6, 9, 14, 16, 18, 19] },
+  { z: -11.85, h: Math.PI - angle, count: 21, free: [3, 5, 8, 10, 13, 15, 17, 19], extraFree: [20], corral: 6 },
+  { z: -5.85, h: -angle, count: 21, free: [1, 3, 5, 8, 10, 13, 16], extraFree: [0, 18] },
+  { z: 5.6, h: angle, count: 21, free: [0, 2, 5, 7, 10, 12, 14, 16], extraFree: [18], corral: 9 },
+  { z: 11.6, h: Math.PI + angle, count: 21, free: [2, 4, 6, 9, 14, 16, 18, 19], extraFree: [20], unavailable: [2] },
 ]
 for (const [rowIndex, row] of rows.entries()) {
   const straight = rowIndex === 0
@@ -125,20 +129,24 @@ for (const [rowIndex, row] of rows.entries()) {
     const accessible = straight && [11, 12, 13].includes(i)
     const corral = row.corral === i
     const x = (i - (row.count - 1) / 2) * pitch + (straight ? Math.max(-0.6, Math.min(0.6, (i - 12) * 0.3)) : 0)
-    const free = row.free.includes(i)
+    const previouslyFree = row.free.includes(i)
+    const free = !(row.unavailable ?? []).includes(i) && (previouslyFree || (row.extraFree ?? []).includes(i))
     const bay = {
       id, center: [x, row.z], heading: row.h, width: accessible ? 2.98 : straight ? 2.68 : 2.6, depth: 5.5,
       kind: corral ? 'corral' : accessible ? 'accessible' : straight ? 'straight' : 'angled',
       row: `R${rowIndex + 1}`, taken: !free,
     }
     if (corral) corrals.push(id)
-    if (!free && !corral) {
+    // Consume the old occupied-bay random sequence even when thinning a bay,
+    // preserving every retained car's type, pose and colour.
+    if (!previouslyFree && !corral) {
       const type = pick(carTypes)
-      bay.car = {
+      const car = {
         type, color: pick(carCatalog[type].variants).color,
         dx: (random() - 0.5) * 0.16, dz: (random() - 0.5) * 0.18, dh: (random() - 0.5) * 0.075,
         noseIn: random() < (straight ? 0.27 : 0.15),
       }
+      if (!free) bay.car = car
     }
     bays.push(bay)
   }

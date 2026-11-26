@@ -9,6 +9,7 @@ import { APPROACH, approachPoints, endError, pathPoint, planParking } from './pa
 import type { ParkingPlan, PathPoint } from './parking.ts'
 import { CruiseRoute } from './route.ts'
 import { CRUISE_SPEED, Traffic } from './traffic.ts'
+import { streetBranches } from './traffic-paths.ts'
 import type { Player, TrafficZone } from './traffic.ts'
 
 const REVERSE_SPEED = 0.88
@@ -414,9 +415,8 @@ export class Drive {
       })
       if (crossing && !stations.some(at => Math.abs(this.route.delta(at, i * step)) < 3)) stations.push(i * step)
     }
-    for (const point of [[this.lot.entrance.pos[0] + 1.65, this.lot.entrance.pos[1]], [this.lot.entrance.pos[0] - 3, this.lot.entrance.pos[1]]] as [number, number][]) {
-      stations.push(this.route.closest(point).station)
-    }
+    const branches = streetBranches(this.lot, this.route)
+    stations.push(branches.entry.station, branches.exit.station)
     return stations
   }
 

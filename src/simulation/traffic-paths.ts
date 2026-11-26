@@ -27,6 +27,22 @@ export function streetBranches(lot: Lot, route: CruiseRoute) {
   // Separate inbound and outbound paths through the south hedge opening.
   const entry = route.closest([x + 6.3, z], 0).station
   const exit = route.closest([x - 11, z], 0).station
+  if (route.closest([x + 6.3, z], 0).distance > 0.002) {
+    // The compact cruise stays in the bay aisles. Enter its westbound lower
+    // aisle through the open apron, and leave from the east end connector.
+    const lower = lot.aisles.at(-1)!.points
+    const middle = lot.aisles[1].points
+    const merge = route.closest([lower[0][0] - 1, lower[0][1]], Math.PI).station
+    const leave = route.closest([lower[0][0] + 6, (lower[0][1] + middle[0][1]) / 2], -Math.PI / 2).station
+    const arrival = route.pose(merge), departure = route.pose(leave)
+    const arriving = forward(arrival.h), departing = forward(departure.h)
+    return {
+      entry: branch([[x + 1.65, lot.street.z + 4.3], [x + 1.65, z + 2],
+        [arrival.x - 4 * arriving[0], arrival.z - 4 * arriving[1]], [arrival.x, arrival.z]], merge),
+      exit: branch([[departure.x, departure.z], [departure.x + 8 * departing[0], departure.z + 8 * departing[1]],
+        [x - 3, z + 3.55], [x - 3, lot.street.z + 4.5]], leave),
+    }
+  }
   return {
     entry: branch([[x + 1.65, lot.street.z + 4.3], [x + 1.65, z + 3.55], [x + 1.65, z], [x + 6.3, z]], entry),
     exit: branch([[x - 11, z], [x - 2, z], [x - 3, z + 3.55], [x - 3, lot.street.z + 4.5]], exit),

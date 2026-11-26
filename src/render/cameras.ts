@@ -39,7 +39,7 @@ function cruiseHeading(pose: Pose, bays: Bay[], windowAspect: number, preferredY
   const [x, z] = localPoint(pose, CENTER_OFFSET, 0)
   const nearby = bays.filter(bay => Math.hypot(bay.center[0] - pose.x, bay.center[1] - pose.z) <= MARKER_RANGE)
   const closer = nearby.filter(bay => Math.hypot(bay.center[0] - pose.x, bay.center[1] - pose.z) <= MARKER_RANGE - 0.8)
-  const candidates = closer.length >= 2 ? closer : nearby
+  const candidates = closer.length >= 4 ? closer : nearby
   const tanY = Math.tan(radians(25))
   const limitX = tanY * TABLET_ASPECT * frame.width / HUD_WIDTH * 0.90
   const limitY = tanY * frame.height / HUD_HEIGHT * 0.90
@@ -58,7 +58,7 @@ function cruiseHeading(pose: Pose, bays: Bay[], windowAspect: number, preferredY
       const rise = along * Math.sin(pitch) - markerDrop * Math.cos(pitch)
       if (depth > 0 && Math.abs(across) < depth * limitX && Math.abs(rise) < depth * limitY) count++
     }
-    count = Math.min(2, count)
+    count = Math.min(4, count)
     const cost = Math.abs(offset) + 0.8 * Math.abs(wrapAngle(heading - preferredYaw))
     if (count > bestCount || count === bestCount && cost < bestCost) {
       bestCount = count

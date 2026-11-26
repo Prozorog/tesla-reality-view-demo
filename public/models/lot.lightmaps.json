@@ -66,7 +66,7 @@
         2240,
         2880
       ],
-      "linearPeak": 8.0
+      "linearPeak": 8
     },
     "Shopfront_joinery": {
       "file": "lightmaps/lot_architecture.png",
@@ -79,7 +79,7 @@
         2240,
         2880
       ],
-      "linearPeak": 8.0
+      "linearPeak": 8
     },
     "Window_displays": {
       "file": "lightmaps/lot_architecture.png",
@@ -92,7 +92,7 @@
         2240,
         2880
       ],
-      "linearPeak": 8.0
+      "linearPeak": 8
     },
     "Kerbs_and_paving": {
       "file": "lightmaps/lot_architecture.png",
@@ -105,7 +105,7 @@
         2240,
         2880
       ],
-      "linearPeak": 8.0
+      "linearPeak": 8
     },
     "Lamp_column_1": {
       "file": "lightmaps/lot_architecture.png",
@@ -118,7 +118,7 @@
         2240,
         2880
       ],
-      "linearPeak": 8.0
+      "linearPeak": 8
     },
     "Lamp_column_2": {
       "file": "lightmaps/lot_architecture.png",
@@ -131,7 +131,7 @@
         2240,
         2880
       ],
-      "linearPeak": 8.0
+      "linearPeak": 8
     },
     "Bollard": {
       "file": "lightmaps/lot_architecture.png",
@@ -144,7 +144,7 @@
         2240,
         2880
       ],
-      "linearPeak": 8.0
+      "linearPeak": 8
     },
     "Serviceberry_1": {
       "file": "lightmaps/lot_architecture.png",
@@ -157,7 +157,7 @@
         2240,
         2880
       ],
-      "linearPeak": 8.0
+      "linearPeak": 8
     },
     "Serviceberry_2": {
       "file": "lightmaps/lot_architecture.png",
@@ -170,7 +170,7 @@
         2240,
         2880
       ],
-      "linearPeak": 8.0
+      "linearPeak": 8
     },
     "Serviceberry_3": {
       "file": "lightmaps/lot_architecture.png",
@@ -183,7 +183,7 @@
         2240,
         2880
       ],
-      "linearPeak": 8.0
+      "linearPeak": 8
     },
     "Cart_corral": {
       "file": "lightmaps/lot_architecture.png",
@@ -196,7 +196,7 @@
         2240,
         2880
       ],
-      "linearPeak": 8.0
+      "linearPeak": 8
     },
     "Street_beyond": {
       "file": "lightmaps/lot_architecture.png",
@@ -209,7 +209,7 @@
         2240,
         2880
       ],
-      "linearPeak": 8.0
+      "linearPeak": 8
     },
     "Street_columns": {
       "file": "lightmaps/lot_architecture.png",
@@ -222,7 +222,7 @@
         2240,
         2880
       ],
-      "linearPeak": 8.0
+      "linearPeak": 8
     },
     "Horizon_roofs": {
       "file": "lightmaps/lot_architecture.png",
@@ -235,7 +235,7 @@
         2240,
         2880
       ],
-      "linearPeak": 8.0
+      "linearPeak": 8
     },
     "Distant_posts": {
       "file": "lightmaps/lot_architecture.png",
@@ -248,7 +248,7 @@
         2240,
         2880
       ],
-      "linearPeak": 8.0
+      "linearPeak": 8
     },
     "Distant_trees": {
       "file": "lightmaps/lot_architecture.png",
@@ -261,7 +261,7 @@
         2240,
         2880
       ],
-      "linearPeak": 8.0
+      "linearPeak": 8
     },
     "Outer_verge": {
       "file": "lightmaps/lot_architecture.png",
@@ -274,13 +274,13 @@
         2240,
         2880
       ],
-      "linearPeak": 8.0
+      "linearPeak": 8
     }
   },
   "emissive": {
     "Sign_Northgate": {
       "color": "#fff0d1",
-      "intensity": 3.0
+      "intensity": 3
     },
     "Sign_Oriel": {
       "color": "#ff665b",
@@ -436,7 +436,7 @@
           0.03229166666666667
         ],
         "lightmapOffset": [
-          0.0,
+          0,
           0.019444444444444486
         ]
       },
@@ -648,7 +648,7 @@
           0.03229166666666667
         ],
         "lightmapOffset": [
-          0.0,
+          0,
           0.019444444444444486
         ]
       },
@@ -1053,8 +1053,8 @@
           0.019444444444444445
         ],
         "lightmapOffset": [
-          0.0,
-          0.0
+          0,
+          0
         ]
       },
       {
@@ -1075,7 +1075,7 @@
         ],
         "lightmapOffset": [
           0.026339285714285714,
-          0.0
+          0
         ]
       },
       {
@@ -1096,7 +1096,7 @@
         ],
         "lightmapOffset": [
           0.05267857142857143,
-          0.0
+          0
         ]
       },
       {
@@ -1117,7 +1117,7 @@
         ],
         "lightmapOffset": [
           0.07901785714285714,
-          0.0
+          0
         ]
       },
       {
@@ -1138,7 +1138,7 @@
         ],
         "lightmapOffset": [
           0.10535714285714286,
-          0.0
+          0
         ]
       },
       {
@@ -1159,7 +1159,7 @@
         ],
         "lightmapOffset": [
           0.13169642857142858,
-          0.0
+          0
         ]
       },
       {
@@ -1180,7 +1180,7 @@
         ],
         "lightmapOffset": [
           0.15803571428571428,
-          0.0
+          0
         ]
       },
       {
@@ -1201,7 +1201,7 @@
         ],
         "lightmapOffset": [
           0.184375,
-          0.0
+          0
         ]
       },
       {
@@ -1222,7 +1222,7 @@
         ],
         "lightmapOffset": [
           0.21071428571428572,
-          0.0
+          0
         ]
       },
       {
@@ -1243,7 +1243,7 @@
         ],
         "lightmapOffset": [
           0.23705357142857142,
-          0.0
+          0
         ]
       },
       {
@@ -1264,7 +1264,7 @@
         ],
         "lightmapOffset": [
           0.26339285714285715,
-          0.0
+          0
         ]
       },
       {
@@ -1285,7 +1285,7 @@
         ],
         "lightmapOffset": [
           0.2897321428571429,
-          0.0
+          0
         ]
       },
       {
@@ -1306,7 +1306,7 @@
         ],
         "lightmapOffset": [
           0.31607142857142856,
-          0.0
+          0
         ]
       },
       {
@@ -1327,7 +1327,7 @@
         ],
         "lightmapOffset": [
           0.3424107142857143,
-          0.0
+          0
         ]
       },
       {
@@ -1348,7 +1348,7 @@
         ],
         "lightmapOffset": [
           0.36875,
-          0.0
+          0
         ]
       },
       {
@@ -1369,7 +1369,7 @@
         ],
         "lightmapOffset": [
           0.3950892857142857,
-          0.0
+          0
         ]
       },
       {
@@ -1390,7 +1390,7 @@
         ],
         "lightmapOffset": [
           0.42142857142857143,
-          0.0
+          0
         ]
       },
       {
@@ -1411,7 +1411,7 @@
         ],
         "lightmapOffset": [
           0.44776785714285716,
-          0.0
+          0
         ]
       }
     ],
@@ -1475,7 +1475,7 @@
           0.05138888888888889
         ],
         "lightmapOffset": [
-          0.0,
+          0,
           0.051736111111111094
         ]
       },
@@ -1640,9 +1640,9 @@
         ],
         "heading": 2.234021,
         "scale": [
-          1.0,
           1,
-          1.0
+          1,
+          1
         ],
         "lightmapScale": [
           0.06607142857142857,
@@ -1661,9 +1661,9 @@
         ],
         "heading": 0.907571,
         "scale": [
-          1.0,
           1,
-          1.0
+          1,
+          1
         ],
         "lightmapScale": [
           0.06607142857142857,
@@ -1762,7 +1762,7 @@
       },
       {
         "position": [
-          0.0,
+          0,
           0,
           39.15
         ],
@@ -2058,7 +2058,7 @@
       },
       {
         "position": [
-          0.0,
+          0,
           0,
           39.15
         ],
@@ -5297,222 +5297,6 @@
         1.865028
       ]
     },
-    "B047": {
-      "type": "pickup",
-      "requestedColor": "darkgrey",
-      "color": "darkgrey",
-      "position": [
-        32.916653999999994,
-        0,
-        -11.798248
-      ],
-      "heading": 2.2386779999999997,
-      "probePosition": [
-        32.916653999999994,
-        1.81467,
-        -11.798248
-      ],
-      "probes": {
-        "roof": {
-          "position": [
-            32.916653999999994,
-            1.81467,
-            -11.798248
-          ],
-          "normal": [
-            0,
-            1,
-            0
-          ],
-          "rgb": [
-            2.332038,
-            2.031776,
-            1.842851
-          ]
-        },
-        "nose": {
-          "position": [
-            31.20422257438113,
-            1.0971954,
-            -13.969147263566356
-          ],
-          "normal": [
-            -0.6193242045637839,
-            0,
-            -0.7851353575285196
-          ],
-          "rgb": [
-            1.489571,
-            1.248402,
-            1.061625
-          ]
-        },
-        "tail": {
-          "position": [
-            34.629085425618854,
-            1.0971954,
-            -9.627348736433643
-          ],
-          "normal": [
-            0.6193242045637841,
-            0,
-            0.7851353575285195
-          ],
-          "rgb": [
-            1.126626,
-            0.978775,
-            0.881781
-          ]
-        },
-        "left": {
-          "position": [
-            32.01947982695216,
-            1.0971954,
-            -11.090546231444963
-          ],
-          "normal": [
-            -0.7851353575285197,
-            0,
-            0.6193242045637839
-          ],
-          "rgb": [
-            1.928684,
-            1.676556,
-            1.514748
-          ]
-        },
-        "right": {
-          "position": [
-            33.81382817304783,
-            1.0971954,
-            -12.505949768555036
-          ],
-          "normal": [
-            0.7851353575285196,
-            0,
-            -0.6193242045637839
-          ],
-          "rgb": [
-            0.458852,
-            0.384147,
-            0.324431
-          ]
-        }
-      },
-      "irradianceRGB": [
-        2.332038,
-        2.031776,
-        1.842851
-      ]
-    },
-    "B048": {
-      "type": "pickup",
-      "requestedColor": "silver",
-      "color": "silver",
-      "position": [
-        -33.028349,
-        0,
-        -5.903128
-      ],
-      "heading": -0.873491,
-      "probePosition": [
-        -33.028349,
-        1.81467,
-        -5.903128
-      ],
-      "probes": {
-        "roof": {
-          "position": [
-            -33.028349,
-            1.81467,
-            -5.903128
-          ],
-          "normal": [
-            0,
-            1,
-            0
-          ],
-          "rgb": [
-            2.41274,
-            2.101656,
-            1.907562
-          ]
-        },
-        "nose": {
-          "position": [
-            -31.252792219297273,
-            1.0971954,
-            -3.783547117254409
-          ],
-          "normal": [
-            0.6421543510678931,
-            0,
-            0.7665753644649514
-          ],
-          "rgb": [
-            1.325261,
-            1.152742,
-            1.04497
-          ]
-        },
-        "tail": {
-          "position": [
-            -34.80390578070272,
-            1.0971954,
-            -8.02270888274559
-          ],
-          "normal": [
-            -0.642154351067893,
-            0,
-            -0.7665753644649514
-          ],
-          "rgb": [
-            1.061862,
-            0.902125,
-            0.790311
-          ]
-        },
-        "left": {
-          "position": [
-            -32.152383331025895,
-            1.0971954,
-            -6.636917776965281
-          ],
-          "normal": [
-            0.7665753644649514,
-            0,
-            -0.6421543510678931
-          ],
-          "rgb": [
-            1.884198,
-            1.633291,
-            1.469897
-          ]
-        },
-        "right": {
-          "position": [
-            -33.904314668974095,
-            1.0971954,
-            -5.1693382230347185
-          ],
-          "normal": [
-            -0.7665753644649513,
-            0,
-            0.6421543510678932
-          ],
-          "rgb": [
-            0.829527,
-            0.716002,
-            0.645468
-          ]
-        }
-      },
-      "irradianceRGB": [
-        2.41274,
-        2.101656,
-        1.907562
-      ]
-    },
     "B050": {
       "type": "sedan",
       "requestedColor": "white",
@@ -6595,114 +6379,6 @@
         2.65992,
         2.317374,
         2.103255
-      ]
-    },
-    "B066": {
-      "type": "offroad",
-      "requestedColor": "silver",
-      "color": "silver",
-      "position": [
-        26.472202000000003,
-        0,
-        -5.897709
-      ],
-      "heading": -0.905464,
-      "probePosition": [
-        26.472202000000003,
-        1.8778,
-        -5.897709
-      ],
-      "probes": {
-        "roof": {
-          "position": [
-            26.472202000000003,
-            1.8778,
-            -5.897709
-          ],
-          "normal": [
-            0,
-            1,
-            0
-          ],
-          "rgb": [
-            2.461469,
-            2.145406,
-            1.947445
-          ]
-        },
-        "nose": {
-          "position": [
-            27.93216524781039,
-            1.136336,
-            -4.037135885327279
-          ],
-          "normal": [
-            0.6173206121819811,
-            0,
-            0.7867116763943853
-          ],
-          "rgb": [
-            0.962368,
-            0.836206,
-            0.757987
-          ]
-        },
-        "tail": {
-          "position": [
-            25.012238752189617,
-            1.136336,
-            -7.758282114672721
-          ],
-          "normal": [
-            -0.6173206121819808,
-            0,
-            -0.7867116763943856
-          ],
-          "rgb": [
-            1.559646,
-            1.32858,
-            1.162556
-          ]
-        },
-        "left": {
-          "position": [
-            27.42360389873079,
-            1.136336,
-            -6.644259509136157
-          ],
-          "normal": [
-            0.7867116763943854,
-            0,
-            -0.617320612181981
-          ],
-          "rgb": [
-            1.527797,
-            1.324375,
-            1.191591
-          ]
-        },
-        "right": {
-          "position": [
-            25.520800101269216,
-            1.136336,
-            -5.151158490863843
-          ],
-          "normal": [
-            -0.7867116763943854,
-            0,
-            0.617320612181981
-          ],
-          "rgb": [
-            1.167101,
-            0.99904,
-            0.905322
-          ]
-        }
-      },
-      "irradianceRGB": [
-        2.461469,
-        2.145406,
-        1.947445
       ]
     },
     "B067": {
@@ -7892,114 +7568,6 @@
         2.498583,
         2.177482,
         1.97758
-      ]
-    },
-    "B087": {
-      "type": "offroad",
-      "requestedColor": "silver",
-      "color": "silver",
-      "position": [
-        26.425394,
-        0,
-        5.638698
-      ],
-      "heading": 0.897539,
-      "probePosition": [
-        26.425394,
-        1.8778,
-        5.638698
-      ],
-      "probes": {
-        "roof": {
-          "position": [
-            26.425394,
-            1.8778,
-            5.638698
-          ],
-          "normal": [
-            0,
-            1,
-            0
-          ],
-          "rgb": [
-            2.047301,
-            1.784632,
-            1.621221
-          ]
-        },
-        "nose": {
-          "position": [
-            27.900056288687214,
-            1.136336,
-            3.789753399877058
-          ],
-          "normal": [
-            0.6235358514533677,
-            0,
-            -0.7817947569230199
-          ],
-          "rgb": [
-            1.252697,
-            1.083904,
-            0.972192
-          ]
-        },
-        "tail": {
-          "position": [
-            24.950731711312788,
-            1.136336,
-            7.487642600122942
-          ],
-          "normal": [
-            -0.6235358514533677,
-            0,
-            0.7817947569230199
-          ],
-          "rgb": [
-            0.988846,
-            0.859325,
-            0.777998
-          ]
-        },
-        "left": {
-          "position": [
-            25.479938328662715,
-            1.136336,
-            4.884631153403385
-          ],
-          "normal": [
-            -0.78179475692302,
-            0,
-            -0.6235358514533675
-          ],
-          "rgb": [
-            1.272967,
-            1.096643,
-            0.979393
-          ]
-        },
-        "right": {
-          "position": [
-            27.370849671337286,
-            1.136336,
-            6.392764846596615
-          ],
-          "normal": [
-            0.78179475692302,
-            0,
-            0.6235358514533675
-          ],
-          "rgb": [
-            0.899128,
-            0.780868,
-            0.703634
-          ]
-        }
-      },
-      "irradianceRGB": [
-        2.047301,
-        1.784632,
-        1.621221
       ]
     },
     "B088": {
@@ -9516,114 +9084,6 @@
         2.083995,
         1.893452
       ]
-    },
-    "B110": {
-      "type": "minivan",
-      "requestedColor": "silver",
-      "color": "silver",
-      "position": [
-        33.018328999999994,
-        0,
-        11.532143999999999
-      ],
-      "heading": 4.026553,
-      "probePosition": [
-        33.018328999999994,
-        1.9956099999999999,
-        11.532143999999999
-      ],
-      "probes": {
-        "roof": {
-          "position": [
-            33.018328999999994,
-            1.9956099999999999,
-            11.532143999999999
-          ],
-          "normal": [
-            0,
-            1,
-            0
-          ],
-          "rgb": [
-            2.104025,
-            1.833725,
-            1.666508
-          ]
-        },
-        "nose": {
-          "position": [
-            31.36219670446286,
-            1.2093782,
-            13.555866021345546
-          ],
-          "normal": [
-            -0.6333201894979473,
-            0,
-            0.773889874319521
-          ],
-          "rgb": [
-            0.518106,
-            0.446865,
-            0.403233
-          ]
-        },
-        "tail": {
-          "position": [
-            34.67446129553713,
-            1.2093782,
-            9.508421978654452
-          ],
-          "normal": [
-            0.6333201894979474,
-            0,
-            -0.7738898743195209
-          ],
-          "rgb": [
-            1.384253,
-            1.202196,
-            1.085268
-          ]
-        },
-        "left": {
-          "position": [
-            33.868578588218625,
-            1.2093782,
-            12.227953892595709
-          ],
-          "normal": [
-            0.7738898743195209,
-            0,
-            0.6333201894979474
-          ],
-          "rgb": [
-            0.514991,
-            0.444437,
-            0.398892
-          ]
-        },
-        "right": {
-          "position": [
-            32.16807941178136,
-            1.2093782,
-            10.836334107404289
-          ],
-          "normal": [
-            -0.773889874319521,
-            0,
-            -0.6333201894979473
-          ],
-          "rgb": [
-            2.064338,
-            1.79293,
-            1.619082
-          ]
-        }
-      },
-      "irradianceRGB": [
-        2.104025,
-        1.833725,
-        1.666508
-      ]
     }
   },
   "lamps": [
@@ -9649,18 +9109,18 @@
           ],
           "watts": 26500,
           "coneDegrees": 160,
-          "blend": 1.0,
+          "blend": 1,
           "radius": 0.32,
           "normalized": true,
           "optics": [
             {
               "watts": 2500,
               "coneDegrees": 160,
-              "blend": 1.0,
+              "blend": 1,
               "direction": [
-                0.0,
-                -1.0,
-                0.0
+                0,
+                -1,
+                0
               ]
             },
             {
@@ -9668,7 +9128,7 @@
               "coneDegrees": 70,
               "blend": 0.9,
               "direction": [
-                0.0,
+                0,
                 -0.4067366430758002,
                 0.9135454576426009
               ]
@@ -9738,18 +9198,18 @@
           ],
           "watts": 26500,
           "coneDegrees": 160,
-          "blend": 1.0,
+          "blend": 1,
           "radius": 0.32,
           "normalized": true,
           "optics": [
             {
               "watts": 2500,
               "coneDegrees": 160,
-              "blend": 1.0,
+              "blend": 1,
               "direction": [
-                0.0,
-                -1.0,
-                -0.0
+                0,
+                -1,
+                0
               ]
             },
             {
@@ -9838,18 +9298,18 @@
           ],
           "watts": 26500,
           "coneDegrees": 160,
-          "blend": 1.0,
+          "blend": 1,
           "radius": 0.32,
           "normalized": true,
           "optics": [
             {
               "watts": 2500,
               "coneDegrees": 160,
-              "blend": 1.0,
+              "blend": 1,
               "direction": [
-                0.0,
-                -1.0,
-                0.0
+                0,
+                -1,
+                0
               ]
             },
             {
@@ -9857,7 +9317,7 @@
               "coneDegrees": 70,
               "blend": 0.9,
               "direction": [
-                0.0,
+                0,
                 -0.4067366430758002,
                 0.9135454576426009
               ]
@@ -9927,18 +9387,18 @@
           ],
           "watts": 26500,
           "coneDegrees": 160,
-          "blend": 1.0,
+          "blend": 1,
           "radius": 0.32,
           "normalized": true,
           "optics": [
             {
               "watts": 2500,
               "coneDegrees": 160,
-              "blend": 1.0,
+              "blend": 1,
               "direction": [
-                0.0,
-                -1.0,
-                -0.0
+                0,
+                -1,
+                0
               ]
             },
             {
@@ -10027,18 +9487,18 @@
           ],
           "watts": 26500,
           "coneDegrees": 160,
-          "blend": 1.0,
+          "blend": 1,
           "radius": 0.32,
           "normalized": true,
           "optics": [
             {
               "watts": 2500,
               "coneDegrees": 160,
-              "blend": 1.0,
+              "blend": 1,
               "direction": [
-                0.0,
-                -1.0,
-                0.0
+                0,
+                -1,
+                0
               ]
             },
             {
@@ -10046,7 +9506,7 @@
               "coneDegrees": 70,
               "blend": 0.9,
               "direction": [
-                0.0,
+                0,
                 -0.4067366430758002,
                 0.9135454576426009
               ]
@@ -10116,18 +9576,18 @@
           ],
           "watts": 26500,
           "coneDegrees": 160,
-          "blend": 1.0,
+          "blend": 1,
           "radius": 0.32,
           "normalized": true,
           "optics": [
             {
               "watts": 2500,
               "coneDegrees": 160,
-              "blend": 1.0,
+              "blend": 1,
               "direction": [
-                0.0,
-                -1.0,
-                -0.0
+                0,
+                -1,
+                0
               ]
             },
             {
@@ -10216,18 +9676,18 @@
           ],
           "watts": 26500,
           "coneDegrees": 160,
-          "blend": 1.0,
+          "blend": 1,
           "radius": 0.32,
           "normalized": true,
           "optics": [
             {
               "watts": 2500,
               "coneDegrees": 160,
-              "blend": 1.0,
+              "blend": 1,
               "direction": [
-                0.0,
-                -1.0,
-                0.0
+                0,
+                -1,
+                0
               ]
             },
             {
@@ -10235,7 +9695,7 @@
               "coneDegrees": 70,
               "blend": 0.9,
               "direction": [
-                0.0,
+                0,
                 -0.4067366430758002,
                 0.9135454576426009
               ]
@@ -10305,18 +9765,18 @@
           ],
           "watts": 26500,
           "coneDegrees": 160,
-          "blend": 1.0,
+          "blend": 1,
           "radius": 0.32,
           "normalized": true,
           "optics": [
             {
               "watts": 2500,
               "coneDegrees": 160,
-              "blend": 1.0,
+              "blend": 1,
               "direction": [
-                0.0,
-                -1.0,
-                -0.0
+                0,
+                -1,
+                0
               ]
             },
             {
@@ -10394,7 +9854,7 @@
       "heads": [
         {
           "position": [
-            -23.0,
+            -23,
             8.095,
             -7.91
           ],
@@ -10405,18 +9865,18 @@
           ],
           "watts": 26500,
           "coneDegrees": 160,
-          "blend": 1.0,
+          "blend": 1,
           "radius": 0.32,
           "normalized": true,
           "optics": [
             {
               "watts": 2500,
               "coneDegrees": 160,
-              "blend": 1.0,
+              "blend": 1,
               "direction": [
-                0.0,
-                -1.0,
-                0.0
+                0,
+                -1,
+                0
               ]
             },
             {
@@ -10424,7 +9884,7 @@
               "coneDegrees": 70,
               "blend": 0.9,
               "direction": [
-                0.0,
+                0,
                 -0.4067366430758002,
                 0.9135454576426009
               ]
@@ -10483,7 +9943,7 @@
         },
         {
           "position": [
-            -23.0,
+            -23,
             8.095,
             -9.79
           ],
@@ -10494,18 +9954,18 @@
           ],
           "watts": 26500,
           "coneDegrees": 160,
-          "blend": 1.0,
+          "blend": 1,
           "radius": 0.32,
           "normalized": true,
           "optics": [
             {
               "watts": 2500,
               "coneDegrees": 160,
-              "blend": 1.0,
+              "blend": 1,
               "direction": [
-                0.0,
-                -1.0,
-                -0.0
+                0,
+                -1,
+                0
               ]
             },
             {
@@ -10583,7 +10043,7 @@
       "heads": [
         {
           "position": [
-            -23.0,
+            -23,
             8.095,
             9.54
           ],
@@ -10594,18 +10054,18 @@
           ],
           "watts": 26500,
           "coneDegrees": 160,
-          "blend": 1.0,
+          "blend": 1,
           "radius": 0.32,
           "normalized": true,
           "optics": [
             {
               "watts": 2500,
               "coneDegrees": 160,
-              "blend": 1.0,
+              "blend": 1,
               "direction": [
-                0.0,
-                -1.0,
-                0.0
+                0,
+                -1,
+                0
               ]
             },
             {
@@ -10613,7 +10073,7 @@
               "coneDegrees": 70,
               "blend": 0.9,
               "direction": [
-                0.0,
+                0,
                 -0.4067366430758002,
                 0.9135454576426009
               ]
@@ -10672,7 +10132,7 @@
         },
         {
           "position": [
-            -23.0,
+            -23,
             8.095,
             7.66
           ],
@@ -10683,18 +10143,18 @@
           ],
           "watts": 26500,
           "coneDegrees": 160,
-          "blend": 1.0,
+          "blend": 1,
           "radius": 0.32,
           "normalized": true,
           "optics": [
             {
               "watts": 2500,
               "coneDegrees": 160,
-              "blend": 1.0,
+              "blend": 1,
               "direction": [
-                0.0,
-                -1.0,
-                -0.0
+                0,
+                -1,
+                0
               ]
             },
             {
@@ -10772,7 +10232,7 @@
       "heads": [
         {
           "position": [
-            0.0,
+            0,
             8.095,
             -7.91
           ],
@@ -10783,18 +10243,18 @@
           ],
           "watts": 26500,
           "coneDegrees": 160,
-          "blend": 1.0,
+          "blend": 1,
           "radius": 0.32,
           "normalized": true,
           "optics": [
             {
               "watts": 2500,
               "coneDegrees": 160,
-              "blend": 1.0,
+              "blend": 1,
               "direction": [
-                0.0,
-                -1.0,
-                0.0
+                0,
+                -1,
+                0
               ]
             },
             {
@@ -10802,7 +10262,7 @@
               "coneDegrees": 70,
               "blend": 0.9,
               "direction": [
-                0.0,
+                0,
                 -0.4067366430758002,
                 0.9135454576426009
               ]
@@ -10872,18 +10332,18 @@
           ],
           "watts": 26500,
           "coneDegrees": 160,
-          "blend": 1.0,
+          "blend": 1,
           "radius": 0.32,
           "normalized": true,
           "optics": [
             {
               "watts": 2500,
               "coneDegrees": 160,
-              "blend": 1.0,
+              "blend": 1,
               "direction": [
-                0.0,
-                -1.0,
-                -0.0
+                0,
+                -1,
+                0
               ]
             },
             {
@@ -10961,7 +10421,7 @@
       "heads": [
         {
           "position": [
-            0.0,
+            0,
             8.095,
             9.54
           ],
@@ -10972,18 +10432,18 @@
           ],
           "watts": 26500,
           "coneDegrees": 160,
-          "blend": 1.0,
+          "blend": 1,
           "radius": 0.32,
           "normalized": true,
           "optics": [
             {
               "watts": 2500,
               "coneDegrees": 160,
-              "blend": 1.0,
+              "blend": 1,
               "direction": [
-                0.0,
-                -1.0,
-                0.0
+                0,
+                -1,
+                0
               ]
             },
             {
@@ -10991,7 +10451,7 @@
               "coneDegrees": 70,
               "blend": 0.9,
               "direction": [
-                0.0,
+                0,
                 -0.4067366430758002,
                 0.9135454576426009
               ]
@@ -11061,18 +10521,18 @@
           ],
           "watts": 26500,
           "coneDegrees": 160,
-          "blend": 1.0,
+          "blend": 1,
           "radius": 0.32,
           "normalized": true,
           "optics": [
             {
               "watts": 2500,
               "coneDegrees": 160,
-              "blend": 1.0,
+              "blend": 1,
               "direction": [
-                0.0,
-                -1.0,
-                -0.0
+                0,
+                -1,
+                0
               ]
             },
             {
@@ -11150,7 +10610,7 @@
       "heads": [
         {
           "position": [
-            23.0,
+            23,
             8.095,
             -7.91
           ],
@@ -11161,18 +10621,18 @@
           ],
           "watts": 26500,
           "coneDegrees": 160,
-          "blend": 1.0,
+          "blend": 1,
           "radius": 0.32,
           "normalized": true,
           "optics": [
             {
               "watts": 2500,
               "coneDegrees": 160,
-              "blend": 1.0,
+              "blend": 1,
               "direction": [
-                0.0,
-                -1.0,
-                0.0
+                0,
+                -1,
+                0
               ]
             },
             {
@@ -11180,7 +10640,7 @@
               "coneDegrees": 70,
               "blend": 0.9,
               "direction": [
-                0.0,
+                0,
                 -0.4067366430758002,
                 0.9135454576426009
               ]
@@ -11239,7 +10699,7 @@
         },
         {
           "position": [
-            23.0,
+            23,
             8.095,
             -9.79
           ],
@@ -11250,18 +10710,18 @@
           ],
           "watts": 26500,
           "coneDegrees": 160,
-          "blend": 1.0,
+          "blend": 1,
           "radius": 0.32,
           "normalized": true,
           "optics": [
             {
               "watts": 2500,
               "coneDegrees": 160,
-              "blend": 1.0,
+              "blend": 1,
               "direction": [
-                0.0,
-                -1.0,
-                -0.0
+                0,
+                -1,
+                0
               ]
             },
             {
@@ -11339,7 +10799,7 @@
       "heads": [
         {
           "position": [
-            23.0,
+            23,
             8.095,
             9.54
           ],
@@ -11350,18 +10810,18 @@
           ],
           "watts": 26500,
           "coneDegrees": 160,
-          "blend": 1.0,
+          "blend": 1,
           "radius": 0.32,
           "normalized": true,
           "optics": [
             {
               "watts": 2500,
               "coneDegrees": 160,
-              "blend": 1.0,
+              "blend": 1,
               "direction": [
-                0.0,
-                -1.0,
-                0.0
+                0,
+                -1,
+                0
               ]
             },
             {
@@ -11369,7 +10829,7 @@
               "coneDegrees": 70,
               "blend": 0.9,
               "direction": [
-                0.0,
+                0,
                 -0.4067366430758002,
                 0.9135454576426009
               ]
@@ -11428,7 +10888,7 @@
         },
         {
           "position": [
-            23.0,
+            23,
             8.095,
             7.66
           ],
@@ -11439,18 +10899,18 @@
           ],
           "watts": 26500,
           "coneDegrees": 160,
-          "blend": 1.0,
+          "blend": 1,
           "radius": 0.32,
           "normalized": true,
           "optics": [
             {
               "watts": 2500,
               "coneDegrees": 160,
-              "blend": 1.0,
+              "blend": 1,
               "direction": [
-                0.0,
-                -1.0,
-                -0.0
+                0,
+                -1,
+                0
               ]
             },
             {
@@ -11528,7 +10988,7 @@
       "heads": [
         {
           "position": [
-            -28.0,
+            -28,
             6.995,
             -27.91
           ],
@@ -11537,34 +10997,34 @@
             -1,
             0
           ],
-          "watts": 39220.0,
+          "watts": 39220,
           "coneDegrees": 160,
-          "blend": 1.0,
+          "blend": 1,
           "radius": 0.32,
           "normalized": true,
           "optics": [
             {
-              "watts": 2500.0,
+              "watts": 2500,
               "coneDegrees": 160,
-              "blend": 1.0,
+              "blend": 1,
               "direction": [
-                0.0,
-                -1.0,
-                0.0
+                0,
+                -1,
+                0
               ]
             },
             {
-              "watts": 8500.0,
+              "watts": 8500,
               "coneDegrees": 70,
               "blend": 0.9,
               "direction": [
-                0.0,
+                0,
                 -0.4067366430758002,
                 0.9135454576426009
               ]
             },
             {
-              "watts": 8500.0,
+              "watts": 8500,
               "coneDegrees": 70,
               "blend": 0.9,
               "direction": [
@@ -11574,7 +11034,7 @@
               ]
             },
             {
-              "watts": 8500.0,
+              "watts": 8500,
               "coneDegrees": 70,
               "blend": 0.9,
               "direction": [
@@ -11584,7 +11044,7 @@
               ]
             },
             {
-              "watts": 1020.0,
+              "watts": 1020,
               "coneDegrees": 70,
               "blend": 0.9,
               "direction": [
@@ -11594,7 +11054,7 @@
               ]
             },
             {
-              "watts": 5100.0,
+              "watts": 5100,
               "coneDegrees": 70,
               "blend": 0.9,
               "direction": [
@@ -11604,7 +11064,7 @@
               ]
             },
             {
-              "watts": 5100.0,
+              "watts": 5100,
               "coneDegrees": 70,
               "blend": 0.9,
               "direction": [
@@ -11628,7 +11088,7 @@
       "heads": [
         {
           "position": [
-            0.0,
+            0,
             6.995,
             -27.91
           ],
@@ -11637,34 +11097,34 @@
             -1,
             0
           ],
-          "watts": 39220.0,
+          "watts": 39220,
           "coneDegrees": 160,
-          "blend": 1.0,
+          "blend": 1,
           "radius": 0.32,
           "normalized": true,
           "optics": [
             {
-              "watts": 2500.0,
+              "watts": 2500,
               "coneDegrees": 160,
-              "blend": 1.0,
+              "blend": 1,
               "direction": [
-                0.0,
-                -1.0,
-                0.0
+                0,
+                -1,
+                0
               ]
             },
             {
-              "watts": 8500.0,
+              "watts": 8500,
               "coneDegrees": 70,
               "blend": 0.9,
               "direction": [
-                0.0,
+                0,
                 -0.4067366430758002,
                 0.9135454576426009
               ]
             },
             {
-              "watts": 8500.0,
+              "watts": 8500,
               "coneDegrees": 70,
               "blend": 0.9,
               "direction": [
@@ -11674,7 +11134,7 @@
               ]
             },
             {
-              "watts": 8500.0,
+              "watts": 8500,
               "coneDegrees": 70,
               "blend": 0.9,
               "direction": [
@@ -11684,7 +11144,7 @@
               ]
             },
             {
-              "watts": 1020.0,
+              "watts": 1020,
               "coneDegrees": 70,
               "blend": 0.9,
               "direction": [
@@ -11694,7 +11154,7 @@
               ]
             },
             {
-              "watts": 5100.0,
+              "watts": 5100,
               "coneDegrees": 70,
               "blend": 0.9,
               "direction": [
@@ -11704,7 +11164,7 @@
               ]
             },
             {
-              "watts": 5100.0,
+              "watts": 5100,
               "coneDegrees": 70,
               "blend": 0.9,
               "direction": [
@@ -11728,7 +11188,7 @@
       "heads": [
         {
           "position": [
-            28.0,
+            28,
             6.995,
             -27.91
           ],
@@ -11737,34 +11197,34 @@
             -1,
             0
           ],
-          "watts": 39220.0,
+          "watts": 39220,
           "coneDegrees": 160,
-          "blend": 1.0,
+          "blend": 1,
           "radius": 0.32,
           "normalized": true,
           "optics": [
             {
-              "watts": 2500.0,
+              "watts": 2500,
               "coneDegrees": 160,
-              "blend": 1.0,
+              "blend": 1,
               "direction": [
-                0.0,
-                -1.0,
-                0.0
+                0,
+                -1,
+                0
               ]
             },
             {
-              "watts": 8500.0,
+              "watts": 8500,
               "coneDegrees": 70,
               "blend": 0.9,
               "direction": [
-                0.0,
+                0,
                 -0.4067366430758002,
                 0.9135454576426009
               ]
             },
             {
-              "watts": 8500.0,
+              "watts": 8500,
               "coneDegrees": 70,
               "blend": 0.9,
               "direction": [
@@ -11774,7 +11234,7 @@
               ]
             },
             {
-              "watts": 8500.0,
+              "watts": 8500,
               "coneDegrees": 70,
               "blend": 0.9,
               "direction": [
@@ -11784,7 +11244,7 @@
               ]
             },
             {
-              "watts": 1020.0,
+              "watts": 1020,
               "coneDegrees": 70,
               "blend": 0.9,
               "direction": [
@@ -11794,7 +11254,7 @@
               ]
             },
             {
-              "watts": 5100.0,
+              "watts": 5100,
               "coneDegrees": 70,
               "blend": 0.9,
               "direction": [
@@ -11804,7 +11264,7 @@
               ]
             },
             {
-              "watts": 5100.0,
+              "watts": 5100,
               "coneDegrees": 70,
               "blend": 0.9,
               "direction": [
@@ -11828,7 +11288,7 @@
       "heads": [
         {
           "position": [
-            13.0,
+            13,
             6.995,
             32.64
           ],
@@ -11837,34 +11297,34 @@
             -1,
             0
           ],
-          "watts": 28340.0,
+          "watts": 28340,
           "coneDegrees": 160,
-          "blend": 1.0,
+          "blend": 1,
           "radius": 0.32,
           "normalized": true,
           "optics": [
             {
-              "watts": 2500.0,
+              "watts": 2500,
               "coneDegrees": 160,
-              "blend": 1.0,
+              "blend": 1,
               "direction": [
-                0.0,
-                -1.0,
-                0.0
+                0,
+                -1,
+                0
               ]
             },
             {
-              "watts": 1700.0,
+              "watts": 1700,
               "coneDegrees": 70,
               "blend": 0.9,
               "direction": [
-                0.0,
+                0,
                 -0.4067366430758002,
                 0.9135454576426009
               ]
             },
             {
-              "watts": 8500.0,
+              "watts": 8500,
               "coneDegrees": 70,
               "blend": 0.9,
               "direction": [
@@ -11874,7 +11334,7 @@
               ]
             },
             {
-              "watts": 8500.0,
+              "watts": 8500,
               "coneDegrees": 70,
               "blend": 0.9,
               "direction": [
@@ -11884,7 +11344,7 @@
               ]
             },
             {
-              "watts": 5100.0,
+              "watts": 5100,
               "coneDegrees": 70,
               "blend": 0.9,
               "direction": [
@@ -11894,7 +11354,7 @@
               ]
             },
             {
-              "watts": 1020.0,
+              "watts": 1020,
               "coneDegrees": 70,
               "blend": 0.9,
               "direction": [
@@ -11904,7 +11364,7 @@
               ]
             },
             {
-              "watts": 1020.0,
+              "watts": 1020,
               "coneDegrees": 70,
               "blend": 0.9,
               "direction": [
@@ -12027,7 +11487,7 @@
     },
     {
       "pos": [
-        0.0,
+        0,
         39.15
       ],
       "height": 5.18,
@@ -12173,7 +11633,7 @@
           "position": [
             -57.29,
             4.94,
-            26.0
+            26
           ],
           "direction": [
             1.5,
@@ -12200,7 +11660,7 @@
           "position": [
             -57.29,
             4.94,
-            10.0
+            10
           ],
           "direction": [
             1.5,
@@ -12227,7 +11687,7 @@
           "position": [
             -57.29,
             4.94,
-            -6.0
+            -6
           ],
           "direction": [
             1.5,
@@ -12254,7 +11714,7 @@
           "position": [
             -57.29,
             4.94,
-            -22.0
+            -22
           ],
           "direction": [
             1.5,
@@ -12281,7 +11741,7 @@
           "position": [
             -57.29,
             4.94,
-            -38.0
+            -38
           ],
           "direction": [
             1.5,

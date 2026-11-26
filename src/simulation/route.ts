@@ -33,8 +33,25 @@ export class CruiseRoute {
     for (const aisle of aisles) {
       const offset = LANE_OFFSETS[aisle.id]
       if (!offset) continue
-      const a = this.closest(aisle.points[0]).station, b = this.closest(aisle.points.at(-1)!).station
-      this.lanes.push({ start: a, end: a + this.ahead(a, b), offset })
+      const a = aisle.points[0], b = aisle.points.at(-1)!
+      const span = distance(a, b)
+      const dx = (b[0] - a[0]) / span, dz = (b[1] - a[1]) / span
+      const ranges: { start: number; end: number }[] = []
+      for (const segment of this.segments) {
+        const lateral = (point: Point) => Math.abs((point[0] - a[0]) * dz - (point[1] - a[1]) * dx)
+        if (lateral(segment.a) > 0.00001 || lateral(segment.b) > 0.00001 ||
+          (segment.b[0] - segment.a[0]) * dx + (segment.b[1] - segment.a[1]) * dz <= 0) continue
+        const previous = ranges.at(-1)
+        if (previous && segment.start - previous.end < 0.00001) previous.end = segment.start + segment.length
+        else ranges.push({ start: segment.start, end: segment.start + segment.length })
+      }
+      // An aisle can be visited twice, or cross station zero. Keep a separate
+      // right-hand lane on every visit without a lane change at the wrap point.
+      if (ranges.length > 1 && ranges[0].start < 0.00001 && this.length - ranges.at(-1)!.end < 0.00001) {
+        const first = ranges.shift()!
+        ranges.at(-1)!.end = this.length + first.end
+      }
+      this.lanes.push(...ranges.map(range => ({ ...range, offset })))
     }
   }
 
