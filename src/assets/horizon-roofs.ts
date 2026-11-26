@@ -1,4 +1,4 @@
-import { BufferAttribute, BufferGeometry, DataTexture, NearestFilter, RGBAFormat, UnsignedByteType, Vector3 } from 'three'
+import { BufferAttribute, BufferGeometry, DataTexture, Mesh, MeshStandardMaterial, NearestFilter, RGBAFormat, UnsignedByteType, Vector3 } from 'three'
 import type { Object3D, Texture } from 'three'
 import { standardMeshes } from './gltf.ts'
 
@@ -81,6 +81,52 @@ export function dressHorizonRoofs(world: Object3D) {
       building[t] = groups.get(r)!
     }
     const count = groups.size
+
+    // Low display windows on the surrounding shops keep a lit commercial
+    // horizon visible while the cruise turns through the rows.
+    const shopWindows: Builder = { positions: [], normals: [], colors: [], uvs: [] }
+    const ground = Array.from({ length: count }, () => ({ y: Infinity, points: [] as Vector3[] }))
+    for (let t = 0; t < triangles; t++) for (let k = 0; k < 3; k++) {
+      const p = new Vector3().fromBufferAttribute(position, 3 * t + k)
+      const foot = ground[building[t]]
+      if (p.y < foot.y - 0.01) { foot.y = p.y; foot.points.length = 0 }
+      if (Math.abs(p.y - foot.y) < 0.01 && !foot.points.some(q => q.distanceToSquared(p) < 1e-4)) foot.points.push(p)
+    }
+    for (const [g, foot] of ground.entries()) {
+      if (foot.points.length !== 4 || foot.y > 0.1) continue
+      const centre = foot.points.reduce((sum, p) => sum.add(p), new Vector3()).multiplyScalar(0.25)
+      foot.points.sort((p, q) => Math.atan2(p.z - centre.z, p.x - centre.x) - Math.atan2(q.z - centre.z, q.x - centre.x))
+      for (let i = 0; i < 4; i++) {
+        const p0 = foot.points[i], p1 = foot.points[(i + 1) % 4]
+        const edge = p1.clone().sub(p0).setY(0)
+        const length = edge.length()
+        if (length < 7.5) continue
+        const outward = new Vector3(edge.z, 0, -edge.x).normalize()
+        const panes = Math.max(2, Math.round(length / 3.3))
+        for (let k = 0; k < panes; k++) {
+          if ((k + g + i) % 5 === 0) continue
+          const start = p0.clone().addScaledVector(edge, (k + 0.12) / panes).addScaledVector(outward, 0.025)
+          const end = p0.clone().addScaledVector(edge, (k + 0.88) / panes).addScaledVector(outward, 0.025)
+          const brightness = [0.62, 0.88, 0.74, 1.0][(k + g) % 4]
+          const tone = [brightness, brightness * (0.73 + 0.07 * (g % 3)), brightness * 0.47]
+          quad(shopWindows, [end.clone().setY(0.45), start.clone().setY(0.45), start.clone().setY(1.95), end.clone().setY(1.95)], outward, tone, 0)
+        }
+      }
+    }
+    if (shopWindows.positions.length) {
+      const windows = new BufferGeometry()
+      windows.setAttribute('position', new BufferAttribute(new Float32Array(shopWindows.positions), 3))
+      windows.setAttribute('normal', new BufferAttribute(new Float32Array(shopWindows.normals), 3))
+      windows.setAttribute('color', new BufferAttribute(new Float32Array(shopWindows.colors), 3))
+      const glow = new MeshStandardMaterial({ color: '#000000', emissive: '#ffffff', emissiveIntensity: 0.65, vertexColors: true, roughness: 0.85 })
+      glow.userData.vertexTint = true
+      const displays = new Mesh(windows, glow)
+      displays.name = 'Distant_shop_windows'
+      displays.position.copy(mesh.position)
+      displays.quaternion.copy(mesh.quaternion)
+      displays.scale.copy(mesh.scale)
+      mesh.parent!.add(displays)
+    }
 
     // Area-weighted average of each building's baked light, in linear values.
     const pixels = lightmapPixels(lightMap)

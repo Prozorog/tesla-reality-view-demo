@@ -15,6 +15,7 @@ const BUMPER = hero.stations.front_bumper
 // Seat: the real low beams, two long lobes reaching about 20 m.
 export const CLOUD = { halfWidth: 1.2, growth: 0.14, gain: 1.55, floor: 0.13, color: [0.30, 0.76, 1.0] as const }
 const REALITY_SHAPE = { growth: CLOUD.growth, base: CLOUD.halfWidth, gain: CLOUD.gain, floor: CLOUD.floor }
+const CRUISE_SHAPE = REALITY_SHAPE
 const SEAT_SHAPE = { growth: 0.05, base: 0.42, gain: 3.0, floor: 4.5 }
 const SEAT_REACH = 25
 // Where along the throw the pool starts to fade (fraction of the reach).
@@ -28,15 +29,18 @@ export class PavementLights {
   private readonly fade = { value: REALITY_FADE }
   private readonly cloud = { value: 1 }
   private readonly cloudColor = { value: new Vector3(...CLOUD.color) }
+  private readonly groundFill = { value: 0 }
   private readonly lamp = new Vector4()
   private readonly bumper = new Vector4()
   private realityReach = 7
   private seatBeams = 1
+  private parking = 0
 
   constructor(world: Object3D, private readonly footprint: Exterior['footprint']) {
     const pavement = standardMeshes(world).filter(mesh => /^(Asphalt_|Kerbs_and_paving$|Outer_verge$|Street_beyond$)/.test(mesh.name))
     for (const material of new Set(pavement.map(mesh => mesh.material))) {
-      editShader(material, 'player-pavement-light-p16', shader => {
+      const asphalt = pavement.some(mesh => mesh.material === material && /^Asphalt_/.test(mesh.name))
+      editShader(material, asphalt ? 'player-pavement-light-p161-asphalt' : 'player-pavement-light-p161', shader => {
         shader.uniforms.rvHead = this.front
         shader.uniforms.rvTail = this.rear
         shader.uniforms.rvBeam = this.beam
@@ -44,6 +48,7 @@ export class PavementLights {
         shader.uniforms.rvFade = this.fade
         shader.uniforms.rvCloud = this.cloud
         shader.uniforms.rvCloudColor = this.cloudColor
+        shader.uniforms.rvGroundFill = this.groundFill
         shader.vertexShader = 'varying vec2 rvPavement;\n' + shader.vertexShader.replace('#include <project_vertex>', `
           rvPavement = (modelMatrix * vec4(transformed, 1.0)).xz;
           #include <project_vertex>
@@ -57,6 +62,7 @@ export class PavementLights {
           uniform float rvFade;
           uniform float rvCloud;
           uniform vec3 rvCloudColor;
+          uniform float rvGroundFill;
           vec2 rvAlong(vec4 bumper) {
             vec2 delta = rvPavement - bumper.xy;
             return vec2(dot(delta, bumper.zw), dot(delta, vec2(-bumper.w, bumper.z)));
@@ -71,6 +77,19 @@ export class PavementLights {
           #ifdef USE_MAP
             rvAlbedo = texture2D(map, vMapUv, 2.2).rgb * diffuse;
           #endif
+          ${asphalt ? `
+          // Clip B keeps the far rows lit between the baked lamp pools. Fill the
+          // missing diffuse light before the player's headlights are applied.
+          // The parking view keeps its baked contrast with only an 8% lift.
+          float rvGroundLuma = dot(reflectedLight.indirectDiffuse, vec3(0.2126, 0.7152, 0.0722));
+          float rvDistance = length(rvPavement - rvHead.xy);
+          float rvFloor = mix(0.142, 0.156, smoothstep(12.0, 65.0, rvDistance));
+          float rvDetail = 0.94 + 0.12 * clamp(rvGroundLuma / 0.10, 0.0, 1.0);
+          vec3 rvGroundTint = diffuseColor.rgb / max(dot(diffuseColor.rgb, vec3(0.2126, 0.7152, 0.0722)), 0.003);
+          vec3 rvFilled = max(reflectedLight.indirectDiffuse,
+            rvGroundTint * vec3(1.03, 1.0, 0.95) * rvFloor * rvDetail);
+          reflectedLight.indirectDiffuse = mix(reflectedLight.indirectDiffuse * 1.08, rvFilled, rvGroundFill);
+          ` : ''}
           vec3 rvLit = reflectedLight.indirectDiffuse / max(diffuseColor.rgb, vec3(0.03));
           vec3 rvLight = vec3(0.0);
           vec2 h = rvAlong(rvHead);
@@ -114,6 +133,9 @@ export class PavementLights {
     const { x, z, h } = drive.pose
     const dx = Math.cos(h), dz = -Math.sin(h)
     const { front, rear } = this.footprint
+    // Selection starts the parking chase before the camera has risen. Use the
+    // established parking light there as well as in the straight-down view.
+    this.parking = drive.selectedBay || drive.mode === 'parked' ? 1 : overhead
     // The beams turn with the front wheels.
     const steer = h + drive.steer * 0.42
     this.lamp.set(x + dx * HEAD_ALONG, z + dz * HEAD_ALONG, Math.cos(steer), -Math.sin(steer))
@@ -129,12 +151,22 @@ export class PavementLights {
   /** The seat sees the real low beams; the Reality View sees the short visual pool. */
   usePass(pass: string) {
     const seat = pass === 'seat'
-    const shape = seat ? SEAT_SHAPE : REALITY_SHAPE
-    this.shape.value.set(shape.growth, shape.base, shape.gain, shape.floor)
+    if (seat) {
+      this.shape.value.set(SEAT_SHAPE.growth, SEAT_SHAPE.base, SEAT_SHAPE.gain, SEAT_SHAPE.floor)
+    } else {
+      const mix = this.parking
+      this.shape.value.set(
+        CRUISE_SHAPE.growth + (REALITY_SHAPE.growth - CRUISE_SHAPE.growth) * mix,
+        CRUISE_SHAPE.base + (REALITY_SHAPE.base - CRUISE_SHAPE.base) * mix,
+        CRUISE_SHAPE.gain + (REALITY_SHAPE.gain - CRUISE_SHAPE.gain) * mix,
+        CRUISE_SHAPE.floor + (REALITY_SHAPE.floor - CRUISE_SHAPE.floor) * mix,
+      )
+    }
     this.beam.value.x = seat ? SEAT_REACH : this.realityReach
     this.beam.value.y = seat ? this.seatBeams : 1
     this.fade.value = seat ? SEAT_FADE : REALITY_FADE
     this.cloud.value = seat ? 0 : 1
+    this.groundFill.value = seat ? 0 : 1 - this.parking
     this.front.value.copy(seat ? this.lamp : this.bumper)
   }
 }
