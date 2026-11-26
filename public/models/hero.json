@@ -4,32 +4,32 @@
   "gltf_mapping": "(x,z,-y)",
   "bounding_box": {
     "min": [
-      -1.07728111743927,
+      -1.0773807764053345,
       -1.131054162979126,
       -0.0004458129405975342
     ],
     "max": [
       3.9671192169189453,
       1.131054162979126,
-      1.6823272705078125
+      1.6823267936706543
     ],
     "size": [
-      5.044400215148926,
+      5.04449987411499,
       2.262108325958252,
-      1.6827731132507324
+      1.6827726364135742
     ],
     "body_width": 2.0
   },
   "stations": {
     "front_bumper": 3.9671192169189453,
-    "rear_bumper": -1.07728111743927,
+    "rear_bumper": -1.0773807764053345,
     "trunk_lip": [
       -1.035,
       0,
       1.08
     ],
     "rear_camera": [
-      -1.08928111743927,
+      -1.0893807764053345,
       0,
       0.933
     ],
@@ -39,7 +39,7 @@
       0.7372390031814575
     ],
     "tail_lamp": [
-      -0.8632227778434753,
+      -0.8640562891960144,
       0.6425813436508179,
       0.9278600811958313
     ]
@@ -69,7 +69,7 @@
       0.3779999911785126
     ]
   },
-  "total_triangles": 154672,
+  "total_triangles": 160468,
   "triangles": {
     "Tailgate crown": 3840,
     "Recess Tailgate crown": 600,
@@ -185,9 +185,13 @@
     "Front bumper": 9984,
     "front lower valance": 192,
     "Tailgate pressing": 9984,
+    "Rear quarter return -1": 3328,
+    "Tailgate side jamb -1": 26,
+    "Rear quarter return 1": 3328,
+    "Tailgate side jamb 1": 26,
     "Tailgate inner lining": 144,
     "Rear bumper": 3072,
-    "Tailgate lower jamb": 960,
+    "Tailgate lower jamb": 720,
     "rear lower valance": 192,
     "Optic housing frontR": 91,
     "Polycarbonate frontR": 91,
@@ -258,7 +262,6 @@
     "lights_brake": 288,
     "lights_reverse": 288,
     "indicators_left": 288,
-    "Tailgate side cut": 336,
     "Smoked rear optic divider": 28,
     "Smoked rear optic divider.001": 28,
     "Front parking sensor": 84,
@@ -269,7 +272,6 @@
     "Intake inner blade.002": 329,
     "Rear diffuser step": 525,
     "Rear diffuser step.001": 525,
-    "Tailgate side cut.001": 336,
     "Smoked rear optic divider.002": 28,
     "Smoked rear optic divider.003": 28,
     "Front parking sensor.002": 84,
@@ -304,12 +306,12 @@
   },
   "lod_triangles": {
     "hero_lod.glb": 14973,
-    "hero_far.glb": 1645
+    "hero_far.glb": 1648
   },
   "lod_parts": {
     "hero_lod.glb": {
-      "body": 8199,
-      "glass": 1700,
+      "body": 8200,
+      "glass": 1699,
       "trim": 1997,
       "wheels": 2300,
       "chrome": 299,
@@ -319,10 +321,10 @@
     "hero_far.glb": {
       "body": 700,
       "glass": 170,
-      "trim": 485,
+      "trim": 484,
       "wheels": 120,
-      "lights_head": 32,
-      "lights_tail": 138
+      "lights_head": 38,
+      "lights_tail": 136
     }
   }
 }

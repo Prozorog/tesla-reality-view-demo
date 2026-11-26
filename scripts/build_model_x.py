@@ -16,7 +16,7 @@ from modelx import panels as P, details as D
 argv=sys.argv[sys.argv.index('--')+1:] if '--' in sys.argv else ['9']
 arg=argv[0]
 export=arg=='export'
-P.R=int(argv[1]) if arg=='features' and len(argv)>1 else (9 if arg in ('export','mesh','features') else int(arg))
+P.R=int(argv[1]) if arg=='features' and len(argv)>1 else (10 if arg in ('export','mesh','features') else int(arg))
 out=ROOT/'tmp'/'model-x'/(arg if arg in ('export','mesh') else 'round'+str(P.R));out.mkdir(parents=True,exist_ok=True)
 bpy.ops.wm.read_factory_settings(use_empty=True)
 scene=bpy.context.scene
@@ -27,8 +27,8 @@ def mat(key,color,metal,rough,coat=0,em=None,power=0):
     P.M[key]=m
 mat('paint','#FAFAFA',.015,.43,.42)
 P.M['paint'].node_tree.nodes['Principled BSDF'].inputs['Coat Roughness'].default_value=.23
-mat('glass','#16191C',.04,.022,.35)
-mat('roofglass','#171C21',.04,.07,.23)
+mat('glass','#252C32',.04,.14,.24)
+mat('roofglass','#27313A',.04,.23,.14)
 mat('blackglass','#111316',.06,.075,.3)
 mat('clad','#242527',.0,.55);mat('seal','#101114',0,.76)
 # Shut-line backing: the painted jamb in its own shadow, not an ink outline.
@@ -42,16 +42,18 @@ for label,alpha in [('lens',.14),('smoke',.31)]:
     P.M[label].node_tree.nodes['Principled BSDF'].inputs['Alpha'].default_value=alpha
 for key,col,em,power in [('led','#E3E5F1','#EEF7FF',.45),('red','#6B1220','#FF1639',.032),('brake','#6B1C20','#FF111D',.015),('amber','#60584D','#FF9E2A',.025)]:
     mat(key,col,.28,.27,0,em,power)
-mat('upholstery','#353A3A',0,.78);mat('frontglass','#16191C',0,.02,.20);mat('windscreen','#16191C',0,.02,.20)
+mat('upholstery','#353A3A',0,.78);mat('frontglass','#29343A',0,.13,.16);mat('windscreen','#29343A',0,.13,.16)
 # Tinted glass shows the cabin faintly, as in the overhead photo.
-for key,alpha in [('glass',.88),('frontglass',.72),('roofglass',.84)]:
+for key,alpha in [('glass',.80),('frontglass',.64),('roofglass',.75)]:
     P.M[key].node_tree.nodes['Principled BSDF'].inputs['Alpha'].default_value=alpha
+for key in ('glass','roofglass','frontglass','windscreen'):
+    P.M[key].node_tree.nodes['Principled BSDF'].inputs['Coat Roughness'].default_value=.26
 tint=bpy.data.images.new('Panoramic gradient',width=64,height=2,alpha=True)
 tint.alpha_mode='STRAIGHT';tint.colorspace_settings.name='Non-Color'
 pixels=[]
 for y in range(2):
     for x in range(64):
-        pixels.extend([1,1,1,.92-.26*(x/63)**.85])
+        pixels.extend([1,1,1,.85-.29*(x/63)**.85])
 tint.pixels.foreach_set(pixels);tint.pack()
 nt=P.M['windscreen'].node_tree
 im=nt.nodes.new('ShaderNodeTexImage');im.image=tint;im.extension='EXTEND'

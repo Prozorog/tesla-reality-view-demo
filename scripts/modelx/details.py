@@ -83,7 +83,18 @@ def face(v):
             # Shallow registration-plate pressing with soft walls.
             recess=at([(0,.034),(.30,.033),(.37,.031),(.46,.008),(.50,0)],abs(t))*at([(322,0),(350,0),(374,1),(404,1),(432,0)],py)
             p.x+=recess;return p
-        panel('Tailgate pressing',hatch,xs,[0,.10,.27,.37,.405,.44,.48,.57,.65,.7,.75,.80,.94,1],'paint',(-1,0,0))
+        hatch_rows=[0,.10,.27,.37,.405,.44,.48,.57,.65,.7,.75,.80,.94,1]
+        def hatch_edge(h):
+            return at([(0,.775),(.27,.78),(.65,.755),(.94,.71),(1,.69)],h)
+        # The hatch cut is an actual 3.6 mm opening with a recessed painted jamb.
+        # Separate quarter returns meet the crown without a dark cord on the paint.
+        cut=.0018/side_width(A)
+        panel('Tailgate pressing',lambda t,h:hatch(t*(hatch_edge(h)-cut),h),xs,hatch_rows,'paint',(-1,0,0))
+        for sign in (-1,1):
+            panel('Rear quarter return '+str(sign),lambda t,h:hatch(sign*mix(hatch_edge(h)+cut,1,t),h),
+                  seq(0,1,8),hatch_rows,'paint',(-1,sign*.25,0))
+            panel('Tailgate side jamb '+str(sign),lambda t,h:hatch(sign*(hatch_edge(h)+t*cut),h)+Vector((.006,0,0)),
+                  [-1,1],hatch_rows,'gap',(-1,0,0),False)
         def inner_hatch(t,h):
             p=hatch(t*.99,h)
             return p+Vector((.035,-.012*t,-.015))
@@ -92,13 +103,13 @@ def face(v):
             py=mix(split(t)+.8,at(REAR_CUT,abs(t)),h)
             return facepoint(v,t,py)
         panel('Rear bumper',bumper,xs,[0,.08,.4,.83,1],'paint',(-1,0,0))
-        line('Tailgate lower jamb',[facepoint(v,t,split(t),-.002) for t in seq(-1,1,80)],.002,'gap')
+        line('Tailgate lower jamb',[facepoint(v,t,split(t),-.004) for t in seq(-.69,.69,60)],.0018,'gap')
     panel(v+' lower valance',row,xs,[5,5.12,6,6.7,7],'clad',(1 if front else -1,0,0))
     P.LINES.append([row(t,5) for t in seq(-1,1,80)])
 def match_quarter_normals():
     # The bumper and quarter share the same corner curve but export as separate
     # panels. Give their coincident edges the tangent of the assembled surface.
-    names=['Tailgate pressing','Rear bumper','rear lower valance','Rear quarter L','Rear quarter R']
+    names=['Tailgate pressing','Rear quarter return -1','Rear quarter return 1','Rear bumper','rear lower valance','Rear quarter L','Rear quarter R']
     dg=bpy.context.evaluated_depsgraph_get()
     curves={(sg,side):[] for sg in [-1,1] for side in [True,False]}
     meshes=[]
@@ -106,7 +117,7 @@ def match_quarter_normals():
         ob=bpy.data.objects[name]
         skin=bpy.data.meshes.new_from_object(ob.evaluated_get(dg),depsgraph=dg)
         ob.modifiers.clear();ob.data=skin
-        side=name.startswith('Rear quarter')
+        side=name in ('Rear quarter L','Rear quarter R')
         for v in skin.vertices:
             x,y,z=v.co
             if abs(x-A)<.0001 and abs(abs(y)-side_width(A))<.0005:
@@ -275,8 +286,6 @@ def trim():
     lettering('T E S L A','rear',0,341,.029,.0285);lettering('MODEL X','rear',176,442,.028);lettering('P100D','rear',-184,442,.025)
     for key,m in LIGHTS.items():obj(key,m)
     for sg in [-1,1]:
-        points=[stamp('rear',u*sg,y,.023) for u,y in path2([(235,293),(238,315),(238,351),(235,386),(232,414),(224,448),(218,455)])]
-        line('Tailgate side cut',points,.0022,'gap')
         for y in (344,377):
             shape('Smoked rear optic divider','rear',[(229,y),(280,y-2),(280,y+2),(229,y+3)],sg,.022,'housing')
         for u in [60,142]:
@@ -327,7 +336,7 @@ def spoiler():
     def blade(t,h):
         x=-.963+.055*t*t+h*(.164-.045*t*t)
         y=t*.539
-        z=P.elevation('rear',x,y,232+16*t*t)+.007*sin(pi*h)
+        z=P.elevation('rear',x,y,240+16*t*t)+.007*sin(pi*h)
         return Vector((x,y,z))
     span=seq(-1,1,24);cross=[0,.10,.48,.87,1]
     def underside(t,h):return blade(t,h)-Vector((0,0,.012+.009*sin(pi*h)))

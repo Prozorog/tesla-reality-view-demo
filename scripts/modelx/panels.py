@@ -54,7 +54,8 @@ CROWN=[(76,279),(124,260),(169,239),(233,213),(312,186),(390,169),(480,156),(558
 WIN=[(102,278),(168,258),(219,236),(269,218),(335,197),(409,182),(479,173),(559,169),(624,170),(681,175),(747,187),(812,206),(876,231),(933,261),(981,294),(1016,321),(1084,338),(1197,361),(1308,391)]
 SILL=[(80,310),(161,291),(218,251),(236,265),(270,277),(323,284),(408,294),(550,303),(691,311),(819,315),(939,321),(1013,328),(1119,343),(1201,369),(1307,391)]
 def roofwidth(q):
-    return at([(A,.882),(-.455,.552),(-.30,.60),(.12,.644),(1.24,.703),(1.7,.72),(2.3,.762),(2.63,.802),(2.81,.851),(3.04,.885),(B,.934)],q)
+    # A continuous broad hatch shoulder rounds the rear roof rail into the crown.
+    return at([(A,.882),(-.55,.81),(-.49,.68),(-.455,.61),(-.30,.62),(.12,.644),(1.24,.703),(1.7,.72),(2.3,.762),(2.63,.802),(2.81,.851),(3.04,.885),(B,.934)],q)
 def deckx(q,t):
     delta=at([(A,-.438),(-.48,-.43),(-.30,-.30),(.10,-.044),(1.23,-.024),(2.3,.13),(2.63,.29),(2.86,.24),(B,.57)],q)
     return q+delta*(1-t**3)
@@ -173,7 +174,14 @@ def lower(x,h,sign):
     y=cabinwidth(x,z,y)
     y=mix(y,abs(edge.y),max(0,(z-(high-.063))/.063))
     end_weight=min(1,max(rear_weight,max(0,1-(B-x)/.10)**2))
-    return Vector((x,sign*mix(y,side_width(x),end_weight),z))
+    p=Vector((x,sign*mix(y,side_width(x),end_weight),z))
+    front_weight=max(0,1-(B-x)/.10)**2
+    if front_weight:
+        # Carry the wing into the bumper return on the same curve. The former
+        # offset edge left a dark vertical crack at the front corner in profile.
+        edge=facepoint('front',sign,proj('front',p)[1])
+        p=p.lerp(edge,front_weight)
+    return p
 def folds(x):
     shoulder=sideheight(x,side_width(x),[(80,340),(325,342),(660,356),(981,371),(1150,376),(1318,396)])
     lowfold=sideheight(x,side_width(x),[(76,481),(438,489),(655,500),(974,518),(1318,518)])
@@ -212,7 +220,7 @@ def shell():
     def hood_edge(q):return at([(2.63,.94),(2.85,.88),(3.14,.85),(B,.91)],q)
     def hood_gap(q):return .0017/roofwidth(q)
     def glass_edge(q):
-        width=at([(-.455,.108),(-.25,.084),(.05,.048),(.8,.042),(1.7,.044),(2.63,.039)],q)
+        width=at([(-.455,.064),(-.35,.059),(-.25,.054),(.05,.048),(.8,.042),(1.7,.044),(2.63,.039)],q)
         return 1-width/roofwidth(q)
     # Boundaries in q follow hatch glass, falcon-wing roof and panoramic windscreen.
     for i,(a,b,name,mat) in enumerate([(A,-.455,'Tailgate crown','paint'),(-.455,.055,'Tailgate glass','glass'),

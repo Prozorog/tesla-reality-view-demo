@@ -55,9 +55,9 @@
     {
       "id": "parked-cars",
       "file": "parked-cars.rad",
-      "count": 1595407,
-      "bytes": 18991848,
-      "spacingFactor": 1.783,
+      "count": 1600842,
+      "bytes": 18774848,
+      "spacingFactor": 1.692,
       "nodes": []
     }
   ]
